@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="zelda-tiles" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="../Downloads/zelda-tiles.png" width="512" height="512"/>
+ </tileset>
+ <imagelayer name="Camada de Imagem 1" visible="0" opacity="0.37" offsetx="0" offsety="-8">
+  <image source="../Downloads/legend-of-zelda-nes-ingame-41383.png" width="256" height="232"/>
+ </imagelayer>
+ <layer name="Camada de Tiles 1" width="16" height="11">
+  <data encoding="csv">
+432,432,432,432,432,432,432,86,86,432,432,432,432,432,432,432,
+432,432,432,432,3,432,434,86,86,432,432,432,432,432,432,432,
+432,432,432,434,86,86,86,86,86,432,432,432,432,432,432,432,
+432,432,434,86,86,86,86,86,86,432,432,432,432,432,432,432,
+432,434,86,86,86,86,86,86,86,435,432,432,432,432,432,432,
+86,86,86,86,86,86,86,86,86,86,86,86,86,86,86,86,
+456,452,86,86,86,86,86,86,86,86,86,86,86,86,456,456,
+432,432,86,86,86,86,86,86,86,86,86,86,86,86,432,432,
+432,432,86,86,86,86,86,86,86,86,86,86,86,86,432,432,
+432,432,456,456,456,456,456,456,456,456,456,456,456,456,432,432,
+432,432,432,432,432,432,432,432,432,432,432,432,432,432,432,432
+</data>
+ </layer>
+</map>
