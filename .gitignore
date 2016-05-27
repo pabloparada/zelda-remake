@@ -27,3 +27,8 @@
 *.out
 *.app
 *.db
+
+# Project folders
+/LegendOfZeldaSolution/LegendOfZelda/obj/x86
+/LegendOfZeldaSolution/LegendOfZelda/bin/Windows/x86
+/LegendOfZeldaSolution/.vs/LegendOfZeldaSolution/v14
