@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="zelda-tiles" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="zelda-tileset.png" width="512" height="512"/>
+ </tileset>
+ <imagelayer name="WorldMap2" visible="0" offsetx="-2304" offsety="-1056">
+  <image source="Zelda_OverWorld2.png" width="4352" height="1408"/>
+ </imagelayer>
+ <layer name="Camada de Tiles 1" width="16" height="11">
+  <data encoding="csv">
+432,432,412,86,412,86,412,86,86,412,86,412,86,412,86,412,
+432,432,412,86,412,86,412,86,86,412,86,412,86,412,86,412,
+432,434,86,86,86,86,86,86,86,86,86,86,86,86,86,412,
+434,86,86,86,412,86,86,86,86,412,86,86,86,412,86,412,
+86,86,412,86,86,86,86,86,86,86,86,86,86,86,86,86,
+86,86,86,86,412,86,412,86,86,412,86,412,86,412,86,86,
+86,86,86,86,86,86,86,86,86,86,86,86,86,86,86,86,
+452,86,86,86,412,86,86,86,86,412,86,86,86,412,86,412,
+432,452,86,86,86,86,86,86,86,86,86,86,86,86,86,412,
+432,432,412,86,412,86,412,86,86,412,86,412,86,412,86,412,
+432,432,412,86,412,86,412,86,86,412,86,412,86,412,86,412
+</data>
+ </layer>
+</map>
