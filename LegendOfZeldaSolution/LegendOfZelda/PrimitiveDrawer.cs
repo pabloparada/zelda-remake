@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace LegendOfZelda
 {
     /// <summary>
+    /// <see cref="https://bitbucket.org/C3/2d-xna-primitives/wiki/Home"/>
     /// </summary>
     public static class Primitives2D
     {
