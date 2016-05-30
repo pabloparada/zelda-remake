@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Link.cs" />
-    <Compile Include="PrimitiveDrawer.cs" />
+    <Compile Include="Primitives2D.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Main.cs" />
