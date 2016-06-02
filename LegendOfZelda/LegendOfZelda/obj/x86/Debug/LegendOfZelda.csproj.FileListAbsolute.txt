@@ -25,3 +25,5 @@ H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\obj\x86\Debug\LegendOfZelda.exe
 H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\obj\x86\Debug\LegendOfZelda.pdb
 H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Newtonsoft.Json.dll
 H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Newtonsoft.Json.xml
+H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Content\zelda-tileset.xnb
+H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Content\CollisionMaskTileSet.xnb

@@ -40,7 +40,7 @@
   <ItemGroup>
     <Compile Include="Entity.cs" />
     <Compile Include="InputManager.cs" />
-    <Compile Include="Link.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Primitives2D.cs" />
     <Compile Include="Program.cs" />

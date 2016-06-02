@@ -6,13 +6,18 @@ namespace LegendOfZelda
 {
     public class Main : Game
     {
+        public static int s_scale = 4;
+        public static Game s_game;
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private World world;
 
         public Main()
         {
+            s_game = this;
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 224 * s_scale;
+            graphics.PreferredBackBufferWidth = 256 * s_scale;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -22,8 +27,6 @@ namespace LegendOfZelda
             world = new World(spriteBatch, graphics);
 
             base.Initialize();
-            TiledReader __tiledReader = new TiledReader();
-            __tiledReader.LoadTiledJson(" ");
         }
 
         protected override void LoadContent()
@@ -50,9 +53,10 @@ namespace LegendOfZelda
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default,
+                RasterizerState.CullNone, null, null);
 
             world.Draw(spriteBatch);
 

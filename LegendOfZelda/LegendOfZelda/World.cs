@@ -9,9 +9,13 @@ namespace LegendOfZelda
         public Scene CurrentScene { get; private set; }
         private Scene previousScene;
 
+        private TiledReader _tileReader;
+        
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
-            CurrentScene = new Scene(new Link(graphicsDeviceManager));
+            _tileReader = new TiledReader();
+            
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"),new Player(graphicsDeviceManager));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

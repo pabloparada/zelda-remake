@@ -10,16 +10,26 @@ namespace LegendOfZelda
 {
     public class TiledReader
     {
-        public void LoadTiledJson(string p_fileName)
+        public RootObject LoadTiledJson(string p_fileName)
         {
-            Console.WriteLine(System.IO.Path.GetFullPath("../../../Room_7-7.json"));
-            using (StreamReader sr = new StreamReader(System.IO.Path.GetFullPath("../../../Room_7-7.json")))
+            Console.WriteLine(System.IO.Path.GetFullPath("../../../" + p_fileName + ".json"));
+            using (StreamReader sr = new StreamReader(System.IO.Path.GetFullPath("../../../" + p_fileName + ".json")))
             {
-                //Console.WriteLine(sr.ReadToEnd());
-                // Read the stream to a string, and write the string to the console.
-                RootObject __root = JsonConvert.DeserializeObject<RootObject>(sr.ReadToEnd());
-                Console.WriteLine(__root.ToString());
-                
+                RootObject __rootObj = JsonConvert.DeserializeObject<RootObject>(sr.ReadToEnd());
+                foreach (Layer __layer in __rootObj.layers)
+                {
+                    if (__layer.name == "CollisionMask")
+                    {
+                        for (int i = 0; i < __layer.data.Count; i++)
+                            __layer.data[i] -= 1025;
+                    }
+                    else if (__layer.name == "TileMap")
+                    {
+                        for (int i = 0; i < __layer.data.Count; i++)
+                            __layer.data[i] -= 1;
+                    }
+                }
+                return __rootObj;
             }
         }
     }
@@ -36,7 +46,7 @@ namespace LegendOfZelda
         public int width { get; set; }
         public int x { get; set; }
         public int y { get; set; }
-        public List<int?> data { get; set; }
+        public List<int> data { get; set; }
     }
 
     public class Tileset
@@ -52,6 +62,7 @@ namespace LegendOfZelda
         public int tilecount { get; set; }
         public int tileheight { get; set; }
         public int tilewidth { get; set; }
+        public string transparentcolor { get; set; }
     }
 
     public class RootObject
