@@ -52,10 +52,9 @@ namespace LegendOfZelda
                 direction.X = 0;
                 direction.Y = 0;
             }
-            Vector2 __tempPos = position;
+            Vector2 __tempPos = position + direction * velocity * p_delta;
             if (__tempPos.X <= 0 || __tempPos.X + linkSpriteSize.X >= 256 * Main.s_scale)
             {
-                System.Console.WriteLine(__tempPos.ToString());
                 base.Update(p_delta);
                 return;
             }
@@ -69,9 +68,12 @@ namespace LegendOfZelda
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             p_spriteBatch.FillRectangle(position, linkSpriteSize, Color.Green);
+            base.DebugDraw(p_spriteBatch);
+        }
+        public override void DebugDraw(SpriteBatch p_spriteBatch)
+        {
             p_spriteBatch.DrawRectangle(hitbox, Color.Red, 1.0f);
-
-            base.Draw(p_spriteBatch);
+            base.DebugDraw(p_spriteBatch);
         }
     }
 }

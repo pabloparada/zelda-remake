@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-
 namespace LegendOfZelda
 {
     public class Entity
@@ -8,5 +7,6 @@ namespace LegendOfZelda
         public Entity() { }
         public virtual void Update(float delta) {}
         public virtual void Draw(SpriteBatch spriteBatch) { }
+        public virtual void DebugDraw(SpriteBatch spriteBatch) { }
     }
 }

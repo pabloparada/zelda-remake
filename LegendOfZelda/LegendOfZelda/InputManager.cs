@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace TicTacToe
+namespace LegendOfZelda
 {
-    class InputManager
+    public class InputManager
     {
         public enum MouseButtons
         {
@@ -18,22 +18,29 @@ namespace TicTacToe
             MIDDLE_BUTTON
         }
         static MouseState s_oldMouseState;
-        public static MouseState s_mouseState;
+        public static MouseState s_mouseState { get; private set; }
 
         static KeyboardState s_oldKeyboardState;
-        public static KeyboardState s_keyboardState;
+        public static KeyboardState s_keyboardState { get; private set; }
+
+        public InputManager()
+        {
+            UpdateOldState();
+            UpdateState();
+        }
         public void UpdateOldState()
         {
             s_oldMouseState = Mouse.GetState();
+            s_oldKeyboardState = Keyboard.GetState();
         }
         public void UpdateState()
         {
             s_mouseState = Mouse.GetState();
+            s_keyboardState = Keyboard.GetState();
         }
 
         public static bool GetMouseButtonChange(MouseButtons p_button, bool p_pressed)
         {
-            
             ButtonState __buttonStateOld;
             ButtonState __buttonState;
             if (p_button == MouseButtons.LEFT_BUTTON)

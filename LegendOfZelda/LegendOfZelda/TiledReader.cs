@@ -12,8 +12,8 @@ namespace LegendOfZelda
     {
         public RootObject LoadTiledJson(string p_fileName)
         {
-            Console.WriteLine(System.IO.Path.GetFullPath("../../../" + p_fileName + ".json"));
-            using (StreamReader sr = new StreamReader(System.IO.Path.GetFullPath("../../../" + p_fileName + ".json")))
+            Console.WriteLine(System.IO.Path.GetFullPath("../../../TileMaps/" + p_fileName + ".json"));
+            using (StreamReader sr = new StreamReader(System.IO.Path.GetFullPath("../../../TileMaps/" + p_fileName + ".json")))
             {
                 RootObject __rootObj = JsonConvert.DeserializeObject<RootObject>(sr.ReadToEnd());
                 foreach (Layer __layer in __rootObj.layers)

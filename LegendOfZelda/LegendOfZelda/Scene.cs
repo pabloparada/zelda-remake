@@ -51,7 +51,16 @@ namespace LegendOfZelda
                         }
                     }
                 }
-                else if (__layer.name == "CollisionMask")
+            }
+            Entities.ForEach(e => e.Draw(p_spriteBatch));
+            base.Draw(p_spriteBatch);
+        }
+        public override void DebugDraw(SpriteBatch p_spriteBatch)
+        {
+
+            foreach (Layer __layer in _rootObject.layers)
+            {
+                if (__layer.name == "CollisionMask")
                 {
                     Rectangle __destinationRect = new Rectangle(0, Main.s_scale * 48, Main.s_scale * 16, Main.s_scale * 16);
                     Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
@@ -59,7 +68,7 @@ namespace LegendOfZelda
                     {
                         __sourceRect.X = (__layer.data[i] % 4) * 16;
                         __sourceRect.Y = (__layer.data[i] / 4) * 16;
-                        p_spriteBatch.Draw(_collisionMask, __destinationRect, __sourceRect, new Color(1f,1f,1f,0.35f));
+                        p_spriteBatch.Draw(_collisionMask, __destinationRect, __sourceRect, new Color(1f, 1f, 1f, 0.35f));
 
                         __destinationRect.X += Main.s_scale * 16;
                         if (__destinationRect.X == Main.s_scale * 256)
@@ -70,10 +79,9 @@ namespace LegendOfZelda
                     }
                 }
             }
-            Entities.ForEach(e => e.Draw(p_spriteBatch));
-            base.Draw(p_spriteBatch);
+            Entities.ForEach(e => e.DebugDraw(p_spriteBatch));
+            base.DebugDraw(p_spriteBatch);
         }
-
         public override void Update(float delta)
         {
             Entities.ForEach(e => e.Update(delta));

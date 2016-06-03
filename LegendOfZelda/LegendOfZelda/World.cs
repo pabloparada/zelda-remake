@@ -24,7 +24,12 @@ namespace LegendOfZelda
 
             base.Draw(spriteBatch);
         }
+        public override void DebugDraw(SpriteBatch p_spriteBatch)
+        {
+            CurrentScene.DebugDraw(p_spriteBatch);
 
+            base.DebugDraw(p_spriteBatch);
+        }
         public override void Update(float delta)
         {
             CurrentScene.Update(delta);
