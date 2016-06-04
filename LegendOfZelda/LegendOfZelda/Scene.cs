@@ -22,7 +22,6 @@ namespace LegendOfZelda
             foreach (Entity __entity in Entities)
                 __entity.scene = this;
             
-
             _rootObject = p_rootObject;
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("zelda-tileset");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("CollisionMaskTileSet");
@@ -30,55 +29,15 @@ namespace LegendOfZelda
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            
-            foreach (Layer __layer in _rootObject.layers)
-            {
-                if (__layer.name == "TileMap")
-                {
-                    Rectangle __destinationRect = new Rectangle(0, Main.s_scale * 48, Main.s_scale * 16, Main.s_scale * 16);
-                    Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
-                    for (int i = 0; i < __layer.data.Count; i ++)
-                    {
-                        __sourceRect.X = (__layer.data[i] % 32)* 16;
-                        __sourceRect.Y = (__layer.data[i]/32) * 16;
-                        p_spriteBatch.Draw(_worldTileSet,__destinationRect, __sourceRect, Color.White);
-
-                        __destinationRect.X += Main.s_scale * 16;
-                        if (__destinationRect.X == Main.s_scale * 256)
-                        {
-                            __destinationRect.X = 0;
-                            __destinationRect.Y += Main.s_scale * 16;
-                        }
-                    }
-                }
-            }
+            DrawTileMap(RootObjectUtil.GetLayer(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
             Entities.ForEach(e => e.Draw(p_spriteBatch));
+            DrawTileMap(RootObjectUtil.GetLayer(_rootObject, "TileMapForeground"), p_spriteBatch, _worldTileSet, 1f);
+          
             base.Draw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-
-            foreach (Layer __layer in _rootObject.layers)
-            {
-                if (__layer.name == "CollisionMask")
-                {
-                    Rectangle __destinationRect = new Rectangle(0, Main.s_scale * 48, Main.s_scale * 16, Main.s_scale * 16);
-                    Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
-                    for (int i = 0; i < __layer.data.Count; i++)
-                    {
-                        __sourceRect.X = (__layer.data[i] % 4) * 16;
-                        __sourceRect.Y = (__layer.data[i] / 4) * 16;
-                        p_spriteBatch.Draw(_collisionMask, __destinationRect, __sourceRect, new Color(1f, 1f, 1f, 0.35f));
-
-                        __destinationRect.X += Main.s_scale * 16;
-                        if (__destinationRect.X == Main.s_scale * 256)
-                        {
-                            __destinationRect.X = 0;
-                            __destinationRect.Y += Main.s_scale * 16;
-                        }
-                    }
-                }
-            }
+            DrawTileMap(RootObjectUtil.GetLayer(_rootObject, "CollisionMask"), p_spriteBatch, _collisionMask, 0.35f);
             Entities.ForEach(e => e.DebugDraw(p_spriteBatch));
             base.DebugDraw(p_spriteBatch);
         }
@@ -87,6 +46,26 @@ namespace LegendOfZelda
             Entities.ForEach(e => e.Update(delta));
 
             base.Update(delta);
+        }
+        private void DrawTileMap(Layer p_layer, SpriteBatch p_spriteBatch, Texture2D p_tileSet, float p_alpha)
+        {
+            Rectangle __destinationRect = new Rectangle(0, Main.s_scale * 48, Main.s_scale * 16, Main.s_scale * 16);
+            Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
+            for (int i = 0; i < p_layer.data.Count; i++)
+            {
+                if (p_layer.data[i] >= 0)
+                {
+                    __sourceRect.X = (p_layer.data[i] % (p_tileSet.Width / 16)) * 16;
+                    __sourceRect.Y = (p_layer.data[i] / (p_tileSet.Height / 16)) * 16;
+                    p_spriteBatch.Draw(p_tileSet, __destinationRect, __sourceRect, new Color(1f, 1f, 1f, p_alpha));
+                }
+                __destinationRect.X += Main.s_scale * 16;
+                if (__destinationRect.X == Main.s_scale * 256)
+                {
+                    __destinationRect.X = 0;
+                    __destinationRect.Y += Main.s_scale * 16;
+                }
+            }
         }
     }
 }

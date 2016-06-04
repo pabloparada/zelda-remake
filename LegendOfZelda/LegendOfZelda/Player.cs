@@ -18,7 +18,7 @@ namespace LegendOfZelda
        
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
-            position = new Vector2(220.0f, 50.0f) * Main.s_scale;
+            position = new Vector2(150.0f, 100.0f) * Main.s_scale;
             velocity = new Vector2(80.0f, 80.0f) * Main.s_scale;
             direction = new Vector2(0, 0);
             linkSpriteSize = new Vector2(12, 12) * Main.s_scale;

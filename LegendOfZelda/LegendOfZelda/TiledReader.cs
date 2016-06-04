@@ -23,7 +23,7 @@ namespace LegendOfZelda
                         for (int i = 0; i < __layer.data.Count; i++)
                             __layer.data[i] -= 1025;
                     }
-                    else if (__layer.name == "TileMap")
+                    else if (__layer.name.StartsWith("TileMap"))
                     {
                         for (int i = 0; i < __layer.data.Count; i++)
                             __layer.data[i] -= 1;
@@ -77,5 +77,16 @@ namespace LegendOfZelda
         public int tilewidth { get; set; }
         public int version { get; set; }
         public int width { get; set; }
+    }
+
+    public class RootObjectUtil
+    {
+        public static Layer GetLayer(RootObject p_root,string p_layerName)
+        {
+            foreach (Layer __layer in p_root.layers)
+                if (__layer.name == p_layerName)
+                    return __layer;
+            return null;
+        }
     }
 }
