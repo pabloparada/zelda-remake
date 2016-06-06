@@ -41,7 +41,12 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collider.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Player.cs" />

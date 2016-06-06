@@ -172,7 +172,20 @@ namespace LegendOfZelda
         /// <param name="color">The color to draw the rectangle in</param>
         public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color)
         {
-            FillRectangle(spriteBatch, location, size, color, 0.0f);
+            FillRectangle(spriteBatch, location, size, Vector2.Zero, color, 0.0f);
+        }
+
+        /// <summary>
+        /// Draws a filled rectangle
+        /// </summary>
+        /// <param name="spriteBatch">The destination drawing surface</param>
+        /// <param name="location">Where to draw</param>
+        /// <param name="size">The size of the rectangle</param>
+        /// <param name="origin">Where start to draw</param>
+        /// <param name="color">The color to draw the rectangle in</param>
+        public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Vector2 origin, Color color)
+        {
+            FillRectangle(spriteBatch, location, size, origin, color, 0.0f);
         }
 
 
@@ -184,7 +197,7 @@ namespace LegendOfZelda
         /// <param name="size">The size of the rectangle</param>
         /// <param name="angle">The angle in radians to draw the rectangle at</param>
         /// <param name="color">The color to draw the rectangle in</param>
-        public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float angle)
+        public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Vector2 origin, Color color, float angle)
         {
             if (pixel == null)
             {
@@ -197,7 +210,7 @@ namespace LegendOfZelda
                              null,
                              color,
                              angle,
-                             Vector2.Zero,
+                             origin,
                              size,
                              SpriteEffects.None,
                              0);
@@ -215,7 +228,7 @@ namespace LegendOfZelda
         /// <param name="color">The color to draw the rectangle in</param>
         public static void FillRectangle(this SpriteBatch spriteBatch, float x, float y, float w, float h, Color color)
         {
-            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), color, 0.0f);
+            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), Vector2.Zero, color, 0.0f);
         }
 
 
@@ -231,7 +244,7 @@ namespace LegendOfZelda
         /// <param name="angle">The angle of the rectangle in radians</param>
         public static void FillRectangle(this SpriteBatch spriteBatch, float x, float y, float w, float h, Color color, float angle)
         {
-            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), color, angle);
+            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), Vector2.Zero, color, angle);
         }
 
         #endregion

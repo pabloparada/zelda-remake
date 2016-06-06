@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -15,16 +16,21 @@ namespace LegendOfZelda
 
         private Vector2 linkSpriteSize;
 
-       
+        private SpriteFont _font;
+
+        private bool _isColliding;
+
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
-            position = new Vector2(150.0f, 100.0f) * Main.s_scale;
-            velocity = new Vector2(80.0f, 80.0f) * Main.s_scale;
+            position = new Vector2(128, 48);
+            velocity = new Vector2(80.0f, 80.0f);
             direction = new Vector2(0, 0);
-            linkSpriteSize = new Vector2(12, 12) * Main.s_scale;
+            linkSpriteSize = new Vector2(12, 12);
+            hitbox = new Rectangle(position.ToPoint(), linkSpriteSize.ToPoint());
+            _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
 
-        public override void Update(float p_delta)
+        public override void Update(float p_delta, Collider p_collider)
         {
             
             if (Keyboard.GetState().IsKeyDown(Keys.W))
@@ -52,27 +58,45 @@ namespace LegendOfZelda
                 direction.X = 0;
                 direction.Y = 0;
             }
+
             Vector2 __tempPos = position + direction * velocity * p_delta;
-            if (__tempPos.X <= 0 || __tempPos.X + linkSpriteSize.X >= 256 * Main.s_scale)
+
+            var aabb = new Collider.AABB(__tempPos, __tempPos + linkSpriteSize);
+
+            if (p_collider.IsColliding(aabb))
             {
-                base.Update(p_delta);
-                return;
+                _isColliding = true;
             }
+            else
+            {
+                _isColliding = false;
+            }
+
             position += direction  * velocity * p_delta;
 
-            hitbox = new Rectangle(position.ToPoint(), linkSpriteSize.ToPoint());
+            hitbox.X = (int) position.X;
+            hitbox.Y = (int) position.Y;
 
             base.Update(p_delta);
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.FillRectangle(position, linkSpriteSize, Color.Green);
+            var rect = new Rectangle((int) (position.X * Main.s_scale), (int) (position.Y * Main.s_scale + 48 * Main.s_scale), hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
+            p_spriteBatch.FillRectangle(rect, Color.Green);
             base.DebugDraw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.DrawRectangle(hitbox, Color.Red, 1.0f);
+            var debugHitbox = new Rectangle(hitbox.X * Main.s_scale, hitbox.Y * Main.s_scale + 48 * Main.s_scale, hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
+            p_spriteBatch.DrawRectangle(debugHitbox, Color.ForestGreen, 1.0f);
+
+            if (_isColliding)
+                p_spriteBatch.DrawRectangle(debugHitbox, Color.Red, 1.0f);
+
+            var __msgPos = new Vector2(position.X * Main.s_scale, position.Y * Main.s_scale + 48 * Main.s_scale);
+            p_spriteBatch.DrawString(_font, "X:" + (int) position.X + " Y:" + (int) position.Y, __msgPos, Color.Black);
+
             base.DebugDraw(p_spriteBatch);
         }
     }

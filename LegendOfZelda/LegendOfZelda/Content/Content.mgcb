@@ -37,3 +37,9 @@
 /processorParam:TextureFormat=Color
 /build:CollisionMaskTileSet.png
 
+#begin DebugFontFace.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:DebugFontFace.spritefont
+

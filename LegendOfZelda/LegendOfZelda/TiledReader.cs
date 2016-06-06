@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 
 using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 
 namespace LegendOfZelda
@@ -79,14 +79,31 @@ namespace LegendOfZelda
         public int width { get; set; }
     }
 
+    public enum CollisionMask
+    {
+        NONE = 0,
+        FULL = 1, 
+        BOTTOM_LEFT_TOP_RIGHT = 2,
+        BOTTOM_RIGHT_TOP_LEFT = 3,
+        TOP_LEFT_BOTTOM_RIGHT = 4,
+        TOP_RIGHT_BOTTOM_LEFT = 5,
+        TOP_HALF_BOTTOM_HALF = 6,
+        SIDE_BY_SIDE = 9
+    }
+
     public class RootObjectUtil
     {
-        public static Layer GetLayer(RootObject p_root,string p_layerName)
+        public static Layer GetLayer(RootObject p_root, string p_layerName)
         {
             foreach (Layer __layer in p_root.layers)
                 if (__layer.name == p_layerName)
                     return __layer;
             return null;
+        }
+
+        public static Tileset FindTilesetByName(RootObject p_root, string p_tilesetName)
+        {
+            return p_root.tilesets.FindAll(p => p.name == p_tilesetName).First();
         }
     }
 }
