@@ -34,15 +34,15 @@ namespace LegendOfZelda
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            DrawTileMap(RootObjectUtil.GetLayer(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
+            DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
             Entities.ForEach(e => e.Draw(p_spriteBatch));
-            DrawTileMap(RootObjectUtil.GetLayer(_rootObject, "TileMapForeground"), p_spriteBatch, _worldTileSet, 1f);
+            DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMapForeground"), p_spriteBatch, _worldTileSet, 1f);
           
             base.Draw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            DrawTileMap(RootObjectUtil.GetLayer(_rootObject, "CollisionMask"), p_spriteBatch, _collisionMask, 0.35f);
+            DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask"), p_spriteBatch, _collisionMask, 0.35f);
             DrawCollisionMap(p_spriteBatch);
             Entities.ForEach(e => e.DebugDraw(p_spriteBatch));
             
@@ -66,9 +66,12 @@ namespace LegendOfZelda
                 rect.Y = rect.Y * Main.s_scale + Main.s_scale * 48;
                 rect.Width *= Main.s_scale;
                 rect.Height *= Main.s_scale;
+                if (c.Mask != CollisionMask.NONE)
+                {
+                    p_spriteBatch.DrawRectangle(rect, Color.DarkRed, 3.0f);
+                    p_spriteBatch.DrawString(_font, "X:" + oldRect.X + " Y:" + oldRect.Y, new Vector2(rect.X, rect.Y), Color.Black);
+                }
 
-                p_spriteBatch.DrawRectangle(rect, Color.DarkRed, 3.0f);
-                p_spriteBatch.DrawString(_font, "X:" + oldRect.X + " Y:" + oldRect.Y, new Vector2(rect.X, rect.Y), Color.Black);
             }
         }
 

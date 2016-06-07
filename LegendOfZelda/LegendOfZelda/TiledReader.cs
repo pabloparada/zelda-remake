@@ -88,12 +88,13 @@ namespace LegendOfZelda
         TOP_LEFT_BOTTOM_RIGHT = 4,
         TOP_RIGHT_BOTTOM_LEFT = 5,
         TOP_HALF_BOTTOM_HALF = 6,
-        SIDE_BY_SIDE = 9
+        LEFT_SIDE = 7,
+        RIGHT_SIDE = 8
     }
 
     public class RootObjectUtil
     {
-        public static Layer GetLayer(RootObject p_root, string p_layerName)
+        public static Layer GetLayerByName(RootObject p_root, string p_layerName)
         {
             foreach (Layer __layer in p_root.layers)
                 if (__layer.name == p_layerName)

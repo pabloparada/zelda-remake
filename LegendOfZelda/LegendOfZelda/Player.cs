@@ -22,7 +22,7 @@ namespace LegendOfZelda
 
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
-            position = new Vector2(128, 48);
+            position = new Vector2(90, 48);
             velocity = new Vector2(80.0f, 80.0f);
             direction = new Vector2(0, 0);
             linkSpriteSize = new Vector2(12, 12);
@@ -32,26 +32,30 @@ namespace LegendOfZelda
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            
+            Direction __dir = Direction.UP;
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 direction.X = 0;
                 direction.Y = -1;
+                __dir = Direction.UP;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 direction.X = -1;
                 direction.Y = 0;
+                __dir = Direction.LEFT;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 direction.X = 1;
                 direction.Y = 0;
+                __dir = Direction.RIGHT;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 direction.X = 0;
                 direction.Y = 1;
+                __dir = Direction.DOWN;
             }
             else
             {
@@ -61,16 +65,20 @@ namespace LegendOfZelda
 
             Vector2 __tempPos = position + direction * velocity * p_delta;
 
-            var aabb = new Collider.AABB(__tempPos, __tempPos + linkSpriteSize);
+            
+            var aabb = new AABB(__tempPos, __tempPos + linkSpriteSize);
 
-            if (p_collider.IsColliding(aabb))
+            if (direction.X != 0 || direction.Y !=0)
+                _isColliding = p_collider.IsColliding(aabb, __dir);
+
+            /*if (p_collider.IsColliding(aabb))
             {
                 _isColliding = true;
             }
             else
             {
                 _isColliding = false;
-            }
+            }*/
 
             position += direction  * velocity * p_delta;
 
