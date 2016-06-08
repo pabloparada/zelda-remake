@@ -83,13 +83,14 @@ namespace LegendOfZelda
     {
         NONE = 0,
         FULL = 1, 
-        BOTTOM_LEFT_TOP_RIGHT = 2,
-        BOTTOM_RIGHT_TOP_LEFT = 3,
-        TOP_LEFT_BOTTOM_RIGHT = 4,
-        TOP_RIGHT_BOTTOM_LEFT = 5,
-        TOP_HALF_BOTTOM_HALF = 6,
-        LEFT_SIDE = 7,
-        RIGHT_SIDE = 8
+        DIAGONAL_TOP_RIGHT = 2,
+        DIAGONAL_TOP_LEFT = 3,
+        DIAGONAL_BOTTOM_RIGHT = 4,
+        DIAGONAL_BOTTOM_LEFT = 5,
+        HALF_TOP = 6,
+        HALF_BOTTOM = 7,
+        HALF_LEFT = 8,
+        HALF_RIGHT = 9
     }
 
     public class RootObjectUtil

@@ -79,11 +79,13 @@ namespace LegendOfZelda
             {
                 _isColliding = false;
             }*/
+            if (!_isColliding)
+            {
+                position += direction * velocity * p_delta;
 
-            position += direction  * velocity * p_delta;
-
-            hitbox.X = (int) position.X;
-            hitbox.Y = (int) position.Y;
+                hitbox.X = (int)position.X;
+                hitbox.Y = (int)position.Y;
+            }
 
             base.Update(p_delta);
         }

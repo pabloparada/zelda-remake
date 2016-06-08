@@ -86,24 +86,60 @@ namespace LegendOfZelda
                 __pos2 = new Vector2(aabb.Min.X, aabb.Max.Y);
             }
             int __index = (int)(__pos1.X / 16f) + ((int)(__pos1.Y/16f)*16);
-            if (CheckCollision(_collisionMask[__index].Mask, __pos1))
+            if (CheckCollision(_collisionMask[__index], __pos1))
                 return true;
             __index = (int)(__pos2.X / 16f) + ((int)(__pos2.Y / 16f) * 16);
-            if (CheckCollision(_collisionMask[__index].Mask, __pos2))
+            if (CheckCollision(_collisionMask[__index], __pos2))
                 return true;
             //System.Console.WriteLine(__index);
             return false;
         }
-        private bool CheckCollision(CollisionMask p_mask, Vector2 p_pos)
+        private bool CheckCollision(AABB p_aabb, Vector2 p_point)
         {
-            if (p_mask == CollisionMask.NONE)
+            if (p_aabb.Mask == CollisionMask.NONE)
                 return false;
-            else if (p_mask == CollisionMask.FULL)
+            else if (p_aabb.Mask == CollisionMask.FULL)
                 return true;
-            //else if (p_mask == CollisionMask.)
+            else if (p_aabb.Mask == CollisionMask.DIAGONAL_TOP_LEFT)
+                return PointInsideTriangle(p_point, p_aabb.Min, new Vector2(p_aabb.Max.X, p_aabb.Min.Y), new Vector2(p_aabb.Min.X, p_aabb.Max.Y));
+            else if (p_aabb.Mask == CollisionMask.DIAGONAL_TOP_RIGHT)
+                return PointInsideTriangle(p_point, p_aabb.Min, new Vector2(p_aabb.Max.X, p_aabb.Min.Y), p_aabb.Max);
+            else if (p_aabb.Mask == CollisionMask.DIAGONAL_BOTTOM_LEFT)
+                return PointInsideTriangle(p_point, p_aabb.Min, new Vector2(p_aabb.Min.X, p_aabb.Max.Y), p_aabb.Max);
+            else if (p_aabb.Mask == CollisionMask.DIAGONAL_BOTTOM_RIGHT)
+                return PointInsideTriangle(p_point, p_aabb.Max, new Vector2(p_aabb.Min.X, p_aabb.Max.Y), new Vector2(p_aabb.Max.X, p_aabb.Min.Y));
+            else if (p_aabb.Mask == CollisionMask.HALF_TOP)
+                return PointInsideRectangle(p_point, p_aabb.Min, new Vector2(p_aabb.Max.X, (p_aabb.Max.Y + p_aabb.Min.Y) / 2f));
+            else if (p_aabb.Mask == CollisionMask.HALF_BOTTOM)
+                return PointInsideRectangle(p_point, new Vector2(p_aabb.Min.X, (p_aabb.Max.Y + p_aabb.Min.Y) / 2f), p_aabb.Max);
+            else if (p_aabb.Mask == CollisionMask.HALF_LEFT)
+                return PointInsideRectangle(p_point, p_aabb.Min, new Vector2((p_aabb.Max.X + p_aabb.Min.X) / 2f, p_aabb.Max.Y));
+            else if (p_aabb.Mask == CollisionMask.HALF_RIGHT)
+                return PointInsideRectangle(p_point, new Vector2((p_aabb.Max.X + p_aabb.Min.X) / 2f, p_aabb.Min.Y), p_aabb.Max);
             return false;
         }
+        float Sign(Vector2 p_point1, Vector2 p_point2, Vector2 p_point3)
+        {
+            return (p_point1.X - p_point3.X) * (p_point2.Y - p_point3.Y) - (p_point2.X - p_point3.X) * (p_point1.Y - p_point3.Y);
+        }
 
+        bool PointInsideTriangle(Vector2 p_point, Vector2 p_vertex1, Vector2 p_vertex2, Vector2 p_vertex3)
+        {
+            bool __b1, __b2, __b3;
+
+            __b1 = Sign(p_point, p_vertex1, p_vertex2) < 0.0f;
+            __b2 = Sign(p_point, p_vertex2, p_vertex3) < 0.0f;
+            __b3 = Sign(p_point, p_vertex3, p_vertex1) < 0.0f;
+
+            return ((__b1 == __b2) && (__b2 == __b3));
+        }
+        bool PointInsideRectangle(Vector2 p_point, Vector2 p_min, Vector2 p_max)
+        {
+            if (p_point.X >= p_min.X && p_point.X <= p_max.X &&
+                p_point.Y >= p_min.Y && p_point.Y <= p_max.Y)
+                return true;
+            return false;
+        }
     }
 
     public class AABB
