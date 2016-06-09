@@ -14,8 +14,9 @@ namespace LegendOfZelda
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
             _tileReader = new TiledReader();
-            
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"),new Player(graphicsDeviceManager));
+
+            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"),new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), new Player(graphicsDeviceManager));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

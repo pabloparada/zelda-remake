@@ -22,7 +22,7 @@ namespace LegendOfZelda
 
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
-            position = new Vector2(90, 48);
+            position = new Vector2(148, 100);
             velocity = new Vector2(80.0f, 80.0f);
             direction = new Vector2(0, 0);
             linkSpriteSize = new Vector2(12, 12);
@@ -65,25 +65,39 @@ namespace LegendOfZelda
 
             Vector2 __tempPos = position + direction * velocity * p_delta;
 
-            
             var aabb = new AABB(__tempPos, __tempPos + linkSpriteSize);
 
             if (direction.X != 0 || direction.Y !=0)
                 _isColliding = p_collider.IsColliding(aabb, __dir);
 
-            /*if (p_collider.IsColliding(aabb))
+            float __reachFraction = 1.0f;
+            float __maxReach = 0f;
+            if (_isColliding)
             {
-                _isColliding = true;
+                __reachFraction = p_delta * 0.5f;
+                for (var i = 0; i < 4; i++)
+                {
+
+                    __tempPos = position + (direction * velocity * p_delta * __reachFraction);
+
+                    _isColliding = p_collider.IsColliding(new AABB(__tempPos, __tempPos + linkSpriteSize), __dir);
+                    if (_isColliding)
+                        __reachFraction -= 1f / (float)Math.Pow(2, i + 2);
+                    else
+                    {
+                        __reachFraction += 1f / (float)Math.Pow(2, i + 2);
+                        __maxReach = __reachFraction;
+                    }
+                }
             }
             else
-            {
-                _isColliding = false;
-            }*/
-            if (!_isColliding)
-            {
-                position += direction * velocity * p_delta;
+                __maxReach = 1f;
 
-                hitbox.X = (int)position.X;
+            if (__maxReach > 0f)
+            {
+                position += direction * velocity * p_delta * __maxReach;
+                position = new Vector2((float)Math.Round(position.X), (float)Math.Round(position.Y));
+                hitbox.X =  (int)position.X;
                 hitbox.Y = (int)position.Y;
             }
 

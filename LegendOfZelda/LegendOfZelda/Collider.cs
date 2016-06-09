@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -56,13 +57,6 @@ namespace LegendOfZelda
         }
         public bool IsColliding(AABB aabb, Direction p_direction)
         {
-            /*foreach (var obj in _collisionMask)
-            {
-                if ((aabb.Min.X >= obj.Min.X && aabb.Max.X <= obj.Max.X) && (aabb.Min.Y >= obj.Min.Y && aabb.Max.Y <= obj.Max.Y))
-                {
-                    return true;
-                }
-            }*/
             Vector2 __pos1 = new Vector2();
             Vector2 __pos2 = new Vector2();
             if (p_direction == Direction.UP)
@@ -86,36 +80,55 @@ namespace LegendOfZelda
                 __pos2 = new Vector2(aabb.Min.X, aabb.Max.Y);
             }
             int __index = (int)(__pos1.X / 16f) + ((int)(__pos1.Y/16f)*16);
-            if (CheckCollision(_collisionMask[__index], __pos1))
+            if (CheckCollision(_collisionMask[__index], __pos1, aabb))
+            {
                 return true;
+            }
             __index = (int)(__pos2.X / 16f) + ((int)(__pos2.Y / 16f) * 16);
-            if (CheckCollision(_collisionMask[__index], __pos2))
+            if (CheckCollision(_collisionMask[__index], __pos2, aabb))
+            {
                 return true;
-            //System.Console.WriteLine(__index);
+            }
             return false;
         }
-        private bool CheckCollision(AABB p_aabb, Vector2 p_point)
+        private bool CheckCollision(AABB p_tileAABB, Vector2 p_point, AABB p_targetAABB)
         {
-            if (p_aabb.Mask == CollisionMask.NONE)
+            if (p_tileAABB.Mask == CollisionMask.NONE)
                 return false;
-            else if (p_aabb.Mask == CollisionMask.FULL)
-                return true;
-            else if (p_aabb.Mask == CollisionMask.DIAGONAL_TOP_LEFT)
-                return PointInsideTriangle(p_point, p_aabb.Min, new Vector2(p_aabb.Max.X, p_aabb.Min.Y), new Vector2(p_aabb.Min.X, p_aabb.Max.Y));
-            else if (p_aabb.Mask == CollisionMask.DIAGONAL_TOP_RIGHT)
-                return PointInsideTriangle(p_point, p_aabb.Min, new Vector2(p_aabb.Max.X, p_aabb.Min.Y), p_aabb.Max);
-            else if (p_aabb.Mask == CollisionMask.DIAGONAL_BOTTOM_LEFT)
-                return PointInsideTriangle(p_point, p_aabb.Min, new Vector2(p_aabb.Min.X, p_aabb.Max.Y), p_aabb.Max);
-            else if (p_aabb.Mask == CollisionMask.DIAGONAL_BOTTOM_RIGHT)
-                return PointInsideTriangle(p_point, p_aabb.Max, new Vector2(p_aabb.Min.X, p_aabb.Max.Y), new Vector2(p_aabb.Max.X, p_aabb.Min.Y));
-            else if (p_aabb.Mask == CollisionMask.HALF_TOP)
-                return PointInsideRectangle(p_point, p_aabb.Min, new Vector2(p_aabb.Max.X, (p_aabb.Max.Y + p_aabb.Min.Y) / 2f));
-            else if (p_aabb.Mask == CollisionMask.HALF_BOTTOM)
-                return PointInsideRectangle(p_point, new Vector2(p_aabb.Min.X, (p_aabb.Max.Y + p_aabb.Min.Y) / 2f), p_aabb.Max);
-            else if (p_aabb.Mask == CollisionMask.HALF_LEFT)
-                return PointInsideRectangle(p_point, p_aabb.Min, new Vector2((p_aabb.Max.X + p_aabb.Min.X) / 2f, p_aabb.Max.Y));
-            else if (p_aabb.Mask == CollisionMask.HALF_RIGHT)
-                return PointInsideRectangle(p_point, new Vector2((p_aabb.Max.X + p_aabb.Min.X) / 2f, p_aabb.Min.Y), p_aabb.Max);
+            else if (p_tileAABB.Mask == CollisionMask.FULL)
+                return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Max);
+            else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_TOP_LEFT)
+            {
+                return PointInsideTriangle(p_point, p_tileAABB.Min, new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y), new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y))
+                    || PointInsideRectangle(new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y), p_targetAABB.Min, p_targetAABB.Max, true)
+                    || PointInsideRectangle(new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y), p_targetAABB.Min, p_targetAABB.Max, true);
+            }
+            else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_TOP_RIGHT)
+            {
+                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y))
+                    || PointInsideRectangle(p_tileAABB.Min, p_targetAABB.Min, p_targetAABB.Max, true)
+                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max, true);
+            }
+            else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_BOTTOM_LEFT)
+            {
+                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y))
+                    || PointInsideRectangle(p_tileAABB.Min, p_targetAABB.Min, p_targetAABB.Max, true)
+                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max, true);
+            }
+            else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_BOTTOM_RIGHT)
+            {
+                return PointInsideTriangle(p_point, p_tileAABB.Max, new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y), new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y))
+                    || PointInsideRectangle(new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y), p_targetAABB.Min, p_targetAABB.Max, true)
+                    || PointInsideRectangle(new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y), p_targetAABB.Min, p_targetAABB.Max, true);
+            }
+            else if (p_tileAABB.Mask == CollisionMask.HALF_TOP)
+                return PointInsideRectangle(p_point, p_tileAABB.Min, new Vector2(p_tileAABB.Max.X, (p_tileAABB.Max.Y + p_tileAABB.Min.Y) / 2f));
+            else if (p_tileAABB.Mask == CollisionMask.HALF_BOTTOM)
+                return PointInsideRectangle(p_point, new Vector2(p_tileAABB.Min.X, (p_tileAABB.Max.Y + p_tileAABB.Min.Y) / 2f), p_tileAABB.Max);
+            else if (p_tileAABB.Mask == CollisionMask.HALF_LEFT)
+                return PointInsideRectangle(p_point, p_tileAABB.Min, new Vector2((p_tileAABB.Max.X + p_tileAABB.Min.X) / 2f, p_tileAABB.Max.Y));
+            else if (p_tileAABB.Mask == CollisionMask.HALF_RIGHT)
+                return PointInsideRectangle(p_point, new Vector2((p_tileAABB.Max.X + p_tileAABB.Min.X) / 2f, p_tileAABB.Min.Y), p_tileAABB.Max);
             return false;
         }
         float Sign(Vector2 p_point1, Vector2 p_point2, Vector2 p_point3)
@@ -133,10 +146,13 @@ namespace LegendOfZelda
 
             return ((__b1 == __b2) && (__b2 == __b3));
         }
-        bool PointInsideRectangle(Vector2 p_point, Vector2 p_min, Vector2 p_max)
+        bool PointInsideRectangle(Vector2 p_point, Vector2 p_min, Vector2 p_max, bool p_collisionOnHover = false)
         {
-            if (p_point.X >= p_min.X && p_point.X <= p_max.X &&
+            if (p_collisionOnHover && p_point.X >= p_min.X && p_point.X <= p_max.X &&
                 p_point.Y >= p_min.Y && p_point.Y <= p_max.Y)
+                return true;
+            else if (p_point.X > p_min.X && p_point.X < p_max.X &&
+                p_point.Y > p_min.Y && p_point.Y < p_max.Y)
                 return true;
             return false;
         }
@@ -169,5 +185,12 @@ namespace LegendOfZelda
         {
             return new Rectangle((int)_min.X, (int)_min.Y, 16, 16);
         }
+        public Vector2 top => new Vector2((_min.X + _max.X)/2f, _min.Y);
+        public Vector2 bottom => new Vector2((_min.X + _max.X) / 2f, _max.Y);
+        /*public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);
+        public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);
+        public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);
+        public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);*/
+
     }
 }

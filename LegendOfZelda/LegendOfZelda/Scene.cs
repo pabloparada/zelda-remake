@@ -77,6 +77,8 @@ namespace LegendOfZelda
 
         private void DrawTileMap(Layer p_layer, SpriteBatch p_spriteBatch, Texture2D p_tileSet, float p_alpha)
         {
+            if (p_layer == null)
+                return;
             Rectangle __destinationRect = new Rectangle(0, Main.s_scale * 48, Main.s_scale * 16, Main.s_scale * 16);
             Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
             for (int i = 0; i < p_layer.data.Count; i++)
