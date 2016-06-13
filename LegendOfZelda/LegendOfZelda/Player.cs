@@ -64,11 +64,9 @@ namespace LegendOfZelda
             }
 
             Vector2 __tempPos = position + direction * velocity * p_delta;
-
-            var aabb = new AABB(__tempPos, __tempPos + linkSpriteSize);
-
+            AABB __tempAabb = new AABB(__tempPos, __tempPos + linkSpriteSize);
             if (direction.X != 0 || direction.Y !=0)
-                _isColliding = p_collider.IsColliding(aabb, __dir);
+                _isColliding = p_collider.IsColliding(__tempAabb, __dir);
 
             float __reachFraction = 1.0f;
             float __maxReach = 0f;
@@ -77,9 +75,7 @@ namespace LegendOfZelda
                 __reachFraction = p_delta * 0.5f;
                 for (var i = 0; i < 4; i++)
                 {
-
                     __tempPos = position + (direction * velocity * p_delta * __reachFraction);
-
                     _isColliding = p_collider.IsColliding(new AABB(__tempPos, __tempPos + linkSpriteSize), __dir);
                     if (_isColliding)
                         __reachFraction -= 1f / (float)Math.Pow(2, i + 2);
@@ -106,19 +102,24 @@ namespace LegendOfZelda
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            var rect = new Rectangle((int) (position.X * Main.s_scale), (int) (position.Y * Main.s_scale + 48 * Main.s_scale), hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
+            Rectangle rect = new Rectangle((int)((parentScenePosition.X+position.X) * Main.s_scale),
+                (int) ((parentScenePosition.Y + position.Y) * Main.s_scale + 48 * Main.s_scale), 
+                hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
             p_spriteBatch.FillRectangle(rect, Color.Green);
             base.DebugDraw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            var debugHitbox = new Rectangle(hitbox.X * Main.s_scale, hitbox.Y * Main.s_scale + 48 * Main.s_scale, hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
+            Rectangle debugHitbox = new Rectangle((int)(parentScenePosition.X + hitbox.X) * Main.s_scale,
+                (int)(parentScenePosition.Y + hitbox.Y) * Main.s_scale + 48 * Main.s_scale, 
+                hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
             p_spriteBatch.DrawRectangle(debugHitbox, Color.ForestGreen, 1.0f);
 
             if (_isColliding)
                 p_spriteBatch.DrawRectangle(debugHitbox, Color.Red, 1.0f);
 
-            var __msgPos = new Vector2(position.X * Main.s_scale, position.Y * Main.s_scale + 48 * Main.s_scale);
+            var __msgPos = new Vector2((int)(parentScenePosition.X + position.X) * Main.s_scale,
+                (int)(parentScenePosition.Y + position.Y) * Main.s_scale + 48 * Main.s_scale);
             p_spriteBatch.DrawString(_font, "X:" + (int) position.X + " Y:" + (int) position.Y, __msgPos, Color.Black);
 
             base.DebugDraw(p_spriteBatch);

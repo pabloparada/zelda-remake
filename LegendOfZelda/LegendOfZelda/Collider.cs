@@ -96,39 +96,39 @@ namespace LegendOfZelda
             if (p_tileAABB.Mask == CollisionMask.NONE)
                 return false;
             else if (p_tileAABB.Mask == CollisionMask.FULL)
-                return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Max);
+                return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Max, false);
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_TOP_LEFT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Min, new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y), new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y))
-                    || PointInsideRectangle(new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y), p_targetAABB.Min, p_targetAABB.Max, true)
-                    || PointInsideRectangle(new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y), p_targetAABB.Min, p_targetAABB.Max, true);
+                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.TopRight, p_tileAABB.BottomLeft)
+                    || PointInsideRectangle(p_tileAABB.TopRight, p_targetAABB.Min, p_targetAABB.Max)
+                    || PointInsideRectangle(p_tileAABB.BottomLeft, p_targetAABB.Min, p_targetAABB.Max);
             }
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_TOP_RIGHT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y))
-                    || PointInsideRectangle(p_tileAABB.Min, p_targetAABB.Min, p_targetAABB.Max, true)
-                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max, true);
+                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, p_tileAABB.TopRight)
+                    || PointInsideRectangle(p_tileAABB.Min, p_targetAABB.Min, p_targetAABB.Max)
+                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max);
             }
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_BOTTOM_LEFT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y))
-                    || PointInsideRectangle(p_tileAABB.Min, p_targetAABB.Min, p_targetAABB.Max, true)
-                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max, true);
+                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, p_tileAABB.BottomLeft)
+                    || PointInsideRectangle(p_tileAABB.Min, p_targetAABB.Min, p_targetAABB.Max)
+                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max);
             }
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_BOTTOM_RIGHT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Max, new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y), new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y))
-                    || PointInsideRectangle(new Vector2(p_tileAABB.Max.X, p_tileAABB.Min.Y), p_targetAABB.Min, p_targetAABB.Max, true)
-                    || PointInsideRectangle(new Vector2(p_tileAABB.Min.X, p_tileAABB.Max.Y), p_targetAABB.Min, p_targetAABB.Max, true);
+                return PointInsideTriangle(p_point, p_tileAABB.Max, p_tileAABB.BottomLeft, p_tileAABB.TopRight)
+                    || PointInsideRectangle(p_tileAABB.TopRight, p_targetAABB.Min, p_targetAABB.Max)
+                    || PointInsideRectangle(p_tileAABB.BottomLeft, p_targetAABB.Min, p_targetAABB.Max);
             }
             else if (p_tileAABB.Mask == CollisionMask.HALF_TOP)
-                return PointInsideRectangle(p_point, p_tileAABB.Min, new Vector2(p_tileAABB.Max.X, (p_tileAABB.Max.Y + p_tileAABB.Min.Y) / 2f));
+                return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Right, false);
             else if (p_tileAABB.Mask == CollisionMask.HALF_BOTTOM)
-                return PointInsideRectangle(p_point, new Vector2(p_tileAABB.Min.X, (p_tileAABB.Max.Y + p_tileAABB.Min.Y) / 2f), p_tileAABB.Max);
+                return PointInsideRectangle(p_point, p_tileAABB.Left, p_tileAABB.Max, false);
             else if (p_tileAABB.Mask == CollisionMask.HALF_LEFT)
-                return PointInsideRectangle(p_point, p_tileAABB.Min, new Vector2((p_tileAABB.Max.X + p_tileAABB.Min.X) / 2f, p_tileAABB.Max.Y));
+                return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Bottom, false);
             else if (p_tileAABB.Mask == CollisionMask.HALF_RIGHT)
-                return PointInsideRectangle(p_point, new Vector2((p_tileAABB.Max.X + p_tileAABB.Min.X) / 2f, p_tileAABB.Min.Y), p_tileAABB.Max);
+                return PointInsideRectangle(p_point, p_tileAABB.Top, p_tileAABB.Max, false);
             return false;
         }
         float Sign(Vector2 p_point1, Vector2 p_point2, Vector2 p_point3)
@@ -146,7 +146,7 @@ namespace LegendOfZelda
 
             return ((__b1 == __b2) && (__b2 == __b3));
         }
-        bool PointInsideRectangle(Vector2 p_point, Vector2 p_min, Vector2 p_max, bool p_collisionOnHover = false)
+        bool PointInsideRectangle(Vector2 p_point, Vector2 p_min, Vector2 p_max, bool p_collisionOnHover = true)
         {
             if (p_collisionOnHover && p_point.X >= p_min.X && p_point.X <= p_max.X &&
                 p_point.Y >= p_min.Y && p_point.Y <= p_max.Y)
@@ -166,6 +166,14 @@ namespace LegendOfZelda
 
         public Vector2 Min => _min;
         public Vector2 Max => _max;
+        public Vector2 TopRight => new Vector2(_max.X, _min.Y);
+        public Vector2 BottomLeft => new Vector2(_min.X, _max.Y);
+        public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);
+        public Vector2 Bottom => new Vector2((_min.X + _max.X) / 2f, _max.Y);
+        public Vector2 Left => new Vector2(_min.X, (_min.Y + _max.Y) / 2f);
+        public Vector2 Right => new Vector2(_max.X, (_min.Y + _max.Y) / 2f);
+        public Vector2 Center => new Vector2((_min.X + _max.X) / 2f, (_min.Y + _max.Y) / 2f);
+
         public CollisionMask Mask => _mask;
 
         public AABB(Vector2 p_min, Vector2 p_max)
@@ -185,12 +193,7 @@ namespace LegendOfZelda
         {
             return new Rectangle((int)_min.X, (int)_min.Y, 16, 16);
         }
-        public Vector2 top => new Vector2((_min.X + _max.X)/2f, _min.Y);
-        public Vector2 bottom => new Vector2((_min.X + _max.X) / 2f, _max.Y);
-        /*public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);
-        public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);
-        public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);
-        public Vector2 Top => new Vector2((_min.X + _max.X) / 2f, _min.Y);*/
+        
 
     }
 }

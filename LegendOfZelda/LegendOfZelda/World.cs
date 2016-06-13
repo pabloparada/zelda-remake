@@ -9,12 +9,14 @@ namespace LegendOfZelda
         public Scene CurrentScene { get; private set; }
         private Scene previousScene;
 
+        public HUD hud;
+
         private TiledReader _tileReader;
         
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
             _tileReader = new TiledReader();
-
+            hud = new HUD();
             //CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"),new Player(graphicsDeviceManager));
             CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), new Player(graphicsDeviceManager));
         }
@@ -22,7 +24,7 @@ namespace LegendOfZelda
         public override void Draw(SpriteBatch spriteBatch)
         {
             CurrentScene.Draw(spriteBatch);
-
+            hud.DrawHUD(spriteBatch);
             base.Draw(spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)

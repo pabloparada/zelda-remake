@@ -50,26 +50,30 @@ namespace LegendOfZelda
         }
         public override void Update(float delta)
         {
-            Entities.ForEach(e => e.Update(delta, _collider));
-
+            //scenePosition.Y += 0.5f;
+            foreach(Entity __e in Entities)
+            {
+                __e.parentScenePosition = scenePosition;
+                __e.Update(delta, _collider);
+            }
             base.Update(delta);
         }
 
         private void DrawCollisionMap(SpriteBatch p_spriteBatch)
         {
-            foreach (var c in _collider.Collisions)
+            foreach (var __collider in _collider.Collisions)
             {
-                var oldRect = c.ToRectangle();
-                var rect = c.ToRectangle();
+                Rectangle oldRect = __collider.ToRectangle();
+                Rectangle rect = __collider.ToRectangle();
 
-                rect.X *= Main.s_scale;
-                rect.Y = rect.Y * Main.s_scale + Main.s_scale * 48;
+                rect.X = (int)(scenePosition.X + rect.X) * Main.s_scale;
+                rect.Y = (int)(scenePosition.Y + rect.Y) * Main.s_scale + Main.s_scale * 48;
                 rect.Width *= Main.s_scale;
                 rect.Height *= Main.s_scale;
-                if (c.Mask != CollisionMask.NONE)
+                if (__collider.Mask != CollisionMask.NONE)
                 {
                     p_spriteBatch.DrawRectangle(rect, Color.DarkRed, 3.0f);
-                    p_spriteBatch.DrawString(_font, "X:" + oldRect.X + " Y:" + oldRect.Y, new Vector2(rect.X, rect.Y), Color.Black);
+                    p_spriteBatch.DrawString(_font, "X:" + oldRect.X + " Y:" + oldRect.Y, new Vector2(rect.X, rect.Y), Color.White);
                 }
 
             }
@@ -79,7 +83,8 @@ namespace LegendOfZelda
         {
             if (p_layer == null)
                 return;
-            Rectangle __destinationRect = new Rectangle(0, Main.s_scale * 48, Main.s_scale * 16, Main.s_scale * 16);
+            Rectangle __destinationRect = new Rectangle((int)(Main.s_scale * scenePosition.X),
+                (int)(Main.s_scale * scenePosition.Y) + Main.s_scale * 48,Main.s_scale * 16, Main.s_scale * 16);
             Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
             for (int i = 0; i < p_layer.data.Count; i++)
             {
@@ -90,9 +95,9 @@ namespace LegendOfZelda
                     p_spriteBatch.Draw(p_tileSet, __destinationRect, __sourceRect, new Color(1f, 1f, 1f, p_alpha));
                 }
                 __destinationRect.X += Main.s_scale * 16;
-                if (__destinationRect.X == Main.s_scale * 256)
+                if (__destinationRect.X == Main.s_scale * 256 + (int)(Main.s_scale * scenePosition.X))
                 {
-                    __destinationRect.X = 0;
+                    __destinationRect.X = (int)(Main.s_scale * scenePosition.X);
                     __destinationRect.Y += Main.s_scale * 16;
                 }
             }
