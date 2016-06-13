@@ -49,9 +49,11 @@
     <Compile Include="Collider.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="HUD.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Portal.cs" />
     <Compile Include="Primitives2D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
