@@ -42,19 +42,19 @@ namespace LegendOfZelda
 
         protected override void Update(GameTime gameTime)
         {
-            if (!IsActive)
-                return;
+            if (!IsActive) return;
+
             inputManager.UpdateState();
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
 
-            if (InputManager.GetKeyChange(Keys.F1, true))
-                s_isOnDebugMode = !s_isOnDebugMode;
+            if (InputManager.GetKeyChange(Keys.F1)) s_isOnDebugMode = !s_isOnDebugMode;
 
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
+
             world.Update(delta);
             inputManager.UpdateOldState();
+
             base.Update(gameTime);
         }
 

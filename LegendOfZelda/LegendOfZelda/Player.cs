@@ -8,118 +8,129 @@ namespace LegendOfZelda
     public class Player : Entity
     {
         
-        private Vector2 position;
-        private Vector2 velocity;
-        private Vector2 direction;
+        private Vector2 _position;
+        private Vector2 _velocity;
+        private Vector2 _direction;
 
-        private Rectangle hitbox;
-
-        private Vector2 linkSpriteSize;
-
-        private SpriteFont _font;
+        private AABB _aabb;
+        private Rectangle _hitbox;
 
         private bool _isColliding;
 
+        private Projectile _projectile;
+
+        private Vector2 _linkSpriteSize;
+
+        private SpriteFont _font;
+
+        private Direction _lasDirection;
+
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
-            position = new Vector2(148, 100);
-            velocity = new Vector2(80.0f, 80.0f);
-            direction = new Vector2(0, 0);
-            linkSpriteSize = new Vector2(12, 12);
-            hitbox = new Rectangle(position.ToPoint(), linkSpriteSize.ToPoint());
+            _position = new Vector2(148, 100);
+            _velocity = new Vector2(80.0f, 80.0f);
+            _direction = new Vector2(0, 0);
+            _linkSpriteSize = new Vector2(12, 12);
+            _lasDirection = Direction.DOWN;
+
+            _aabb = new AABB(_position, _position + _linkSpriteSize);
+            _hitbox = new Rectangle(_position.ToPoint(), _linkSpriteSize.ToPoint());
+
             _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            Direction __dir = Direction.UP;
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                direction.X = 0;
-                direction.Y = -1;
-                __dir = Direction.UP;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                direction.X = -1;
-                direction.Y = 0;
-                __dir = Direction.LEFT;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                direction.X = 1;
-                direction.Y = 0;
-                __dir = Direction.RIGHT;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                direction.X = 0;
-                direction.Y = 1;
-                __dir = Direction.DOWN;
-            }
-            else
-            {
-                direction.X = 0;
-                direction.Y = 0;
-            }
+            var __dirTuple = InputManager.GetDirection();
 
-            Vector2 __tempPos = position + direction * velocity * p_delta;
+            var __dir = __dirTuple.Item1 == Direction.NONE ? _lasDirection : __dirTuple.Item1;
 
-            var aabb = new AABB(__tempPos, __tempPos + linkSpriteSize);
+            var __maxReach = 0.0f;
 
-            if (direction.X != 0 || direction.Y !=0)
-                _isColliding = p_collider.IsColliding(aabb, __dir);
+            _direction = __dirTuple.Item2;
 
-            float __reachFraction = 1.0f;
-            float __maxReach = 0f;
+            var __tempPos = _position + _direction * _velocity * p_delta;
+
+            _aabb.Min = __tempPos;
+            _aabb.Max = __tempPos + _linkSpriteSize;
+
+            if (Math.Abs(_direction.X) > 0 || Math.Abs(_direction.Y) > 0)
+            {
+                _isColliding = p_collider.IsColliding(_aabb, __dir);
+            }
+            
             if (_isColliding)
             {
-                __reachFraction = p_delta * 0.5f;
+                var __reachFraction = p_delta * 0.5f;
+
                 for (var i = 0; i < 4; i++)
                 {
+                    __tempPos = _position + (_direction*_velocity*p_delta*__reachFraction);
 
-                    __tempPos = position + (direction * velocity * p_delta * __reachFraction);
+                    _isColliding = p_collider.IsColliding(new AABB(__tempPos, __tempPos + _linkSpriteSize), __dir);
 
-                    _isColliding = p_collider.IsColliding(new AABB(__tempPos, __tempPos + linkSpriteSize), __dir);
                     if (_isColliding)
-                        __reachFraction -= 1f / (float)Math.Pow(2, i + 2);
+                        __reachFraction -= 1f/(float) Math.Pow(2, i + 2);
                     else
                     {
-                        __reachFraction += 1f / (float)Math.Pow(2, i + 2);
+                        __reachFraction += 1f/(float) Math.Pow(2, i + 2);
                         __maxReach = __reachFraction;
                     }
                 }
             }
             else
+            {
                 __maxReach = 1f;
+            }
 
             if (__maxReach > 0f)
             {
-                position += direction * velocity * p_delta * __maxReach;
-                position = new Vector2((float)Math.Round(position.X), (float)Math.Round(position.Y));
-                hitbox.X =  (int)position.X;
-                hitbox.Y = (int)position.Y;
+                _position += _direction * _velocity * p_delta * __maxReach;
+                _position = new Vector2((float)Math.Round(_position.X), (float)Math.Round(_position.Y));
+                _hitbox.X =  (int)_position.X;
+                _hitbox.Y = (int)_position.Y;
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.X) && _projectile == null)
+            {
+                _projectile = new SwordProjectile(_position, __dir);
+            }
+
+            if (_projectile != null && _projectile.alive)
+            {
+                _projectile.Update(p_delta, p_collider);
+            }
+            else
+            {
+                _projectile = null;
+            }
+
+            _lasDirection = __dir;
 
             base.Update(p_delta);
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            var rect = new Rectangle((int) (position.X * Main.s_scale), (int) (position.Y * Main.s_scale + 48 * Main.s_scale), hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
+            var rect = new Rectangle((int) (_position.X * Main.s_scale), (int) (_position.Y * Main.s_scale + 48 * Main.s_scale), _hitbox.Width * Main.s_scale, _hitbox.Height * Main.s_scale);
             p_spriteBatch.FillRectangle(rect, Color.Green);
+
+            if (_projectile != null && _projectile.alive) _projectile.Draw(p_spriteBatch);
+
             base.DebugDraw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            var debugHitbox = new Rectangle(hitbox.X * Main.s_scale, hitbox.Y * Main.s_scale + 48 * Main.s_scale, hitbox.Width * Main.s_scale, hitbox.Height * Main.s_scale);
+            var debugHitbox = new Rectangle(_hitbox.X * Main.s_scale, _hitbox.Y * Main.s_scale + 48 * Main.s_scale, _hitbox.Width * Main.s_scale, _hitbox.Height * Main.s_scale);
             p_spriteBatch.DrawRectangle(debugHitbox, Color.ForestGreen, 1.0f);
 
             if (_isColliding)
                 p_spriteBatch.DrawRectangle(debugHitbox, Color.Red, 1.0f);
 
-            var __msgPos = new Vector2(position.X * Main.s_scale, position.Y * Main.s_scale + 48 * Main.s_scale);
-            p_spriteBatch.DrawString(_font, "X:" + (int) position.X + " Y:" + (int) position.Y, __msgPos, Color.Black);
+            if (_projectile != null && _projectile.alive) _projectile.DebugDraw(p_spriteBatch);
+
+            var __msgPos = new Vector2(_position.X * Main.s_scale, _position.Y * Main.s_scale + 48 * Main.s_scale);
+            p_spriteBatch.DrawString(_font, "X:" + (int) _position.X + " Y:" + (int) _position.Y, __msgPos, Color.Black);
 
             base.DebugDraw(p_spriteBatch);
         }
