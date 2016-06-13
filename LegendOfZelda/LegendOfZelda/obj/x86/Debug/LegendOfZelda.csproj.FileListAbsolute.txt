@@ -27,3 +27,6 @@ H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Newtonsoft.Json.dl
 H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Newtonsoft.Json.xml
 H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Content\zelda-tileset.xnb
 H:\Prog2D\Zelda\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\Content\CollisionMaskTileSet.xnb
+C:\Users\Gabriel\Documents\GitHub\zelda-remake\LegendOfZelda\LegendOfZelda\bin\Windows\Debug\LegendOfZelda.exe.config
+C:\Users\Gabriel\Documents\GitHub\zelda-remake\LegendOfZelda\LegendOfZelda\obj\x86\Debug\LegendOfZelda.exe
+C:\Users\Gabriel\Documents\GitHub\zelda-remake\LegendOfZelda\LegendOfZelda\obj\x86\Debug\LegendOfZelda.pdb

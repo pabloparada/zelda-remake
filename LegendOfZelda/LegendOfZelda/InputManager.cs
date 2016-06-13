@@ -17,10 +17,22 @@ namespace LegendOfZelda
             RIGHT_BUTTON,
             MIDDLE_BUTTON
         }
-        static MouseState s_oldMouseState;
+
+        private static readonly Dictionary<Direction, Tuple<Direction, Vector2>> _directionCache = new Dictionary<Direction, Tuple<Direction, Vector2>>
+        {
+            { Direction.UP, new Tuple<Direction, Vector2>(Direction.UP, new Vector2(0, -1)) },
+            { Direction.LEFT, new Tuple<Direction, Vector2>(Direction.LEFT, new Vector2(-1, 0)) },
+            { Direction.RIGHT, new Tuple<Direction, Vector2>(Direction.RIGHT, new Vector2(1, 0)) },
+            { Direction.DOWN, new Tuple<Direction, Vector2>(Direction.DOWN, new Vector2(0, 1)) },
+            { Direction.NONE, new Tuple<Direction, Vector2>(Direction.NONE, new Vector2(0, 0)) }
+        };
+
+        private static Tuple<Direction, Vector2> _previousDirectionCache;
+
+        private static MouseState s_oldMouseState;
         public static MouseState s_mouseState { get; private set; }
 
-        static KeyboardState s_oldKeyboardState;
+        private static KeyboardState s_oldKeyboardState;
         public static KeyboardState s_keyboardState { get; private set; }
 
         public InputManager()
@@ -30,46 +42,35 @@ namespace LegendOfZelda
         }
         public void UpdateOldState()
         {
-            s_oldMouseState = Mouse.GetState();
             s_oldKeyboardState = Keyboard.GetState();
         }
         public void UpdateState()
         {
-            s_mouseState = Mouse.GetState();
             s_keyboardState = Keyboard.GetState();
         }
 
-        public static bool GetMouseButtonChange(MouseButtons p_button, bool p_pressed)
+        public static bool GetKeyChange(Keys p_key)
         {
-            ButtonState __buttonStateOld;
-            ButtonState __buttonState;
-            if (p_button == MouseButtons.LEFT_BUTTON)
+            if (s_oldKeyboardState.IsKeyDown(p_key) && s_keyboardState.IsKeyUp(p_key))
             {
-                __buttonStateOld = s_oldMouseState.LeftButton;
-                __buttonState = s_mouseState.LeftButton;
-            }
-            else if (p_button == MouseButtons.RIGHT_BUTTON)
-            {
-                __buttonStateOld = s_oldMouseState.RightButton;
-                __buttonState = s_mouseState.RightButton;
-            }
-            else
-            {
-                __buttonStateOld = s_oldMouseState.MiddleButton;
-                __buttonState = s_mouseState.MiddleButton;
-            }
-            if (p_pressed && __buttonState != __buttonStateOld && __buttonState == ButtonState.Pressed)
                 return true;
-            else if (!p_pressed && __buttonState != __buttonStateOld && __buttonState == ButtonState.Released)
-                return true;
+            }
+
             return false;
         }
-        public static bool GetKeyChange(Keys p_key, bool p_pressed)
+
+        public static Tuple<Direction, Vector2> GetDirection()
         {
-            bool __keyState = s_keyboardState.IsKeyDown(p_key);
-            if (__keyState != s_oldKeyboardState.IsKeyDown(p_key) && __keyState)
-                return true;
-            return false;
+            if (s_keyboardState.IsKeyDown(Keys.W)) return _directionCache[Direction.UP];
+            else if (s_keyboardState.IsKeyDown(Keys.A)) return _directionCache[Direction.LEFT];
+            else if (s_keyboardState.IsKeyDown(Keys.D)) return _directionCache[Direction.RIGHT];
+            else if (s_keyboardState.IsKeyDown(Keys.S)) return _directionCache[Direction.DOWN];
+            else return _directionCache[Direction.NONE];
+        }
+
+        public static Vector2 GetDirectionVectorByDirectionEnum(Direction p_direction)
+        {
+            return _directionCache[p_direction].Item2;
         }
     }
 }
