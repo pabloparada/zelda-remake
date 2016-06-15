@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,7 +8,9 @@ namespace LegendOfZelda
     public class Scene : Entity
     {
         private List<Entity> Entities { get; }
+
         private Player _player;
+        private List<Portal> _portals;
 
         private RootObject _rootObject;
         private Texture2D _worldTileSet;
@@ -23,15 +26,36 @@ namespace LegendOfZelda
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
+            SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
+
             Entities = new List<Entity>(p_entities);
             Entities.Add(_player);
-            
+            _portals.ForEach(__portal => Entities.Add(__portal));
+
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("zelda-tileset");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("CollisionMaskTileSet");
 
             _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
-
+        private void SetPortals(Layer p_layer)
+        {
+            _portals = new List<Portal>();
+            if (p_layer == null)
+            {
+                Console.WriteLine("PORTALS LAYER NOT FOUND");
+                return;
+            }
+            Portal __tempPortal;
+            foreach (Object p_obj in p_layer.objects)
+            {
+                __tempPortal = new Portal(new Vector2(p_obj.x,p_obj.y), new Vector2(p_obj.width, p_obj.height));
+                __tempPortal.transitionType = (TransitionType)p_obj.properties.TransitionType;
+                if (p_obj.properties.TransitionType == (int)TransitionType.BLINK)
+                    __tempPortal.collideOnHit = false;
+                __tempPortal.targetMap = p_obj.properties.TargetMap;
+                _portals.Add(__tempPortal);
+            }
+        }
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
@@ -50,15 +74,38 @@ namespace LegendOfZelda
         }
         public override void Update(float delta)
         {
-            //scenePosition.Y += 0.5f;
             foreach(Entity __e in Entities)
             {
                 __e.parentScenePosition = scenePosition;
                 __e.Update(delta, _collider);
             }
+            CheckPortalCollision();
+
             base.Update(delta);
         }
-
+        private void CheckPortalCollision()
+        {
+            foreach (Portal __portal in _portals)
+            {
+                if (__portal.collideOnHit)
+                {
+                    if (_collider.PointInsideRectangle(_player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(_player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(_player.aabb.TopRight, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(_player.aabb.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
+                    {
+                        Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
+                        return;
+                    }
+                }
+                else if (_collider.PointInsideRectangle(_player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
+                        && _collider.PointInsideRectangle(_player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
+                {
+                    Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
+                    return;
+                }
+            }
+        }
         private void DrawCollisionMap(SpriteBatch p_spriteBatch)
         {
             foreach (var __collider in _collider.Collisions)

@@ -46,11 +46,13 @@
                  "name":"PortalNorth",
                  "properties":
                     {
-                     "TargetMap":"Room_7-6"
+                     "TargetMap":"Room_7-6",
+                     "TransitionType":1
                     },
                  "propertytypes":
                     {
-                     "TargetMap":"string"
+                     "TargetMap":"string",
+                     "TransitionType":"int"
                     },
                  "rotation":0,
                  "type":"Portal",
@@ -65,11 +67,13 @@
                  "name":"PortalEast",
                  "properties":
                     {
-                     "TargetMap":"Room_8-7"
+                     "TargetMap":"Room_8-7",
+                     "TransitionType":0
                     },
                  "propertytypes":
                     {
-                     "TargetMap":"string"
+                     "TargetMap":"string",
+                     "TransitionType":"int"
                     },
                  "rotation":0,
                  "type":"Portal",
@@ -84,11 +88,13 @@
                  "name":"PortalCave",
                  "properties":
                     {
-                     "TargetMap":"SwordRoom"
+                     "TargetMap":"SwordRoom",
+                     "TransitionType":4
                     },
                  "propertytypes":
                     {
-                     "TargetMap":"string"
+                     "TargetMap":"string",
+                     "TransitionType":"int"
                     },
                  "rotation":0,
                  "type":"Portal",

@@ -8,7 +8,7 @@ namespace LegendOfZelda
     {
         public static int s_scale = 4;
         public static Game s_game;
-        public static bool s_isOnDebugMode = false;
+        public static bool s_isOnDebugMode = true;
 
         public InputManager inputManager;
         private GraphicsDeviceManager graphics;
@@ -50,6 +50,8 @@ namespace LegendOfZelda
 
             if (InputManager.GetKeyChange(Keys.F1)) s_isOnDebugMode = !s_isOnDebugMode;
 
+            if (InputManager.GetKeyChange(Keys.F2)) ChangeScale();
+
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
             world.Update(delta);
@@ -72,6 +74,17 @@ namespace LegendOfZelda
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        void ChangeScale()
+        {
+            s_scale += 1;
+            if (s_scale == 5)
+                s_scale = 1;
+           
+            graphics.PreferredBackBufferHeight = 224 * s_scale;
+            graphics.PreferredBackBufferWidth = 256 * s_scale;
+            graphics.ApplyChanges();
         }
     }
 }
