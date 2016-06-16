@@ -172,8 +172,6 @@ namespace LegendOfZelda
         public Vector2 Right => new Vector2(_max.X, (_min.Y + _max.Y) / 2f);
         public Vector2 Center => new Vector2((_min.X + _max.X) / 2f, (_min.Y + _max.Y) / 2f);
        
-        
-
         public CollisionMask Mask => _mask;
 
         public AABB(Vector2 p_min, Vector2 p_max)
@@ -196,6 +194,19 @@ namespace LegendOfZelda
         public Rectangle ToRectangle(int p_width, int p_height)
         {
             return new Rectangle((int)_min.X, (int)_min.Y, p_width, p_height);
+        }
+
+        public Rectangle ScaledRectangleFromAABB(Vector2 p_scale)
+        {
+            return ScaledRectangleFromAABB(p_scale.X, p_scale.Y);
+        }
+
+        public Rectangle ScaledRectangleFromAABB(float p_width, float p_height)
+        {
+            return new Rectangle(
+                (int) (_min.X * Main.s_scale), (int) (_min.Y * Main.s_scale + 48 * Main.s_scale),
+                (int) (p_width * Main.s_scale), (int) (p_height * Main.s_scale)
+            );
         }
     }
 }

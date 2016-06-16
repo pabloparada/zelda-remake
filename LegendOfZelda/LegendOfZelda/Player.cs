@@ -98,11 +98,6 @@ namespace LegendOfZelda
                 _hitbox.Y = (int)Position.Y;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.X) && _projectile == null)
-            {
-                _projectile = new SwordProjectile(Position, __dir);
-            }
-
             if (_projectile != null && _projectile.alive)
             {
                 _projectile.Update(p_delta, p_collider);
@@ -110,6 +105,11 @@ namespace LegendOfZelda
             else
             {
                 _projectile = null;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.X) && _projectile == null)
+            {
+                _projectile = new SwordProjectile(Position, __dir);
             }
 
             _lasDirection = __dir;
