@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,42 +13,116 @@ namespace LegendOfZelda
         public HUD hud;
 
         private TiledReader _tileReader;
-        
+
+        private bool isTransitioning = false;
+        private float _transitionDuration = 4f;
+        private float _transitionCount;
+        private List<Vector2> _transitionPositions;
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
+            state = State.ACTIVE;
             _tileReader = new TiledReader();
             hud = new HUD();
             //CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"),new Player(graphicsDeviceManager));
             CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), new Player(graphicsDeviceManager));
+            CurrentScene.state = State.ACTIVE;
+            CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
+        }
+
+        private void Scene_OnPortalEnter(TransitionType arg1, string arg2)
+        {
+            Console.WriteLine(arg2);
+            ChangeScene(new Scene(_tileReader.LoadTiledJson(arg2), CurrentScene.Player), arg1);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            CurrentScene.Draw(spriteBatch);
+            if (previousScene != null && previousScene.state != State.DISABLED)
+                previousScene.Draw(spriteBatch);
+            if (CurrentScene.state != State.DISABLED)
+                CurrentScene.Draw(spriteBatch);
+            
             hud.DrawHUD(spriteBatch);
             base.Draw(spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            CurrentScene.DebugDraw(p_spriteBatch);
-
+            if (previousScene != null && previousScene.state != State.DISABLED)
+                previousScene.DebugDraw(p_spriteBatch);
+            if (CurrentScene.state != State.DISABLED)
+                CurrentScene.DebugDraw(p_spriteBatch);
+            
             base.DebugDraw(p_spriteBatch);
         }
         public override void Update(float delta)
         {
-            CurrentScene.Update(delta);
-
+            if (isTransitioning)
+                UpdateTransition(delta);
+            if (previousScene != null && previousScene.state == State.ACTIVE)
+                previousScene.Update(delta);
+            if (CurrentScene.state != State.DISABLED)
+                CurrentScene.Update(delta);
+            
             base.Update(delta);
+            
         }
 
-        public Scene ChangeScene(Scene nextScene)
+        public void ChangeScene(Scene nextScene, TransitionType p_transitionType)
         {
             previousScene = CurrentScene;
+            previousScene.state = State.DRAW_ONLY;
             CurrentScene = nextScene;
+            CurrentScene.state = State.DRAW_ONLY;
+            CurrentScene.Player = previousScene.Player;
+            previousScene.RemoveEntity(previousScene.Player);
+            previousScene.Player = null;
 
-            // TODO: translate curr -> next visually
+            _transitionPositions = new List<Vector2>();
+            if (p_transitionType == TransitionType.MOVE_SCENE_LEFT)
+                AddTransitionPositions(Vector2.UnitX * -256, Vector2.UnitX * 256, Vector2.UnitX * 32);
+            else if (p_transitionType == TransitionType.MOVE_SCENE_RIGHT)
+                AddTransitionPositions(Vector2.UnitX * 256, Vector2.UnitX * -256, Vector2.UnitX * -32);
+            else if (p_transitionType == TransitionType.MOVE_SCENE_DOWN)
+                AddTransitionPositions(Vector2.UnitY * 176, Vector2.UnitY * -176, Vector2.UnitY * -32);
+            else if (p_transitionType == TransitionType.MOVE_SCENE_UP)
+                AddTransitionPositions(Vector2.UnitY * -176, Vector2.UnitY * 176, Vector2.UnitY * 32);
+            else if (p_transitionType == TransitionType.BLINK)
+                AddTransitionPositions(Vector2.Zero, Vector2.Zero, Vector2.Zero);
 
-            return previousScene;
+            isTransitioning = true;
+            _transitionCount = 0f;
+        }
+        private void AddTransitionPositions(Vector2 p_previousEnd, Vector2 p_currentStart, Vector2 p_playerEnd)
+        {
+            _transitionPositions.Add(previousScene.scenePosition);
+            _transitionPositions.Add(previousScene.scenePosition + p_previousEnd);
+            _transitionPositions.Add(CurrentScene.scenePosition + p_currentStart);
+            _transitionPositions.Add(CurrentScene.scenePosition);
+
+            CurrentScene.scenePosition = _transitionPositions[2];
+            CurrentScene.Player.ForcePosition(CurrentScene.Player.Position - p_currentStart);
+
+            _transitionPositions.Add(CurrentScene.Player.Position);
+            _transitionPositions.Add(CurrentScene.Player.Position + p_playerEnd);
+        }
+        private void UpdateTransition(float p_delta)
+        {
+            _transitionCount += p_delta;
+            previousScene.scenePosition = Vector2.Lerp(_transitionPositions[0],
+                _transitionPositions[1], _transitionCount / _transitionDuration);
+            CurrentScene.scenePosition = Vector2.Lerp(_transitionPositions[2], 
+                _transitionPositions[3], _transitionCount / _transitionDuration);
+
+            CurrentScene.Player.ForcePosition(Vector2.Lerp(_transitionPositions[4],
+                _transitionPositions[5], _transitionCount / _transitionDuration));
+
+            if (_transitionCount >= _transitionDuration)
+            {
+                CurrentScene.scenePosition = Vector2.Zero;
+                CurrentScene.state = State.ACTIVE;
+                previousScene = null;
+                isTransitioning = false;
+            }
         }
     }
 }

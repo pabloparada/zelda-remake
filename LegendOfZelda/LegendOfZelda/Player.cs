@@ -8,7 +8,7 @@ namespace LegendOfZelda
     public class Player : Entity
     {
         
-        private Vector2 _position;
+        public Vector2 Position { get; private set; }
         private Vector2 _velocity;
         private Vector2 _direction;
 
@@ -27,18 +27,24 @@ namespace LegendOfZelda
 
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
-            _position = new Vector2(124, 20);
+            state = State.ACTIVE;
+            Position = new Vector2(227, 83);
             _velocity = new Vector2(80.0f, 80.0f);
             _direction = new Vector2(0, 0);
             _linkSpriteSize = new Vector2(12, 12);
             _lasDirection = Direction.DOWN;
 
-            aabb = new AABB(_position, _position + _linkSpriteSize);
-            _hitbox = new Rectangle(_position.ToPoint(), _linkSpriteSize.ToPoint());
+            aabb = new AABB(Position, Position + _linkSpriteSize);
+            _hitbox = new Rectangle(Position.ToPoint(), _linkSpriteSize.ToPoint());
 
             _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
-
+        public void ForcePosition(Vector2 p_pos)
+        {
+            Position = p_pos;
+            _hitbox.X = (int)Position.X;
+            _hitbox.Y = (int)Position.Y;
+        }
         public override void Update(float p_delta, Collider p_collider)
         {
             var __dirTuple = InputManager.GetDirection();
@@ -50,7 +56,7 @@ namespace LegendOfZelda
 
             _direction = __dirTuple.Item2;
 
-            var __tempPos = _position + _direction * _velocity * p_delta;
+            var __tempPos = Position + _direction * _velocity * p_delta;
 
             aabb.Min = __tempPos;
             aabb.Max = __tempPos + _linkSpriteSize;
@@ -66,7 +72,7 @@ namespace LegendOfZelda
 
                 for (var i = 0; i < 4; i++)
                 {
-                    __tempPos = _position + (_direction*_velocity*p_delta*__reachFraction);
+                    __tempPos = Position + (_direction*_velocity*p_delta*__reachFraction);
 
                     _isColliding = p_collider.IsColliding(new AABB(__tempPos, __tempPos + _linkSpriteSize), __dir);
 
@@ -86,15 +92,15 @@ namespace LegendOfZelda
 
             if (__maxReach > 0f)
             {
-                _position += _direction * _velocity * p_delta * __maxReach;
-                _position = new Vector2((float)Math.Round(_position.X), (float)Math.Round(_position.Y));
-                _hitbox.X =  (int)_position.X;
-                _hitbox.Y = (int)_position.Y;
+                Position += _direction * _velocity * p_delta * __maxReach;
+                Position = new Vector2((float)Math.Round(Position.X), (float)Math.Round(Position.Y));
+                _hitbox.X =  (int)Position.X;
+                _hitbox.Y = (int)Position.Y;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.X) && _projectile == null)
             {
-                _projectile = new SwordProjectile(_position, __dir);
+                _projectile = new SwordProjectile(Position, __dir);
             }
 
             if (_projectile != null && _projectile.alive)
@@ -113,11 +119,12 @@ namespace LegendOfZelda
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            Rectangle rect = new Rectangle((int)((parentScenePosition.X+_position.X) * Main.s_scale),
-                (int) ((parentScenePosition.Y + _position.Y) * Main.s_scale + 48 * Main.s_scale), 
+            Rectangle rect = new Rectangle((int)((parentScenePosition.X+Position.X) * Main.s_scale),
+                (int) ((parentScenePosition.Y + Position.Y) * Main.s_scale + 48 * Main.s_scale), 
                 _hitbox.Width * Main.s_scale, _hitbox.Height * Main.s_scale);
             p_spriteBatch.FillRectangle(rect, Color.Green);
-
+            Console.WriteLine(parentScenePosition);
+            Console.WriteLine(rect);
             if (_projectile != null && _projectile.alive) _projectile.Draw(p_spriteBatch);
 
             base.DebugDraw(p_spriteBatch);
@@ -134,8 +141,9 @@ namespace LegendOfZelda
 
             if (_projectile != null && _projectile.alive) _projectile.DebugDraw(p_spriteBatch);
 
-            var __msgPos = new Vector2(_position.X * Main.s_scale, _position.Y * Main.s_scale + 48 * Main.s_scale);
-            p_spriteBatch.DrawString(_font, "X:" + (int) _position.X + " Y:" + (int) _position.Y, __msgPos, Color.Black);
+            var __msgPos = new Vector2((parentScenePosition.X + Position.X) * Main.s_scale,
+                (parentScenePosition.Y + Position.Y) * Main.s_scale + 48 * Main.s_scale);
+            p_spriteBatch.DrawString(_font, "X:" + (int) Position.X + " Y:" + (int) Position.Y, __msgPos, Color.Black);
 
             base.DebugDraw(p_spriteBatch);
         }

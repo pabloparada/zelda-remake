@@ -5,7 +5,15 @@ namespace LegendOfZelda
 {
     public class Entity
     {
-        public Vector2 parentScenePosition;
+        public enum State
+        {
+            ACTIVE,
+            DRAW_ONLY,
+            DISABLED
+        }
+        public State        state = State.DISABLED;
+        public Vector2      parentScenePosition;
+
         public virtual void Update(float delta) { }
         public virtual void Update(float delta, Collider p_collider) { }
         public virtual void Draw(SpriteBatch spriteBatch) { }

@@ -62,6 +62,7 @@ namespace LegendOfZelda
 
         protected override void Draw(GameTime gameTime)
         {
+            if (!IsActive) return;
             GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default,

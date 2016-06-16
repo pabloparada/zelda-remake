@@ -30,6 +30,7 @@ namespace LegendOfZelda
         
         public Portal(Vector2 p_position, Vector2 p_size)
         {
+            state = State.ACTIVE;
             _position = p_position;
             _size = p_size;
             aabb = new AABB(_position, _position + _size);

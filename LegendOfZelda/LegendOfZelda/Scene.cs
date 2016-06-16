@@ -7,9 +7,10 @@ namespace LegendOfZelda
 {
     public class Scene : Entity
     {
+        public event Action<TransitionType, string> OnPortalEnter;
         private List<Entity> Entities { get; }
 
-        private Player _player;
+        public Player Player { get; set; }
         private List<Portal> _portals;
 
         private RootObject _rootObject;
@@ -22,14 +23,14 @@ namespace LegendOfZelda
 
         public Scene(RootObject p_rootObject, Player p_player,params Entity[] p_entities)
         {
-            _player = p_player;
+            Player = p_player;
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
 
             Entities = new List<Entity>(p_entities);
-            Entities.Add(_player);
+            Entities.Add(Player);
             _portals.ForEach(__portal => Entities.Add(__portal));
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("zelda-tileset");
@@ -59,7 +60,9 @@ namespace LegendOfZelda
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
-            Entities.ForEach(e => e.Draw(p_spriteBatch));
+            foreach(Entity __e in Entities)
+                if (__e.state != State.DISABLED)
+                    __e.Draw(p_spriteBatch);
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMapForeground"), p_spriteBatch, _worldTileSet, 1f);
           
             base.Draw(p_spriteBatch);
@@ -68,39 +71,60 @@ namespace LegendOfZelda
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask"), p_spriteBatch, _collisionMask, 0.35f);
             DrawCollisionMap(p_spriteBatch);
-            Entities.ForEach(e => e.DebugDraw(p_spriteBatch));
-            
+
+            foreach (Entity __e in Entities)
+                if (__e.state != State.DISABLED)
+                    __e.DebugDraw(p_spriteBatch);
+
             base.DebugDraw(p_spriteBatch);
+        }
+        public void RemoveEntity(Entity p_ent)
+        {
+            Entities.Remove(p_ent);
         }
         public override void Update(float delta)
         {
-            foreach(Entity __e in Entities)
+            if (state == State.DRAW_ONLY)
+                foreach (Entity __e in Entities)
+                {
+                    __e.parentScenePosition = scenePosition;
+                }
+            else
             {
-                __e.parentScenePosition = scenePosition;
-                __e.Update(delta, _collider);
-            }
-            CheckPortalCollision();
+                foreach (Entity __e in Entities)
+                {
+                    if (__e.state != State.ACTIVE)
+                        continue;
 
+                    __e.parentScenePosition = scenePosition;
+                    __e.Update(delta, _collider);
+                }
+                CheckPortalCollision();
+            }
             base.Update(delta);
         }
         private void CheckPortalCollision()
         {
             foreach (Portal __portal in _portals)
             {
+                if (__portal.state != State.ACTIVE)
+                    continue;
                 if (__portal.collideOnHit)
                 {
-                    if (_collider.PointInsideRectangle(_player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(_player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(_player.aabb.TopRight, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(_player.aabb.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
+                    if (_collider.PointInsideRectangle(Player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(Player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(Player.aabb.TopRight, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(Player.aabb.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
                     {
                         Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
+                        OnPortalEnter?.Invoke(__portal.transitionType, __portal.targetMap);
                         return;
                     }
                 }
-                else if (_collider.PointInsideRectangle(_player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
-                        && _collider.PointInsideRectangle(_player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
+                else if (_collider.PointInsideRectangle(Player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
+                        && _collider.PointInsideRectangle(Player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
+                    OnPortalEnter?.Invoke(__portal.transitionType, __portal.targetMap);
                     Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
                     return;
                 }
@@ -122,7 +146,6 @@ namespace LegendOfZelda
                     p_spriteBatch.DrawRectangle(rect, Color.DarkRed, 3.0f);
                     p_spriteBatch.DrawString(_font, "X:" + oldRect.X + " Y:" + oldRect.Y, new Vector2(rect.X, rect.Y), Color.White);
                 }
-
             }
         }
 
