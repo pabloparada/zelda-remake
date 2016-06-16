@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="12">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="14">
  <tileset firstgid="1" name="TileSet_World" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
@@ -16,7 +16,7 @@
 432,432,432,434,86,86,86,86,86,432,432,432,432,432,432,432,
 432,432,434,86,86,86,86,86,86,432,432,432,432,432,432,432,
 432,434,86,86,86,86,86,86,86,435,432,432,432,432,432,432,
-86,86,86,86,86,86,86,86,86,86,86,86,86,86,86,86,
+397,86,86,86,86,86,86,86,86,86,86,86,86,86,86,86,
 456,452,86,86,86,86,86,86,86,86,86,86,86,86,456,456,
 432,432,86,86,86,86,86,86,86,86,86,86,86,86,432,432,
 432,432,86,86,86,86,86,86,86,86,86,86,86,86,432,432,
@@ -31,7 +31,7 @@
 1026,1026,1026,1027,1025,1025,1025,1025,1025,1026,1026,1026,1026,1026,1026,1026,
 1026,1026,1027,1025,1025,1025,1025,1025,1025,1026,1026,1026,1026,1026,1026,1026,
 1026,1027,1025,1025,1025,1025,1025,1025,1025,1028,1026,1026,1026,1026,1026,1026,
-1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,
+1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,
 1026,1029,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
@@ -43,16 +43,27 @@
   <object id="2" name="PortalNorth" type="Portal" x="112" y="0" width="32" height="2">
    <properties>
     <property name="TargetMap" value="Room_7-6"/>
+    <property name="TransitionType" type="int" value="1"/>
    </properties>
   </object>
   <object id="10" name="PortalEast" type="Portal" x="254" y="80" width="2" height="16">
    <properties>
     <property name="TargetMap" value="Room_8-7"/>
+    <property name="TransitionType" type="int" value="0"/>
    </properties>
   </object>
   <object id="11" name="PortalCave" type="Portal" x="64" y="16" width="16" height="16">
    <properties>
     <property name="TargetMap" value="SwordRoom"/>
+    <property name="TargetPositionX" type="float" value="122"/>
+    <property name="TargetPositionY" type="float" value="144"/>
+    <property name="TransitionType" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="13" name="PortalWest" type="Portal" x="0" y="80" width="2" height="16">
+   <properties>
+    <property name="TargetMap" value="Room_6-7"/>
+    <property name="TransitionType" type="int" value="2"/>
    </properties>
   </object>
  </objectgroup>

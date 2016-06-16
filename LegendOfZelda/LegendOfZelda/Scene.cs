@@ -7,7 +7,7 @@ namespace LegendOfZelda
 {
     public class Scene : Entity
     {
-        public event Action<TransitionType, string> OnPortalEnter;
+        public event Action<Portal> OnPortalEnter;
         private List<Entity> Entities { get; }
 
         public Player Player { get; set; }
@@ -52,7 +52,12 @@ namespace LegendOfZelda
                 __tempPortal = new Portal(new Vector2(p_obj.x,p_obj.y), new Vector2(p_obj.width, p_obj.height));
                 __tempPortal.transitionType = (TransitionType)p_obj.properties.TransitionType;
                 if (p_obj.properties.TransitionType == (int)TransitionType.BLINK)
+                {
                     __tempPortal.collideOnHit = false;
+                    __tempPortal.targetPosition = new Vector2(p_obj.properties.TargetPositionX, p_obj.properties.TargetPositionY);
+                    Console.WriteLine(__tempPortal.targetPosition);
+                    Console.WriteLine(p_obj.properties.TransitionType);
+                }
                 __tempPortal.targetMap = p_obj.properties.TargetMap;
                 _portals.Add(__tempPortal);
             }
@@ -117,14 +122,14 @@ namespace LegendOfZelda
                         || _collider.PointInsideRectangle(Player.aabb.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
                     {
                         Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
-                        OnPortalEnter?.Invoke(__portal.transitionType, __portal.targetMap);
+                        OnPortalEnter?.Invoke(__portal);
                         return;
                     }
                 }
                 else if (_collider.PointInsideRectangle(Player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
                         && _collider.PointInsideRectangle(Player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
-                    OnPortalEnter?.Invoke(__portal.transitionType, __portal.targetMap);
+                    OnPortalEnter?.Invoke(__portal);
                     Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
                     return;
                 }

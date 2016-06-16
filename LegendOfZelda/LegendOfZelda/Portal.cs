@@ -27,6 +27,7 @@ namespace LegendOfZelda
         public bool collideOnHit = true;
         public string targetMap;
         public TransitionType transitionType;
+        public Vector2 targetPosition;
         
         public Portal(Vector2 p_position, Vector2 p_size)
         {
