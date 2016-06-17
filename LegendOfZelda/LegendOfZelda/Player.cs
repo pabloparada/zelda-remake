@@ -100,7 +100,7 @@ namespace LegendOfZelda
 
             if (_projectile != null && _projectile.alive)
             {
-                _projectile.Update(p_delta, p_collider);
+                _projectile.Update(p_delta, p_collider, Position);
             }
             else
             {
