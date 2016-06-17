@@ -25,7 +25,7 @@ namespace LegendOfZelda
             _aabb = new AABB(p_position, p_position + _projectileSize);
         }
 
-        public override void Update(float p_delta, Collider p_collider)
+        public override void Update(float p_delta, Collider p_collider, Vector2 p_playerPosition)
         {
             var __direction = InputManager.GetDirectionVectorByDirectionEnum(direction);
 
@@ -41,7 +41,6 @@ namespace LegendOfZelda
             if (_isColliding)
             {
                 alive = false;
-                _switchedComponents = false;
             }
 
             base.Update(p_delta, p_collider);
@@ -55,17 +54,6 @@ namespace LegendOfZelda
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             p_spriteBatch.FillRectangle(_aabb.ScaledRectangleFromAABB(_projectileSize), Color.Blue);
-        }
-
-        private Vector2 Switch(Vector2 p_v1)
-        {
-            _switchedComponents = true;
-            return new Vector2(p_v1.Y, p_v1.X);
-        }
-
-        private Vector2 GetProjectileSizeAndControlComponentSwitch(Vector2 p_projectileSize)
-        {
-            return !IsVerticalMovement() && !_switchedComponents ? Switch(p_projectileSize) : p_projectileSize;
         }
     }
 }

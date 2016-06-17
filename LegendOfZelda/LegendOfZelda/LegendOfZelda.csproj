@@ -46,6 +46,7 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BoomerangProjectile.cs" />
     <Compile Include="Collider.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Entity.cs" />
