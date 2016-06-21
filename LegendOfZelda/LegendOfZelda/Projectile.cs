@@ -74,5 +74,10 @@ namespace LegendOfZelda
         {
             return !IsVerticalMovement() && !_switchedComponents ? Switch(p_projectileSize) : p_projectileSize;
         }
+
+        protected Vector2 RevertDirection(Vector2 p_direction)
+        {
+            return p_direction * -Vector2.One;
+        }
     }
 }

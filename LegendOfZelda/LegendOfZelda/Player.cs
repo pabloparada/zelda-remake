@@ -109,7 +109,7 @@ namespace LegendOfZelda
 
             if (Keyboard.GetState().IsKeyDown(Keys.X) && _projectile == null)
             {
-                _projectile = new SwordProjectile(Position, __dir);
+                _projectile = new BoomerangProjectile(Position, __dir);
             }
 
             _lasDirection = __dir;

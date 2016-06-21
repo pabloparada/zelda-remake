@@ -12,9 +12,15 @@ namespace LegendOfZelda
         private Vector2 _playerSize;
         private Vector2 _velocity;
         private Vector2 _direction;
+        private Vector2 _reverseDirection;
         private Vector2 _currentPlayerPosition;
-        
+        private Vector2 _maxDistanceInDirection;
+        private Vector2 _currentDistance;
+        private Vector2 _maxDistance;
+        private Vector2 _t;
+
         private bool _paused;
+        private bool _switchedDirection;
 
         private bool _isColliding;
         
@@ -26,6 +32,13 @@ namespace LegendOfZelda
             _velocity = new Vector2(130, 130);
             position = _currentPlayerPosition = p_position = GetInitialPositionByDirection(_playerSize, _projectileSize);
             _aabb = new AABB(p_position, p_position + _projectileSize);
+            _currentDistance = Vector2.Zero;
+            _direction = InputManager.GetDirectionVectorByDirectionEnum(direction);
+            _reverseDirection = RevertDirection(_direction);
+            _t = Vector2.Zero;
+            _maxDistance = new Vector2(60.0f, 60.0f);
+            _maxDistanceInDirection = GetMaxDistanceInDirection();
+            _switchedDirection = false;
         }
 
         public override void Update(float p_delta, Collider p_collider, Vector2 p_playerPosition)
@@ -36,24 +49,44 @@ namespace LegendOfZelda
 
             if (!_paused)
             {
-                _direction = InputManager.GetDirectionVectorByDirectionEnum(direction);
+                var __tmpPosition = position;
+                var __direction = ShouldSwitchDirection() ? _reverseDirection : _direction;
 
-                position += _direction * _velocity* p_delta;
+                position += __direction * _velocity * p_delta;
 
-                _projectileSize = GetProjectileSizeAndControlComponentSwitch(_projectileSize);
+                _currentDistance += position - __tmpPosition;
+
+                _t = GetInterpolatedTimeByDistance();
+
+                if (_switchedDirection)
+                {
+                    System.Console.WriteLine((position - initialPlayerPosition) * _t);
+                }
 
                 _aabb.Min = position;
                 _aabb.Max = position + _projectileSize;
 
                 _isColliding = p_collider.IsColliding(_aabb, direction);
 
-                if (_isColliding)
+                if (_isColliding || IsBoomerangMovimentEnded())
                 {
-                    alive = false;
+                    ResetBoomerangState();
                 }
 
                 base.Update(p_delta, p_collider, p_playerPosition);
             }
+        }
+
+        private Vector2 GetInterpolatedTimeByDistance()
+        {
+            var __t = _currentDistance / _maxDistance;
+
+            if (__t.X >= 1.0f) __t.X = 1.0f;
+            else if (__t.X <= -1.0f) __t.X = -1.0f;
+            else if (__t.Y >= 1.0f) __t.Y = 1.0f;
+            else if (__t.Y <= -1.0f) __t.Y = -1.0f;
+
+            return __t;
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)
@@ -89,6 +122,43 @@ namespace LegendOfZelda
         private Vector2 ScaleVectorForDrawing(Vector2 p_vector)
         {
             return new Vector2(p_vector.X * Main.s_scale, p_vector.Y * Main.s_scale + 48 * Main.s_scale);
+        }
+
+        private void ResetBoomerangState()
+        {
+            alive = false;
+            _switchedDirection = false;
+            _currentDistance = Vector2.Zero;
+            _maxDistanceInDirection = GetMaxDistanceInDirection();
+
+        }
+
+        private bool IsBoomerangMovimentEnded()
+        {
+            return _currentDistance.X >= -0.2f && _currentDistance.X <= 0.2f && _currentDistance.Y >= -0.2f && _currentDistance.Y <= 0.2f && _switchedDirection;
+        }
+
+        private bool ShouldSwitchDirection()
+        {
+            var isAtMax = false;
+
+            if (direction == Direction.UP) isAtMax = _currentDistance.Y <= _maxDistanceInDirection.Y;
+            else if (direction == Direction.DOWN) isAtMax = _currentDistance.Y >= _maxDistanceInDirection.Y;
+            else if (direction == Direction.LEFT) isAtMax = _currentDistance.X <= _maxDistanceInDirection.X;
+            else if (direction == Direction.RIGHT) isAtMax = _currentDistance.X >= _maxDistanceInDirection.X;
+
+            if (isAtMax)
+            {
+                _switchedDirection = isAtMax;
+                return _switchedDirection;
+            }
+
+            return _switchedDirection;
+        }
+
+        private Vector2 GetMaxDistanceInDirection()
+        {
+            return _maxDistance * _direction;
         }
     }
 
