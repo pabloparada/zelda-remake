@@ -18,6 +18,7 @@ namespace LegendOfZelda
         private Vector2 _currentDistance;
         private Vector2 _maxDistance;
         private Vector2 _t;
+        private Vector2 _playerDeltaPositon;
 
         private bool _paused;
         private bool _switchedDirection;
@@ -36,6 +37,7 @@ namespace LegendOfZelda
             _direction = InputManager.GetDirectionVectorByDirectionEnum(direction);
             _reverseDirection = RevertDirection(_direction);
             _t = Vector2.Zero;
+            _playerDeltaPositon = Vector2.Zero;
             _maxDistance = new Vector2(60.0f, 60.0f);
             _maxDistanceInDirection = GetMaxDistanceInDirection();
             _switchedDirection = false;
@@ -52,15 +54,31 @@ namespace LegendOfZelda
                 var __tmpPosition = position;
                 var __direction = ShouldSwitchDirection() ? _reverseDirection : _direction;
 
-                position += __direction * _velocity * p_delta;
-
                 _currentDistance += position - __tmpPosition;
 
                 _t = GetInterpolatedTimeByDistance();
 
                 if (_switchedDirection)
                 {
-                    System.Console.WriteLine((position - initialPlayerPosition) * _t);
+                    _playerDeltaPositon = initialPlayerPosition - _currentPlayerPosition;
+                    
+                    if (!IsPlayerMovingLeftOrRight() && IsProjectileMovingLeftOrRight())
+                    {
+                        if (_playerDeltaPositon.X == 0.0f)
+                        {
+                            _playerDeltaPositon.Y += _t.Y * __direction.X;
+                        }
+                        else
+                        {
+                            _playerDeltaPositon.X += _t.X * __direction.Y;
+                        }
+
+                        System.Console.WriteLine(_playerDeltaPositon);
+                    }
+                }
+                else
+                {
+                    position += __direction * _velocity * p_delta;
                 }
 
                 _aabb.Min = position;
@@ -85,6 +103,9 @@ namespace LegendOfZelda
             else if (__t.X <= -1.0f) __t.X = -1.0f;
             else if (__t.Y >= 1.0f) __t.Y = 1.0f;
             else if (__t.Y <= -1.0f) __t.Y = -1.0f;
+
+            if (__t.X == 0.0f) __t.X = __t.Y;
+            if (__t.Y == 0.0f) __t.Y = __t.X;
 
             return __t;
         }
@@ -159,6 +180,26 @@ namespace LegendOfZelda
         private Vector2 GetMaxDistanceInDirection()
         {
             return _maxDistance * _direction;
+        }
+
+        private bool IsPlayerMovingUpOrDown()
+        {
+            return _playerDeltaPositon.Y != 0.0f;
+        }
+
+        private bool IsPlayerMovingLeftOrRight()
+        {
+            return _playerDeltaPositon.X != 0.0f;
+        }
+
+        private bool IsProjectileMovingLeftOrRight()
+        {
+            return direction == Direction.LEFT || direction == Direction.RIGHT;
+        }
+
+        private bool IsProjectileMovingUpOrDown()
+        {
+            return direction == Direction.DOWN || direction == Direction.UP;
         }
     }
 
