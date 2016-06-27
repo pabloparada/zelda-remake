@@ -28,7 +28,7 @@ namespace LegendOfZelda
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
             state = State.ACTIVE;
-            Position = new Vector2(227, 83);
+            Position = new Vector2(66, 40);
             _velocity = new Vector2(80.0f, 80.0f);
             _direction = new Vector2(0, 0);
             _linkSpriteSize = new Vector2(12, 12);
@@ -98,18 +98,18 @@ namespace LegendOfZelda
                 _hitbox.Y = (int)Position.Y;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.X) && _projectile == null)
-            {
-                _projectile = new SwordProjectile(Position, __dir);
-            }
-
             if (_projectile != null && _projectile.alive)
             {
-                _projectile.Update(p_delta, p_collider);
+                _projectile.Update(p_delta, p_collider, Position);
             }
             else
             {
                 _projectile = null;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.X) && _projectile == null)
+            {
+                _projectile = new BoomerangProjectile(Position, __dir);
             }
 
             _lasDirection = __dir;
@@ -123,8 +123,6 @@ namespace LegendOfZelda
                 (int) ((parentScenePosition.Y + Position.Y) * Main.s_scale + 48 * Main.s_scale), 
                 _hitbox.Width * Main.s_scale, _hitbox.Height * Main.s_scale);
             p_spriteBatch.FillRectangle(rect, Color.Green);
-            Console.WriteLine(parentScenePosition);
-            Console.WriteLine(rect);
             if (_projectile != null && _projectile.alive) _projectile.Draw(p_spriteBatch);
 
             base.DebugDraw(p_spriteBatch);
