@@ -36,7 +36,7 @@ namespace LegendOfZelda
             return GetInitialPositionByDirection(position, p_playerSize, p_projectileSize);
         }
 
-        protected Vector2 GetInitialPositionByDirection(Vector2 p_position, Vector2 p_playerSize, Vector2 p_projectileSize)
+        public Vector2 GetInitialPositionByDirection(Vector2 p_position, Vector2 p_playerSize, Vector2 p_projectileSize)
         {
             var __initialPosition = new Vector2();
 

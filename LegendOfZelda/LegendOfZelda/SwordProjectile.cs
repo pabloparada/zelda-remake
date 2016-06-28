@@ -18,7 +18,7 @@ namespace LegendOfZelda
         {
             _projectileSize = GetProjectileSizeAndControlComponentSwitch(new Vector2(12, 4));
             _playerSize = new Vector2(12, 12);
-            _velocity = new Vector2(180, 180);
+            _velocity = new Vector2(150, 150);
 
             position = p_position = GetInitialPositionByDirection(_playerSize, _projectileSize);
             
