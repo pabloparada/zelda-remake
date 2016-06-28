@@ -116,18 +116,18 @@ namespace LegendOfZelda
                     continue;
                 if (__portal.collideOnHit)
                 {
-                    if (_collider.PointInsideRectangle(Player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(Player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(Player.aabb.TopRight, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(Player.aabb.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
+                    if (_collider.PointInsideRectangle(Player._playerAABB.Min, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(Player._playerAABB.Max, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(Player._playerAABB.TopRight, __portal.aabb.Min, __portal.aabb.Max)
+                        || _collider.PointInsideRectangle(Player._playerAABB.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
                     {
                         Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
                         OnPortalEnter?.Invoke(__portal);
                         return;
                     }
                 }
-                else if (_collider.PointInsideRectangle(Player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
-                        && _collider.PointInsideRectangle(Player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
+                else if (_collider.PointInsideRectangle(Player._playerAABB.Min, __portal.aabb.Min, __portal.aabb.Max)
+                        && _collider.PointInsideRectangle(Player._playerAABB.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
                     OnPortalEnter?.Invoke(__portal);
                     Console.WriteLine(_portals.IndexOf(__portal) + "Collide");

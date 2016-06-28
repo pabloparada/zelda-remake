@@ -46,11 +46,11 @@ namespace LegendOfZelda
 
             if (_switchedDirection)
             {
-                position += GetInitialPositionByDirection(p_playerPosition - position, _playerSize, _projectileSize) * p_delta * 7.0f;
+                position += GetInitialPositionByDirection(p_playerPosition - position, _playerSize, _projectileSize) * p_delta * 5.0f;
             }
             else
             {
-                position += __direction * _velocity * p_delta;
+                position += __direction * _velocity * p_delta * 1.2f;
             }
 
             _currentDistance += position - __tmpPosition;
@@ -58,9 +58,7 @@ namespace LegendOfZelda
             _aabb.Min = position;
             _aabb.Max = position + _projectileSize;
 
-            _isColliding = p_collider.IsColliding(_aabb, direction);
-
-            if (_isColliding || IsBoomerangMovimentEnded(p_collider))
+            if (IsBoomerangMovimentEnded(p_collider))
             {
                 ResetBoomerangState();
             }
