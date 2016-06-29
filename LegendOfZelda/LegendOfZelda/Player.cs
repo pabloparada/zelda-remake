@@ -32,8 +32,10 @@ namespace LegendOfZelda
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
             state = State.ACTIVE;
-            Position = new Vector2(66, 40);
-            _velocity = new Vector2(80.0f, 80.0f);
+            //Position = new Vector2(66, 40);
+            Position = new Vector2(150, 80);
+            _velocity = new Vector2(160.0f, 160.0f);
+           // _velocity = new Vector2(80.0f, 80.0f);
             _direction = new Vector2(0, 0);
             _linkSpriteSize = new Vector2(12, 12);
             _swordSpriteSize = new Vector2(12, 4);

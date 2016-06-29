@@ -46,7 +46,7 @@
                  "name":"PortalWest",
                  "properties":
                     {
-                     "TargetMap":"Room_6-4",
+                     "TargetMap":"Room_5-5",
                      "TransitionType":2
                     },
                  "propertytypes":
@@ -67,7 +67,7 @@
                  "name":"PortalEast",
                  "properties":
                     {
-                     "TargetMap":"Room_8-4",
+                     "TargetMap":"Room_7-5",
                      "TransitionType":0
                     },
                  "propertytypes":
@@ -88,7 +88,7 @@
                  "name":"PortalNorth",
                  "properties":
                     {
-                     "TargetMap":"Room_7-3",
+                     "TargetMap":"Room_6-4",
                      "TransitionType":1
                     },
                  "propertytypes":
@@ -109,7 +109,7 @@
                  "name":"PortalSouth",
                  "properties":
                     {
-                     "TargetMap":"Room_7-5",
+                     "TargetMap":"Room_6-6",
                      "TransitionType":3
                     },
                  "propertytypes":

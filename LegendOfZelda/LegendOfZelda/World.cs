@@ -26,7 +26,7 @@ namespace LegendOfZelda
             _tileReader = new TiledReader();
             hud = new HUD();
             //CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"),new Player(graphicsDeviceManager));
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_8-5"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-3"), new Player(graphicsDeviceManager));
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
         }
@@ -43,8 +43,16 @@ namespace LegendOfZelda
                 previousScene.Draw(spriteBatch);
             if (CurrentScene.state != State.DISABLED)
                 CurrentScene.Draw(spriteBatch);
+
+            //ForegroundDraw
+            if (previousScene != null && previousScene.state != State.DISABLED)
+                previousScene.DrawForeground(spriteBatch);
+            if (CurrentScene.state != State.DISABLED)
+                CurrentScene.DrawForeground(spriteBatch);
+
             if (_transitionType == TransitionType.BLINK && _transitionCount <= 0.8f * _transitionDuration)
                 spriteBatch.FillRectangle(new Rectangle(0, 48 * Main.s_scale, 256 * Main.s_scale, 176 * Main.s_scale), Color.Green);
+
             hud.DrawHUD(spriteBatch);
             base.Draw(spriteBatch);
         }

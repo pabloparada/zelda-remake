@@ -68,9 +68,11 @@ namespace LegendOfZelda
             foreach(Entity __e in Entities)
                 if (__e.state != State.DISABLED)
                     __e.Draw(p_spriteBatch);
-            DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMapForeground"), p_spriteBatch, _worldTileSet, 1f);
-          
             base.Draw(p_spriteBatch);
+        }
+        public void DrawForeground(SpriteBatch p_spriteBatch)
+        {
+            DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMapForeground"), p_spriteBatch, _worldTileSet, 1f);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
