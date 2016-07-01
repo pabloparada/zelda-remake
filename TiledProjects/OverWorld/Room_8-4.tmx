@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="6">
  <tileset firstgid="1" name="zelda-tiles" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../Images/TileSets/TileSet_World.png" width="512" height="512"/>
+  <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="1025" name="CollisionMaskTileSet" tilewidth="16" tileheight="16" tilecount="16" columns="4">
-  <image source="../Images/TileSets/TileSet_CollisionMask.png" trans="ff00ff" width="64" height="64"/>
+  <image source="../../Images/TileSets/TileSet_CollisionMask.png" trans="ff00ff" width="64" height="64"/>
  </tileset>
  <imagelayer name="RefImage" opacity="0.4" offsetx="-2304" offsety="-704">
-  <image source="../Images/Maps/Zelda_OverWorld.png" width="4352" height="1408"/>
+  <image source="../../Images/Maps/Zelda_OverWorld.png" width="4352" height="1408"/>
  </imagelayer>
  <layer name="TileMap" width="16" height="11">
   <data encoding="csv">
@@ -26,11 +26,11 @@
  </layer>
  <layer name="CollisionMask" width="16" height="11" opacity="0.5">
   <data encoding="csv">
-1026,1026,1026,1026,1026,1026,1026,1025,1025,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1025,1025,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1025,1025,1025,1025,1025,1025,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1025,1025,1025,1025,1025,1025,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1025,1025,1025,1025,1025,1025,1026,1026,1026,
+1035,1035,1035,1035,1035,1035,1035,1025,1025,1026,1026,1026,1026,1026,1026,1026,
+1035,1035,1035,1035,1035,1035,1035,1025,1025,1026,1026,1026,1026,1026,1026,1026,
+1035,1035,1035,1035,1035,1035,1035,1025,1025,1025,1025,1025,1025,1026,1026,1026,
+1035,1035,1035,1035,1035,1035,1035,1025,1025,1025,1025,1025,1025,1026,1026,1026,
+1035,1035,1035,1035,1035,1035,1035,1025,1025,1025,1025,1025,1025,1026,1026,1026,
 1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,1026,
 1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,1026,
 1026,1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,1026,
