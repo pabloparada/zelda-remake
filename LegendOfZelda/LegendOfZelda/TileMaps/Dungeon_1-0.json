@@ -19,7 +19,7 @@
          "name":"TileMap",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":16,
          "x":0,
          "y":0
@@ -30,7 +30,7 @@
          "name":"TileMapForeground",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":16,
          "x":0,
          "y":0
@@ -41,7 +41,7 @@
          "name":"CollisionMask",
          "opacity":0.5,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":16,
          "x":0,
          "y":0
@@ -100,7 +100,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_1-0",
-                     "TransitionType":1
+                     "TransitionType":0
                     },
                  "propertytypes":
                     {
@@ -110,8 +110,8 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":240,
-                 "x":8,
+                 "width":248,
+                 "x":4,
                  "y":0
                 }, 
                 {
@@ -121,7 +121,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_1-1",
-                     "TransitionType":3
+                     "TransitionType":0
                     },
                  "propertytypes":
                     {
@@ -131,8 +131,8 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":240,
-                 "x":8,
+                 "width":248,
+                 "x":4,
                  "y":174
                 }],
          "opacity":1,
@@ -141,8 +141,96 @@
          "width":16,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":11,
+         "name":"Enemies",
+         "objects":[
+                {
+                 "height":16,
+                 "id":5,
+                 "name":"BladeTrap0",
+                 "properties":
+                    {
+                     "Name":"BladeTrap"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":32,
+                 "y":32
+                }, 
+                {
+                 "height":16,
+                 "id":7,
+                 "name":"BladeTrap1",
+                 "properties":
+                    {
+                     "Name":"BladeTrap"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":32,
+                 "y":128
+                }, 
+                {
+                 "height":16,
+                 "id":8,
+                 "name":"BladeTrap2",
+                 "properties":
+                    {
+                     "Name":"BladeTrap"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":208,
+                 "y":32
+                }, 
+                {
+                 "height":16,
+                 "id":9,
+                 "name":"BladeTrap3",
+                 "properties":
+                    {
+                     "Name":"BladeTrap"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":208,
+                 "y":128
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":16,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":5,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tileheight":16,
