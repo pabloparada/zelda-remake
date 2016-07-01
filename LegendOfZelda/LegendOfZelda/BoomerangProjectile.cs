@@ -35,10 +35,15 @@ namespace LegendOfZelda
             _maxDistance = new Vector2(55.0f, 55.0f);
             _maxDistanceInDirection = GetMaxDistanceInDirection();
             _switchedDirection = false;
+            _maxCooldown = 2.0f;
         }
 
         public override void Update(float p_delta, Collider p_collider, Vector2 p_playerPosition)
         {
+            _cooldown += p_delta;
+
+            if (!alive) return;
+
             _currentPlayerPosition = p_playerPosition;
 
             var __tmpPosition = position;

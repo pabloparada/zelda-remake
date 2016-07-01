@@ -20,6 +20,8 @@ namespace LegendOfZelda
             _playerSize = new Vector2(12, 12);
             _velocity = new Vector2(150, 150);
 
+            _maxCooldown = 2.0f;
+
             position = p_position = GetInitialPositionByDirection(_playerSize, _projectileSize);
             
             _aabb = new AABB(p_position, p_position + _projectileSize);
@@ -27,6 +29,10 @@ namespace LegendOfZelda
 
         public override void Update(float p_delta, Collider p_collider, Vector2 p_playerPosition)
         {
+            _cooldown += p_delta;
+
+            if (!alive) return;
+
             var __direction = InputManager.GetDirectionVectorByDirectionEnum(direction);
 
             position += __direction *_velocity * p_delta;

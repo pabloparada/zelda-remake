@@ -8,8 +8,9 @@ namespace LegendOfZelda
         public bool alive { get; set; }
         public Vector2 position { get; set; }
 
+        protected float _cooldown;
+        protected float _maxCooldown;
         protected bool _switchedComponents;
-
         protected Vector2 initialPlayerPosition;
 
         public Projectile(Vector2 p_position, Direction p_direction)
@@ -17,6 +18,8 @@ namespace LegendOfZelda
             position = initialPlayerPosition = p_position;
             direction = p_direction;
             alive = true;
+            _cooldown = 0.0f;
+            _maxCooldown = 0.0f;
         }
 
         public virtual void Update(float delta, Collider p_collider, Vector2 p_playerPosition)
@@ -64,20 +67,25 @@ namespace LegendOfZelda
             return __initialPosition;
         }
 
-        protected Vector2 Switch(Vector2 p_v1)
+        public Vector2 Switch(Vector2 p_v1)
         {
             _switchedComponents = true;
             return new Vector2(p_v1.Y, p_v1.X);
         }
 
-        protected Vector2 GetProjectileSizeAndControlComponentSwitch(Vector2 p_projectileSize)
+        public Vector2 GetProjectileSizeAndControlComponentSwitch(Vector2 p_projectileSize)
         {
             return !IsVerticalMovement() && !_switchedComponents ? Switch(p_projectileSize) : p_projectileSize;
         }
 
-        protected Vector2 RevertDirection(Vector2 p_direction)
+        public Vector2 RevertDirection(Vector2 p_direction)
         {
             return p_direction * -Vector2.One;
+        }
+
+        public bool IsCooldownUp()
+        {
+            return _cooldown >= _maxCooldown;
         }
     }
 }

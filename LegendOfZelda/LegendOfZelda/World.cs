@@ -20,13 +20,13 @@ namespace LegendOfZelda
         private float _transitionDuration = 2f;
         private float _transitionCount;
         private List<Vector2> _transitionPositions;
+
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
             state = State.ACTIVE;
             _tileReader = new TiledReader();
             hud = new HUD();
-            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"),new Player(graphicsDeviceManager));
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-3"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"), new Player(graphicsDeviceManager));
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
         }
@@ -114,8 +114,8 @@ namespace LegendOfZelda
             _transitionPositions.Add(previousScene.scenePosition + p_previousEnd);
             _transitionPositions.Add(CurrentScene.scenePosition + p_currentStart);
             _transitionPositions.Add(CurrentScene.scenePosition);
-            _transitionPositions.Add(CurrentScene.Player.Position - p_currentStart);
-            _transitionPositions.Add(CurrentScene.Player.Position - p_currentStart + p_playerEnd);
+            _transitionPositions.Add(CurrentScene.Player._position - p_currentStart);
+            _transitionPositions.Add(CurrentScene.Player._position - p_currentStart + p_playerEnd);
             CurrentScene.scenePosition = _transitionPositions[2];
         }
         private void UpdateTransition(float p_delta)
