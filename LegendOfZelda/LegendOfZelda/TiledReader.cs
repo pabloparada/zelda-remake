@@ -39,6 +39,7 @@ namespace LegendOfZelda
         public int TargetPositionX { get; set; }
         public int TargetPositionY { get; set; }
         public int TransitionType { get; set; }
+        public string Name { get; set; }
     }
 
     public class Propertytypes
@@ -47,6 +48,7 @@ namespace LegendOfZelda
         public string TargetPositionX { get; set; }
         public string TargetPositionY { get; set; }
         public string TransitionType { get; set; }
+        public string Name { get; set; }
     }
 
     public class Object

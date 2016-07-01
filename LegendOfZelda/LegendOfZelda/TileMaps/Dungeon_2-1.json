@@ -100,7 +100,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_2-0",
-                     "TransitionType":0
+                     "TransitionType":1
                     },
                  "propertytypes":
                     {
@@ -121,7 +121,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_2-2",
-                     "TransitionType":0
+                     "TransitionType":3
                     },
                  "propertytypes":
                     {
@@ -210,8 +210,39 @@
          "width":0,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":0,
+         "name":"Items",
+         "objects":[
+                {
+                 "height":16,
+                 "id":10,
+                 "name":"Key",
+                 "properties":
+                    {
+                     "Name":"Key"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":48
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":10,
+ "nextobjectid":11,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tileheight":16,

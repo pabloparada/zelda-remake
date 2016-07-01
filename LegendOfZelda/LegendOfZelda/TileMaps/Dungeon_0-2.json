@@ -19,7 +19,7 @@
          "name":"TileMap",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":16,
          "x":0,
          "y":0
@@ -100,7 +100,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_0-1",
-                     "TransitionType":0
+                     "TransitionType":1
                     },
                  "propertytypes":
                     {
@@ -121,7 +121,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_0-3",
-                     "TransitionType":0
+                     "TransitionType":3
                     },
                  "propertytypes":
                     {
@@ -153,8 +153,77 @@
          "width":0,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":0,
+         "name":"Items",
+         "objects":[
+                {
+                 "height":16,
+                 "id":14,
+                 "name":"Fire0",
+                 "properties":
+                    {
+                     "Name":"Fire"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":72,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":16,
+                 "name":"Fire1",
+                 "properties":
+                    {
+                     "Name":"Fire"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":168,
+                 "y":64
+                }, 
+                {
+                 "height":32,
+                 "id":17,
+                 "name":"Text",
+                 "properties":
+                    {
+                     "Name":"Text"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":160,
+                 "x":48,
+                 "y":32
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":12,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tileheight":16,

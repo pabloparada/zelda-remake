@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="9">
+ <tileset firstgid="1" name="zelda-tiles" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="1025" name="CollisionMaskTileSet" tilewidth="16" tileheight="16" tilecount="16" columns="4">
+  <image source="../../Images/TileSets/TileSet_CollisionMask.png" trans="ff00ff" width="64" height="64"/>
+ </tileset>
+ <imagelayer name="RefImage" opacity="0.4" offsetx="-2048" offsety="-528">
+  <image source="../../Images/Maps/Zelda_OverWorld.png" width="4352" height="1408"/>
+ </imagelayer>
+ <layer name="TileMap" width="16" height="11">
+  <data encoding="csv">
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,86,86,86,86,86,86,86,86,86,86,86,86,1,2,
+2,1,86,373,374,86,373,438,374,86,373,374,86,86,1,2,
+2,1,86,378,379,86,378,3,379,86,378,379,86,86,1,2,
+2,1,86,86,86,86,86,86,86,86,86,86,86,86,86,447,
+2,1,86,86,373,374,86,86,86,373,374,86,86,86,219,2,
+2,1,86,86,378,379,86,86,86,378,379,86,86,86,1,2,
+2,1,86,86,86,86,86,86,86,86,86,86,86,86,1,2,
+2,1,219,219,219,219,219,219,219,219,219,219,219,219,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2
+</data>
+ </layer>
+ <layer name="CollisionMask" width="16" height="11" opacity="0.5">
+  <data encoding="csv">
+1035,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1035,
+1035,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1035,
+1035,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1035,
+1035,1026,1025,1026,1026,1025,1026,1026,1026,1025,1026,1026,1025,1025,1026,1035,
+1035,1026,1025,1026,1026,1025,1026,1025,1026,1025,1026,1026,1025,1025,1026,1035,
+1035,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,
+1035,1026,1025,1025,1026,1026,1025,1025,1025,1026,1026,1025,1025,1025,1026,1035,
+1035,1026,1025,1025,1026,1026,1025,1025,1025,1026,1026,1025,1025,1025,1026,1035,
+1035,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1035,
+1035,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1035,
+1035,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1035
+</data>
+ </layer>
+ <objectgroup name="Portals">
+  <object id="1" name="PortalWest" x="0" y="4" width="2" height="167">
+   <properties>
+    <property name="TargetMap" value="Room_6-3"/>
+    <property name="TransitionType" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="3" name="PortalEast" x="254" y="2" width="2" height="167">
+   <properties>
+    <property name="TargetMap" value="Room_8-3"/>
+    <property name="TransitionType" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="4" name="PortalNorth" x="3" y="0" width="248" height="2">
+   <properties>
+    <property name="TargetMap" value="Room_7-2"/>
+    <property name="TransitionType" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="5" name="PortalSouth" x="3" y="174" width="250" height="2">
+   <properties>
+    <property name="TargetMap" value="Room_7-4"/>
+    <property name="TransitionType" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="7" name="PortalCave" x="112" y="64" width="16" height="16">
+   <properties>
+    <property name="TargetMap" value="Dungeon_2-5"/>
+    <property name="TargetPositionX" type="float" value="122"/>
+    <property name="TargetPositionY" type="float" value="140"/>
+    <property name="TransitionType" type="int" value="4"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="11">
+ <tileset firstgid="1" name="zelda-tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="1025" name="CollisionMask" tilewidth="16" tileheight="16" tilecount="16" columns="4">
+  <image source="../../Images/TileSets/TileSet_CollisionMask.png" width="64" height="64"/>
+ </tileset>
+ <imagelayer name="RefImage" opacity="0.33" offsetx="-256" offsety="-176">
+  <image source="../../Images/Maps/Zelda_Quest1_Dundeon1.png" width="1536" height="1056"/>
+ </imagelayer>
+ <layer name="TileMap" width="16" height="11">
+  <data encoding="csv">
+3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+912,912,912,913,912,912,912,912,912,912,912,912,912,912,912,912,
+912,912,912,913,912,912,912,912,912,912,912,912,912,912,912,912,
+912,912,912,913,912,912,912,3,3,3,3,3,3,3,912,912,
+912,912,912,913,912,912,912,3,3,3,3,3,3,3,912,912,
+912,912,912,913,912,912,912,3,3,3,3,3,3,3,912,912,
+912,912,912,913,912,912,912,912,912,912,912,913,912,912,912,912,
+912,912,3,913,3,3,3,3,3,3,3,913,3,3,912,912,
+912,912,3,913,3,3,3,3,3,3,3,913,3,3,912,912,
+912,912,912,912,912,912,912,912,912,912,912,912,912,912,912,912,
+912,912,912,912,912,912,912,912,912,912,912,912,912,912,912,912
+</data>
+ </layer>
+ <layer name="TileMapForeground" width="16" height="11">
+  <data encoding="csv">
+3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,0,0,0,0,0,0,0,0,0,0,0,0,0,0,912,
+912,912,912,912,912,912,912,912,912,912,912,912,912,912,912,912
+</data>
+ </layer>
+ <layer name="CollisionMask" width="16" height="11" opacity="0.5">
+  <data encoding="csv">
+1026,1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1025,1026,1026,1026,1031,1031,1031,1031,1031,1031,1031,1026,1026,
+1026,1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1025,1026,1026,1026,1026,
+1026,1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1025,1026,1026,1026,1026,
+1026,1026,1031,1025,1031,1031,1031,1031,1031,1031,1031,1025,1031,1031,1026,1026,
+1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026
+</data>
+ </layer>
+ <objectgroup name="Portals">
+  <object id="1" name="PortalExit" x="48" y="0" width="16" height="16">
+   <properties>
+    <property name="TargetMap" value="Dungeon_1-0"/>
+    <property name="TargetPositionX" type="float" value="112"/>
+    <property name="TargetPositionY" type="float" value="80"/>
+    <property name="TransitionType" type="int" value="4"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Enemies">
+  <object id="5" name="Keese0" x="48" y="80" width="16" height="16">
+   <properties>
+    <property name="Name" value="Keese"/>
+   </properties>
+  </object>
+  <object id="7" name="Keese1" x="160" y="80" width="16" height="16">
+   <properties>
+    <property name="Name" value="Keese"/>
+   </properties>
+  </object>
+  <object id="8" name="Keese2" x="112" y="112" width="16" height="16">
+   <properties>
+    <property name="Name" value="Keese"/>
+   </properties>
+  </object>
+  <object id="9" name="Keese3" x="192" y="96" width="16" height="16">
+   <properties>
+    <property name="Name" value="Keese"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Items">
+  <object id="10" name="Bow" x="128" y="80" width="16" height="16">
+   <properties>
+    <property name="Name" value="Bow"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -23,6 +23,7 @@ namespace LegendOfZelda
 
         public Scene(RootObject p_rootObject, Player p_player,params Entity[] p_entities)
         {
+            tag = "Scene";
             Player = p_player;
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
@@ -33,8 +34,8 @@ namespace LegendOfZelda
             Entities.Add(Player);
             _portals.ForEach(__portal => Entities.Add(__portal));
 
-            _worldTileSet = Main.s_game.Content.Load<Texture2D>("zelda-tileset");
-            _collisionMask = Main.s_game.Content.Load<Texture2D>("CollisionMaskTileSet");
+            _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
+            _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
 
             _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }

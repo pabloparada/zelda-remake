@@ -7,7 +7,7 @@
   <image source="../../Images/TileSets/TileSet_CollisionMask.png" trans="ff00ff" width="64" height="64"/>
  </tileset>
  <imagelayer name="RefImage" opacity="0.4" offsetx="-1792" offsety="-880">
-  <image source="../Images/Maps/Zelda_OverWorld.png"/>
+  <image source="../../Images/Maps/Zelda_OverWorld.png" width="4352" height="1408"/>
  </imagelayer>
  <layer name="TileMap" width="16" height="11">
   <data encoding="csv">

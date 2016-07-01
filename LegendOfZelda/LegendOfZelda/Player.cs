@@ -32,6 +32,7 @@ namespace LegendOfZelda
 
         public Player(GraphicsDeviceManager p_graphicsDeviceManager)
         {
+            tag = "Player";
             state = State.ACTIVE;
             _position = new Vector2(190, 80);
             _velocity = new Vector2(80.0f, 80.0f);

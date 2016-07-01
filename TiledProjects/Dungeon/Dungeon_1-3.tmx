@@ -70,13 +70,13 @@
   <object id="3" name="PortalNorth" x="4" y="0" width="248" height="2">
    <properties>
     <property name="TargetMap" value="Dungeon_1-2"/>
-    <property name="TransitionType" type="int" value="0"/>
+    <property name="TransitionType" type="int" value="1"/>
    </properties>
   </object>
   <object id="4" name="PortalSouth" x="4" y="174" width="248" height="2">
    <properties>
     <property name="TargetMap" value="Dungeon_1-4"/>
-    <property name="TransitionType" type="int" value="0"/>
+    <property name="TransitionType" type="int" value="3"/>
    </properties>
   </object>
  </objectgroup>

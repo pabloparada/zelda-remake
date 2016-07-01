@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="10">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="11">
  <tileset firstgid="1" name="zelda-tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
@@ -9,7 +9,7 @@
  <imagelayer name="RefImage" opacity="0.33" offsetx="-512" offsety="0">
   <image source="../../Images/Maps/Zelda_Quest1_Dundeon1.png" width="1536" height="1056"/>
  </imagelayer>
- <layer name="TileMap" width="16" height="11">
+ <layer name="TileMap" width="16" height="11" visible="0">
   <data encoding="csv">
 4,5,6,5,5,7,8,5,5,9,10,5,5,11,5,12,
 41,42,43,44,45,46,47,48,48,49,50,51,52,53,54,55,
@@ -70,13 +70,13 @@
   <object id="3" name="PortalNorth" x="4" y="0" width="248" height="2">
    <properties>
     <property name="TargetMap" value="Dungeon_2-0"/>
-    <property name="TransitionType" type="int" value="0"/>
+    <property name="TransitionType" type="int" value="1"/>
    </properties>
   </object>
   <object id="4" name="PortalSouth" x="4" y="174" width="248" height="2">
    <properties>
     <property name="TargetMap" value="Dungeon_2-1"/>
-    <property name="TransitionType" type="int" value="0"/>
+    <property name="TransitionType" type="int" value="3"/>
    </properties>
   </object>
  </objectgroup>
@@ -94,6 +94,13 @@
   <object id="9" name="Goriya2" x="176" y="96" width="16" height="16">
    <properties>
     <property name="Name" value="Goriya"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Items">
+  <object id="10" name="Key" x="128" y="48" width="16" height="16">
+   <properties>
+    <property name="Name" value="Key"/>
    </properties>
   </object>
  </objectgroup>

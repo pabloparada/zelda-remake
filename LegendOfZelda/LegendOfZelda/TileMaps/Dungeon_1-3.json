@@ -100,7 +100,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_1-2",
-                     "TransitionType":0
+                     "TransitionType":1
                     },
                  "propertytypes":
                     {
@@ -121,7 +121,7 @@
                  "properties":
                     {
                      "TargetMap":"Dungeon_1-4",
-                     "TransitionType":0
+                     "TransitionType":3
                     },
                  "propertytypes":
                     {

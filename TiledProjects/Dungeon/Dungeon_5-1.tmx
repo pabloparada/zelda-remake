@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="18">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="14">
  <tileset firstgid="1" name="zelda-tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="1025" name="CollisionMask" tilewidth="16" tileheight="16" tilecount="16" columns="4">
   <image source="../../Images/TileSets/TileSet_CollisionMask.png" width="64" height="64"/>
  </tileset>
- <imagelayer name="RefImage" opacity="0.33" offsetx="0" offsety="-352">
+ <imagelayer name="RefImage" opacity="0.33" offsetx="-1280" offsety="-175">
   <image source="../../Images/Maps/Zelda_Quest1_Dundeon1.png" width="1536" height="1056"/>
  </imagelayer>
  <layer name="TileMap" width="16" height="11" visible="0">
   <data encoding="csv">
 4,5,6,5,5,7,8,5,5,9,10,5,5,11,5,12,
 41,42,43,44,45,46,47,48,48,49,50,51,52,53,54,55,
-41,99,3,3,3,3,3,3,3,3,3,3,3,3,101,55,
-131,132,3,3,3,3,3,3,3,3,3,3,3,3,134,135,
-163,164,3,3,3,3,3,3,3,3,3,3,3,3,165,166,
-41,199,3,3,3,3,3,3,3,3,3,3,3,3,418,202,
-232,233,3,3,3,3,3,3,3,3,3,3,3,3,234,235,
-270,271,3,3,3,3,3,3,3,3,3,3,3,3,272,273,
-41,282,3,3,3,3,3,3,3,3,3,3,3,3,283,55,
+41,99,100,100,100,100,100,100,100,100,100,100,100,100,101,55,
+131,132,100,133,133,133,133,133,133,133,133,133,133,100,134,135,
+167,168,100,133,100,100,383,100,100,384,100,100,133,100,169,170,
+203,388,100,133,100,383,100,100,100,100,384,100,133,100,205,55,
+236,237,100,133,100,100,100,100,100,100,100,100,133,100,238,239,
+270,271,100,133,133,133,133,100,100,133,133,133,133,100,272,273,
+41,282,100,100,100,100,100,100,100,100,100,100,100,100,283,55,
 41,288,289,290,291,292,293,294,294,295,296,297,298,299,300,55,
 333,334,335,334,334,336,337,334,334,338,339,334,334,340,334,341
 </data>
@@ -30,9 +30,9 @@
 41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,
 41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,
 131,0,0,0,0,0,0,0,0,0,0,0,0,0,0,135,
-163,0,0,0,0,0,0,0,0,0,0,0,0,0,0,166,
-41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,202,
-232,0,0,0,0,0,0,0,0,0,0,0,0,0,0,235,
+167,0,0,0,0,0,0,0,0,0,0,0,0,0,0,170,
+203,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,
+236,0,0,0,0,0,0,0,0,0,0,0,0,0,0,239,
 270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,273,
 41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,
 41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,
@@ -43,12 +43,12 @@
   <data encoding="csv">
 1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
 1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
-1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
+1026,1026,1025,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1025,1026,1026,
+1026,1026,1025,1026,1025,1025,1026,1025,1025,1026,1025,1025,1026,1025,1026,1026,
+1025,1025,1025,1026,1025,1026,1025,1025,1025,1025,1026,1025,1026,1025,1026,1026,
+1026,1026,1025,1026,1025,1025,1025,1025,1025,1025,1025,1025,1026,1025,1026,1026,
+1026,1026,1025,1026,1026,1026,1026,1025,1025,1026,1026,1026,1026,1025,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
 1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
 1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026
@@ -57,44 +57,34 @@
  <objectgroup name="Portals">
   <object id="1" name="PortalWest" x="0" y="4" width="2" height="168">
    <properties>
-    <property name="TargetMap" value="Dungeon_0-2"/>
+    <property name="TargetMap" value="Dungeon_4-1"/>
     <property name="TransitionType" type="int" value="2"/>
    </properties>
   </object>
   <object id="2" name="PortalEast" x="254" y="4" width="2" height="168">
    <properties>
-    <property name="TargetMap" value="Dungeon_1-2"/>
+    <property name="TargetMap" value="Dungeon_5-1"/>
     <property name="TransitionType" type="int" value="0"/>
    </properties>
   </object>
   <object id="3" name="PortalNorth" x="4" y="0" width="248" height="2">
    <properties>
-    <property name="TargetMap" value="Dungeon_0-1"/>
+    <property name="TargetMap" value="Dungeon_5-0"/>
     <property name="TransitionType" type="int" value="1"/>
    </properties>
   </object>
   <object id="4" name="PortalSouth" x="4" y="174" width="248" height="2">
    <properties>
-    <property name="TargetMap" value="Dungeon_0-3"/>
+    <property name="TargetMap" value="Dungeon_5-2"/>
     <property name="TransitionType" type="int" value="3"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="Enemies"/>
  <objectgroup name="Items">
-  <object id="14" name="Fire0" x="72" y="64" width="16" height="16">
+  <object id="12" name="Triforce" x="120" y="84" width="16" height="16">
    <properties>
-    <property name="Name" value="Fire"/>
-   </properties>
-  </object>
-  <object id="16" name="Fire1" x="168" y="64" width="16" height="16">
-   <properties>
-    <property name="Name" value="Fire"/>
-   </properties>
-  </object>
-  <object id="17" name="Text" x="48" y="32" width="160" height="32">
-   <properties>
-    <property name="Name" value="Text"/>
+    <property name="Name" value="Triforce"/>
    </properties>
   </object>
  </objectgroup>
