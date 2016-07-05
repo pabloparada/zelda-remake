@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LegendOfZelda.Items;
 
 namespace LegendOfZelda
 {
@@ -28,9 +29,11 @@ namespace LegendOfZelda
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
-            SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
-
             Entities = new List<Entity>(p_entities);
+
+            SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
+            SetItems(RootObjectUtil.GetLayerByName(p_rootObject, "Items"));
+           
             Entities.Add(Player);
             _portals.ForEach(__portal => Entities.Add(__portal));
 
@@ -61,6 +64,21 @@ namespace LegendOfZelda
                 }
                 __tempPortal.targetMap = p_obj.properties.TargetMap;
                 _portals.Add(__tempPortal);
+            }
+        }
+        private void SetItems(Layer p_layer)
+        {
+            Item __tempItem;
+            if (p_layer == null)
+            {
+                Console.WriteLine("ITEMS LAYER NOT FOUND");
+                return;
+            }
+            foreach (Object p_obj in p_layer.objects)
+            {
+                Console.WriteLine(p_obj.properties.Name);
+                __tempItem = Item.SpawnItem(p_obj);
+                Entities.Add(__tempItem);
             }
         }
         public override void Draw(SpriteBatch p_spriteBatch)

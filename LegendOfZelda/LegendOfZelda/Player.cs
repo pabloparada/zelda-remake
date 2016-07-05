@@ -172,7 +172,7 @@ namespace LegendOfZelda
             if (_projectile != null && _projectile.alive) _projectile.Draw(p_spriteBatch);
             if (_weaponAABB != null) p_spriteBatch.FillRectangle(_weaponAABB.ScaledRectangleFromAABB(_swordSpriteSize), Color.Aqua);
 
-            base.DebugDraw(p_spriteBatch);
+            base.Draw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {

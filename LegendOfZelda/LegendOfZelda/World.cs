@@ -27,7 +27,8 @@ namespace LegendOfZelda
             tag = "World";
             _tileReader = new TiledReader();
             hud = new HUD();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-5"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("SwordRoom"), new Player(graphicsDeviceManager));
+            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_5-1"), new Player(graphicsDeviceManager));
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
         }

@@ -28,8 +28,9 @@ namespace LegendOfZelda
 
         protected override void Initialize()
         {
+            TilesetManager.Setup();
             world = new World(spriteBatch, graphics);
-
+            
             base.Initialize();
         }
 
