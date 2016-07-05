@@ -21,15 +21,18 @@ namespace LegendOfZelda
         private float _transitionCount;
         private List<Vector2> _transitionPositions;
 
+        public static Random random;
+
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
             state = State.ACTIVE;
             tag = "World";
             _tileReader = new TiledReader();
             hud = new HUD();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-5"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-2"), new Player(graphicsDeviceManager));
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
+            random = new Random();
         }
 
         private void Scene_OnPortalEnter(Portal p_portal)
