@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LegendOfZelda.Items;
 
 namespace LegendOfZelda
 {
     public class Scene : Entity
     {
         public event Action<Portal> OnPortalEnter;
-        private List<Entity> entities { get; }
+        private List<Entity> Entities { get; }
 
         public Player Player { get; set; }
         private List<Portal> _portals;
@@ -28,29 +29,19 @@ namespace LegendOfZelda
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
+            Entities = new List<Entity>(p_entities);
+
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
-
-            entities = new List<Entity>(p_entities);
-            entities.Add(Player);
-            _portals.ForEach(__portal => entities.Add(__portal));
-
-            SetEnemies(RootObjectUtil.GetLayerByName(p_rootObject, "Enemies"));
+            SetItems(RootObjectUtil.GetLayerByName(p_rootObject, "Items"));
+           
+            Entities.Add(Player);
+            _portals.ForEach(__portal => Entities.Add(__portal));
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
 
             _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
-
-        private void SetEnemies(Layer p_layer)
-        {
-            foreach (Object __obj in p_layer.objects)
-            {
-                entities.Add(Enemy.CreateEnemyByObject(__obj));
-                break;
-            }
-        }
-
         private void SetPortals(Layer p_layer)
         {
             _portals = new List<Portal>();
@@ -75,10 +66,25 @@ namespace LegendOfZelda
                 _portals.Add(__tempPortal);
             }
         }
+        private void SetItems(Layer p_layer)
+        {
+            Item __tempItem;
+            if (p_layer == null)
+            {
+                Console.WriteLine("ITEMS LAYER NOT FOUND");
+                return;
+            }
+            foreach (Object p_obj in p_layer.objects)
+            {
+                Console.WriteLine(p_obj.properties.Name);
+                __tempItem = Item.SpawnItem(p_obj);
+                Entities.Add(__tempItem);
+            }
+        }
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
-            foreach(Entity __e in entities)
+            foreach(Entity __e in Entities)
                 if (__e.state != State.DISABLED)
                     __e.Draw(p_spriteBatch);
             base.Draw(p_spriteBatch);
@@ -92,7 +98,7 @@ namespace LegendOfZelda
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask"), p_spriteBatch, _collisionMask, 0.35f);
             DrawCollisionMap(p_spriteBatch);
 
-            foreach (Entity __e in entities)
+            foreach (Entity __e in Entities)
                 if (__e.state != State.DISABLED)
                     __e.DebugDraw(p_spriteBatch);
 
@@ -100,18 +106,18 @@ namespace LegendOfZelda
         }
         public void RemoveEntity(Entity p_ent)
         {
-            entities.Remove(p_ent);
+            Entities.Remove(p_ent);
         }
         public override void Update(float delta)
         {
             if (state == State.DRAW_ONLY)
-                foreach (Entity __e in entities)
+                foreach (Entity __e in Entities)
                 {
                     __e.parentScenePosition = scenePosition;
                 }
             else
             {
-                foreach (Entity __e in entities)
+                foreach (Entity __e in Entities)
                 {
                     if (__e.state != State.ACTIVE)
                         continue;
@@ -123,7 +129,6 @@ namespace LegendOfZelda
             }
             base.Update(delta);
         }
-
         private void CheckPortalCollision()
         {
             foreach (Portal __portal in _portals)

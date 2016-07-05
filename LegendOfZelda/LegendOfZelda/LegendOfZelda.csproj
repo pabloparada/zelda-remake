@@ -46,14 +46,26 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Items\BoomerangItem.cs" />
     <Compile Include="BoomerangProjectile.cs" />
     <Compile Include="Collider.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Gel.cs" />
+    <Compile Include="Items\BowItem.cs" />
+    <Compile Include="Items\Compass.cs" />
+    <Compile Include="Items\Fire.cs" />
     <Compile Include="HUD.cs" />
     <Compile Include="InputManager.cs" />
+    <Compile Include="Items\Heart.cs" />
+    <Compile Include="Items\HeartContainer.cs" />
+    <Compile Include="Items\Item.cs" />
+    <Compile Include="Items\Key.cs" />
+    <Compile Include="Items\MapItem.cs" />
+    <Compile Include="Items\Rupee.cs" />
+    <Compile Include="Items\Triforce.cs" />
+    <Compile Include="Items\WoodSwordItem.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Portal.cs" />
@@ -64,6 +76,7 @@
     <Compile Include="Scene.cs" />
     <Compile Include="SwordProjectile.cs" />
     <Compile Include="TiledReader.cs" />
+    <Compile Include="TilesetManager.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
