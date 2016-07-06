@@ -17,7 +17,7 @@ namespace LegendOfZelda
         private RootObject _rootObject;
         private Texture2D _worldTileSet;
         private Texture2D _collisionMask;
-        public Vector2 scenePosition = new Vector2(0f, 0f);
+        public Vector2 scenePosition = new Vector2(0f, 48f );
         private Collider _collider;
 
         private SpriteFont _font;
@@ -59,8 +59,6 @@ namespace LegendOfZelda
                 {
                     __tempPortal.collideOnHit = false;
                     __tempPortal.targetPosition = new Vector2(p_obj.properties.TargetPositionX, p_obj.properties.TargetPositionY);
-                    Console.WriteLine(__tempPortal.targetPosition);
-                    Console.WriteLine(p_obj.properties.TransitionType);
                 }
                 __tempPortal.targetMap = p_obj.properties.TargetMap;
                 _portals.Add(__tempPortal);
@@ -78,6 +76,8 @@ namespace LegendOfZelda
             {
                 Console.WriteLine(p_obj.properties.Name);
                 __tempItem = Item.SpawnItem(p_obj);
+                __tempItem.name = p_obj.name;
+                __tempItem.type = EntityType.ITEM;
                 Entities.Add(__tempItem);
             }
         }
@@ -113,7 +113,7 @@ namespace LegendOfZelda
             if (state == State.DRAW_ONLY)
                 foreach (Entity __e in Entities)
                 {
-                    __e.parentScenePosition = scenePosition;
+                    __e.parentPosition = scenePosition;
                 }
             else
             {
@@ -122,7 +122,7 @@ namespace LegendOfZelda
                     if (__e.state != State.ACTIVE)
                         continue;
 
-                    __e.parentScenePosition = scenePosition;
+                    __e.parentPosition = scenePosition;
                     __e.Update(delta, _collider);
                 }
                 CheckPortalCollision();
@@ -164,7 +164,7 @@ namespace LegendOfZelda
                 Rectangle rect = __collider.ToRectangle();
 
                 rect.X = (int)(scenePosition.X + rect.X) * Main.s_scale;
-                rect.Y = (int)(scenePosition.Y + rect.Y) * Main.s_scale + Main.s_scale * 48;
+                rect.Y = (int)(scenePosition.Y + rect.Y) * Main.s_scale;
                 rect.Width *= Main.s_scale;
                 rect.Height *= Main.s_scale;
                 if (__collider.Mask != CollisionMask.NONE)
@@ -180,7 +180,7 @@ namespace LegendOfZelda
             if (p_layer == null)
                 return;
             Rectangle __destinationRect = new Rectangle((int)(Main.s_scale * scenePosition.X),
-                (int)(Main.s_scale * scenePosition.Y) + Main.s_scale * 48,Main.s_scale * 16, Main.s_scale * 16);
+                (int)(Main.s_scale * scenePosition.Y),Main.s_scale * 16, Main.s_scale * 16);
             Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
             for (int i = 0; i < p_layer.data.Count; i++)
             {

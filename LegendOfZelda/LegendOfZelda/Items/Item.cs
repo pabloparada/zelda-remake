@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace LegendOfZelda.Items
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     public class Item : Entity
     {
         public enum ItemType
@@ -51,8 +44,7 @@ namespace LegendOfZelda.Items
             else if (p_itemObj.properties.Name == "WoodSword")
                 return new WoodSwordItem(p_itemObj);
 
-            else return new Fire(p_itemObj);
+            else return new Compass(p_itemObj);
         }
-        
     }
 }

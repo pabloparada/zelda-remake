@@ -39,7 +39,7 @@ namespace LegendOfZelda
         public static Texture2D itemsTileset { get; protected set; }
         public static void Setup()
         {
-           itemsTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Items");
+            itemsTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Items");
         }
 
         public static Rectangle GetSourceRectangle(TileSetType p_type, int p_index)
@@ -50,7 +50,6 @@ namespace LegendOfZelda
                 __sourceRect.X = (p_index % (itemsTileset.Width / 16)) * 16;
                 __sourceRect.Y = (p_index / (itemsTileset.Height / 16)) * 16;
             }
-
             return __sourceRect;
         }
     }

@@ -204,7 +204,7 @@ namespace LegendOfZelda
         public Rectangle ScaledRectangleFromAABB(float p_width, float p_height)
         {
             return new Rectangle(
-                (int) (_min.X * Main.s_scale), (int) (_min.Y * Main.s_scale + 48 * Main.s_scale),
+                (int) (_min.X * Main.s_scale), (int) (_min.Y * Main.s_scale),
                 (int) (p_width * Main.s_scale), (int) (p_height * Main.s_scale)
             );
         }

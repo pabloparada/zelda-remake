@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LegendOfZelda.Items
@@ -13,21 +8,18 @@ namespace LegendOfZelda.Items
         public BoomerangItem(Object p_obj)
         {
             tag = "BoomerangItem";
-            name = "BoomerangItem";
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;
         }
-        public override void Update(float delta, Collider p_collider)
+        public override void Update(float p_delta, Collider p_collider)
         {
-            base.Update(delta, p_collider);
+            base.Update(p_delta, p_collider);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            Rectangle __rect = new Rectangle((int)position.X * Main.s_scale, ((int)position.Y * Main.s_scale) + 48 * Main.s_scale,
-                (int)size.X * Main.s_scale, (int)size.X * Main.s_scale);
-            spriteBatch.Draw(TilesetManager.itemsTileset, __rect,
+            spriteBatch.Draw(TilesetManager.itemsTileset, MathUtil.GetDrawRectangle(position,size,parentPosition),
                 TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, (int)TilesetManager.ItemTileSet.BOOMERANG), Color.White);
         }
     }

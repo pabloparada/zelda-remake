@@ -29,7 +29,7 @@ namespace LegendOfZelda
             tag = "World";
             _tileReader = new TiledReader();
             hud = new HUD();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-2"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_4-1"), new Player(graphicsDeviceManager));
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
             random = new Random();
@@ -55,7 +55,7 @@ namespace LegendOfZelda
                 CurrentScene.DrawForeground(spriteBatch);
 
             if (_transitionType == TransitionType.BLINK && _transitionCount <= 0.8f * _transitionDuration)
-                spriteBatch.FillRectangle(new Rectangle(0, 48 * Main.s_scale, 256 * Main.s_scale, 176 * Main.s_scale), Color.Green);
+                spriteBatch.FillRectangle(new Rectangle(0, 48 * Main.s_scale, 256 * Main.s_scale, 176 * Main.s_scale), Color.Black);
 
             hud.DrawHUD(spriteBatch);
             base.Draw(spriteBatch);
@@ -118,8 +118,8 @@ namespace LegendOfZelda
             _transitionPositions.Add(previousScene.scenePosition + p_previousEnd);
             _transitionPositions.Add(CurrentScene.scenePosition + p_currentStart);
             _transitionPositions.Add(CurrentScene.scenePosition);
-            _transitionPositions.Add(CurrentScene.Player._position - p_currentStart);
-            _transitionPositions.Add(CurrentScene.Player._position - p_currentStart + p_playerEnd);
+            _transitionPositions.Add(CurrentScene.Player.position - p_currentStart);
+            _transitionPositions.Add(CurrentScene.Player.position - p_currentStart + p_playerEnd);
             CurrentScene.scenePosition = _transitionPositions[2];
         }
         private void UpdateTransition(float p_delta)
@@ -137,7 +137,7 @@ namespace LegendOfZelda
 
             if (_transitionCount >= _transitionDuration)
             {
-                CurrentScene.scenePosition = Vector2.Zero;
+                CurrentScene.scenePosition = new Vector2(0f, 48f);
                 CurrentScene.state = State.ACTIVE;
                 CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
                 previousScene = null;
