@@ -80,6 +80,7 @@
     <Compile Include="SwordProjectile.cs" />
     <Compile Include="TiledReader.cs" />
     <Compile Include="TilesetManager.cs" />
+    <Compile Include="Util\EnemyFactory.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>

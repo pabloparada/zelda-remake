@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using System;
+﻿using Microsoft.Xna.Framework;
 
 namespace LegendOfZelda
 {
@@ -14,23 +12,15 @@ namespace LegendOfZelda
         {
             state = State.ACTIVE;
 
-            _position = p_position;
             _size = p_size;
-            _aabb = new AABB(p_position, p_position + p_size);
+            _position = CenterInTile(p_position);
+            _position.Y += 48;
+            _aabb = new AABB(_position, _position + p_size);
         }
 
-        public static Enemy CreateEnemyByObject(Object p_object)
+        protected Vector2 CenterInTile(Vector2 p_position)
         {
-            var __name = p_object.properties.Name;
-
-            if ("Gel".Equals(__name))
-            {
-                return new Gel(new Vector2(p_object.x, p_object.y));
-            } else
-            {
-                return null;
-            }
-            
+            return p_position - (_size * 0.55f) + (Vector2.One * 8.0f);
         }
     }
 }

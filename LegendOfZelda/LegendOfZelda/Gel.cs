@@ -9,44 +9,46 @@ namespace LegendOfZelda
         private Direction[] _direction;
         private Vector2 _velocity;
         private float _targetDistance;
-        private float _tick = 3.0f;
+        private float _tick = -1.5f;
         private Vector2 _startPosition;
+        private Vector2 _targetPosition;
         private Direction _targetDirection;
         private Vector2 _targetDirectionVector;
 
-        public Gel(Vector2 p_position) : base(p_position, new Vector2(7.0f, 7.0f))
+        public Gel(Vector2 p_position) : base(p_position, new Vector2(6.0f, 6.0f))
         {
             _velocity = new Vector2(4.0f, 4.0f);
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
-            _startPosition = p_position;
+            _startPosition = _position;
+            _targetPosition = _position;
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (_tick > 1.5f)
+            if (_tick >= -0.5f && _tick < 0.0f)
             {
-                _targetDistance = 16 * World.random.Next(1, 2);
-                _targetDirection = _direction[World.random.Next(4)];
-                _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
-                _startPosition = _position;
-                _tick = -0.5f;
+                SortNextMove();
+                
+                _tick = 0.0f;
             }
             else if(_tick > 0.0f)
             {
-                _tick += p_delta;
-
-                var __tmpPosition = InterpolatePosition(_tick);
-                var __tmpAABB = new AABB(__tmpPosition, __tmpPosition + _size);
-
-                if (p_collider.IsColliding(__tmpAABB, _targetDirection))
+                if (CollisionDetected(_targetPosition, p_collider) || _tick >= 1.0f)
                 {
-                    _tick = 1.51f;
+                    _tick = -1.5f;
                 }
+                else
+                {
+                    var __tmpPosition = InterpolatePosition(_targetPosition, _tick);
+                    var __tmpAABB = new AABB(__tmpPosition, __tmpPosition + _size);
 
-                _position = __tmpPosition;
+                    _position = __tmpPosition;
 
-                _aabb.Min = _position;
-                _aabb.Max = _position + _size;
+                    _aabb.Min = _position;
+                    _aabb.Max = _position + _size;
+
+                    _tick += p_delta * 2.5f;
+                }
             }
             else
             {
@@ -56,7 +58,25 @@ namespace LegendOfZelda
             base.Update(p_delta);
         }
 
-        private Vector2 InterpolatePosition(float tick)
+        private bool CollisionDetected(Vector2 p_position, Collider p_collider)
+        {
+            var __targetPos = new Vector2(p_position.X, p_position.Y - 48); // TODO: remove godamn -48 from here
+            var __col = (int) __targetPos.X / 16;
+            var __row = (int) __targetPos.Y / 16;
+
+            return __row <= 1 || __row >= 9 || __col <= 1 || __col >= 14;
+        }
+
+        private void SortNextMove()
+        {
+            _targetDistance = 16 * World.random.Next(1, 3);
+            _targetDirection = _direction[World.random.Next(4)];
+            _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
+            _startPosition = _position;
+            _targetPosition = _startPosition + (_targetDistance * _targetDirectionVector);
+        }
+
+        private Vector2 InterpolatePosition(Vector2 p_target, float tick)
         {
             return Vector2.Lerp(_startPosition, _startPosition + (_targetDistance * _targetDirectionVector), tick);
         }
@@ -69,6 +89,7 @@ namespace LegendOfZelda
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
+            p_spriteBatch.FillRectangle(_aabb.ScaledRectangleFromAABB(_size), Color.Bisque);
             base.DebugDraw(p_spriteBatch);
         }
     }

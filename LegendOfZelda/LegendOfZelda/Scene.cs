@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LegendOfZelda.Items;
+using LegendOfZelda.Util;
 
 namespace LegendOfZelda
 {
     public class Scene : Entity
     {
         public event Action<Portal> OnPortalEnter;
-        private List<Entity> Entities { get; }
+        private List<Entity> entities { get; }
 
         public Player Player { get; set; }
         private List<Portal> _portals;
+        private List<Enemy> _enemies;
 
         private RootObject _rootObject;
         private Texture2D _worldTileSet;
@@ -29,19 +31,22 @@ namespace LegendOfZelda
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
-            Entities = new List<Entity>(p_entities);
+            entities = new List<Entity>(p_entities);
 
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
             SetItems(RootObjectUtil.GetLayerByName(p_rootObject, "Items"));
+            SetEnemies(RootObjectUtil.GetLayerByName(p_rootObject, "Enemies"));
            
-            Entities.Add(Player);
-            _portals.ForEach(__portal => Entities.Add(__portal));
+            entities.Add(Player);
+            _portals.ForEach(__portal => entities.Add(__portal));
+            _enemies.ForEach(__enemy => entities.Add(__enemy));
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
 
             _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
+
         private void SetPortals(Layer p_layer)
         {
             _portals = new List<Portal>();
@@ -64,6 +69,17 @@ namespace LegendOfZelda
                 _portals.Add(__tempPortal);
             }
         }
+
+        private void SetEnemies(Layer p_layer)
+        {
+            _enemies = new List<Enemy>();
+
+            foreach (Object __obj in p_layer.objects) 
+            {
+                _enemies.Add(EnemyFactory.CreateEnemyByObject(__obj));
+            }
+        }
+
         private void SetItems(Layer p_layer)
         {
             Item __tempItem;
@@ -78,13 +94,13 @@ namespace LegendOfZelda
                 __tempItem = Item.SpawnItem(p_obj);
                 __tempItem.name = p_obj.name;
                 __tempItem.type = EntityType.ITEM;
-                Entities.Add(__tempItem);
+                entities.Add(__tempItem);
             }
         }
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
-            foreach(Entity __e in Entities)
+            foreach(Entity __e in entities)
                 if (__e.state != State.DISABLED)
                     __e.Draw(p_spriteBatch);
             base.Draw(p_spriteBatch);
@@ -98,7 +114,7 @@ namespace LegendOfZelda
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask"), p_spriteBatch, _collisionMask, 0.35f);
             DrawCollisionMap(p_spriteBatch);
 
-            foreach (Entity __e in Entities)
+            foreach (Entity __e in entities)
                 if (__e.state != State.DISABLED)
                     __e.DebugDraw(p_spriteBatch);
 
@@ -106,18 +122,18 @@ namespace LegendOfZelda
         }
         public void RemoveEntity(Entity p_ent)
         {
-            Entities.Remove(p_ent);
+            entities.Remove(p_ent);
         }
         public override void Update(float delta)
         {
             if (state == State.DRAW_ONLY)
-                foreach (Entity __e in Entities)
+                foreach (Entity __e in entities)
                 {
                     __e.parentPosition = scenePosition;
                 }
             else
             {
-                foreach (Entity __e in Entities)
+                foreach (Entity __e in entities)
                 {
                     if (__e.state != State.ACTIVE)
                         continue;
@@ -142,7 +158,6 @@ namespace LegendOfZelda
                         || _collider.PointInsideRectangle(Player._playerAABB.TopRight, __portal.aabb.Min, __portal.aabb.Max)
                         || _collider.PointInsideRectangle(Player._playerAABB.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
                     {
-                        Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
                         OnPortalEnter?.Invoke(__portal);
                         return;
                     }
@@ -151,7 +166,6 @@ namespace LegendOfZelda
                         && _collider.PointInsideRectangle(Player._playerAABB.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
                     OnPortalEnter?.Invoke(__portal);
-                    Console.WriteLine(_portals.IndexOf(__portal) + "Collide");
                     return;
                 }
             }

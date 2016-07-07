@@ -29,7 +29,7 @@ namespace LegendOfZelda
             tag = "World";
             _tileReader = new TiledReader();
             hud = new HUD();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_4-1"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-2"), new Player(graphicsDeviceManager));
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
             random = new Random();
@@ -37,7 +37,6 @@ namespace LegendOfZelda
 
         private void Scene_OnPortalEnter(Portal p_portal)
         {
-            Console.WriteLine(p_portal.targetMap);
             ChangeScene(new Scene(_tileReader.LoadTiledJson(p_portal.targetMap), CurrentScene.Player), p_portal);
         }
 
