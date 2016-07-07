@@ -29,22 +29,26 @@ namespace LegendOfZelda
         public EntityType   type = EntityType.EMPTY;
         public State        state = State.DISABLED;
 
+       
         public Vector2      parentPosition;
         public Vector2      position { get; protected set; }
         public Vector2      size { get; protected set; }
         public Rectangle    hitbox { get; protected set; }
+        public AABB         aabb { get; protected set; }
+        public Direction    direction { get; protected set; }
 
-        public AnimationController animationController;
+        public AnimationController  animationController;
+        public float                animationSpeed =1f;
 
         public virtual void Update(float p_delta)
         {
-            if (animationController != null && type == EntityType.ITEM)
-                animationController.UpdateAnimationController(p_delta);
+            if (animationController != null)
+                animationController.UpdateAnimationController(p_delta * animationSpeed);
         }
         public virtual void Update(float p_delta, Collider p_collider)
         {
-            if (animationController != null && type == EntityType.ITEM)
-                animationController.UpdateAnimationController(p_delta);
+            if (animationController != null)
+                animationController.UpdateAnimationController(p_delta * animationSpeed);
         }
         public virtual void Draw(SpriteBatch p_spriteBatch) { }
         public virtual void DebugDraw(SpriteBatch p_spriteBatch) { }

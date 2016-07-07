@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using LegendOfZelda.Animations;
 
 namespace LegendOfZelda
 {
@@ -19,8 +19,9 @@ namespace LegendOfZelda
         {
             _velocity = new Vector2(4.0f, 4.0f);
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
-            _startPosition = _position;
-            _targetPosition = _position;
+            _startPosition = position;
+            _targetPosition = position;
+            animationController = new AnimationController("Gel");
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -40,12 +41,12 @@ namespace LegendOfZelda
                 else
                 {
                     var __tmpPosition = InterpolatePosition(_targetPosition, _tick);
-                    var __tmpAABB = new AABB(__tmpPosition, __tmpPosition + _size);
+                    var __tmpAABB = new AABB(__tmpPosition, __tmpPosition + size);
 
-                    _position = __tmpPosition;
+                    position = __tmpPosition;
 
-                    _aabb.Min = _position;
-                    _aabb.Max = _position + _size;
+                    aabb.Min = position;
+                    aabb.Max = position + size;
 
                     _tick += p_delta * 2.5f;
                 }
@@ -60,7 +61,7 @@ namespace LegendOfZelda
 
         private bool CollisionDetected(Vector2 p_position, Collider p_collider)
         {
-            var __targetPos = new Vector2(p_position.X, p_position.Y - 48); // TODO: remove godamn -48 from here
+            var __targetPos = new Vector2(p_position.X, p_position.Y);
             var __col = (int) __targetPos.X / 16;
             var __row = (int) __targetPos.Y / 16;
 
@@ -72,7 +73,7 @@ namespace LegendOfZelda
             _targetDistance = 16 * World.random.Next(1, 3);
             _targetDirection = _direction[World.random.Next(4)];
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
-            _startPosition = _position;
+            _startPosition = position;
             _targetPosition = _startPosition + (_targetDistance * _targetDirectionVector);
         }
 
@@ -83,13 +84,13 @@ namespace LegendOfZelda
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.FillRectangle(_aabb.ScaledRectangleFromAABB(_size), Color.Bisque);
+            animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
             base.Draw(p_spriteBatch);
         }
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.FillRectangle(_aabb.ScaledRectangleFromAABB(_size), Color.Bisque);
+            p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Bisque);
             base.DebugDraw(p_spriteBatch);
         }
     }
