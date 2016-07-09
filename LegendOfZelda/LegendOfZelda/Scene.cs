@@ -74,6 +74,8 @@ namespace LegendOfZelda
         {
             _enemies = new List<Enemy>();
 
+            if (p_layer == null) return;
+
             foreach (Object __obj in p_layer.objects) 
             {
                 _enemies.Add(EnemyFactory.CreateEnemyByObject(__obj));

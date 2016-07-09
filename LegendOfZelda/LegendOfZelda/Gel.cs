@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LegendOfZelda.Animations;
+using LegendOfZelda.Util;
 
 namespace LegendOfZelda
 {
@@ -22,7 +23,7 @@ namespace LegendOfZelda
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
             _startPosition = position;
             _targetPosition = position;
-            animationController = new AnimationController("Gel");
+            _animationController = new AnimationController("Gel");
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -92,7 +93,7 @@ namespace LegendOfZelda
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
             base.Draw(p_spriteBatch);
         }
 

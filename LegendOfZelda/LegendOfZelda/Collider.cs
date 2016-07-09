@@ -174,6 +174,8 @@ namespace LegendOfZelda
        
         public CollisionMask Mask => _mask;
 
+        public AABB() {}
+
         public AABB(Vector2 p_min, Vector2 p_max)
         {
             _min = p_min;

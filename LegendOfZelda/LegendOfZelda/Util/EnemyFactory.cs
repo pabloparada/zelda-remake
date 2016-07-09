@@ -8,11 +8,14 @@ namespace LegendOfZelda.Util
         {
             var __name = p_object.properties.Name;
 
-            //if ("Gel".Equals(__name))
-            //{
+            if ("Gel".Equals(__name))
+            { 
                 return new Gel(new Vector2(p_object.x, p_object.y));
-            //}
-
+            }
+            else
+            {
+                return new Stalfos(new Vector2(p_object.x, p_object.y));
+            }
         }
     }
 }

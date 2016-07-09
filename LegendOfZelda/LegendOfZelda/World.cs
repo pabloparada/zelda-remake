@@ -29,7 +29,7 @@ namespace LegendOfZelda
             tag = "World";
             _tileReader = new TiledReader();
             hud = new HUD();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-2"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-1"), new Player(graphicsDeviceManager));
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
             random = new Random();

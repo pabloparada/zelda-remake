@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LegendOfZelda.Util;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LegendOfZelda.Items
@@ -12,15 +13,16 @@ namespace LegendOfZelda.Items
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;
         }
-        public override void Update(float p_delta, Collider p_collider)
+
+        public override void Draw(SpriteBatch p_spriteBatch)
         {
-            base.Update(p_delta, p_collider);
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-            spriteBatch.Draw(TilesetManager.itemsTileset, MathUtil.GetDrawRectangle(position,size,parentPosition),
-                TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, (int)TilesetManager.ItemTileSet.BOOMERANG), Color.White);
+            base.Draw(p_spriteBatch);
+
+            p_spriteBatch.Draw(TilesetManager.itemsTileset, 
+                               MathUtil.GetDrawRectangle(position,size,parentPosition), 
+                               TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, 
+                               (int)TilesetManager.ItemTileSet.BOOMERANG), 
+                               Color.White);
         }
     }
 }

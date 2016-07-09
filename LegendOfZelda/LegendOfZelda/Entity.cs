@@ -37,18 +37,18 @@ namespace LegendOfZelda
         public AABB         aabb { get; protected set; }
         public Direction    direction { get; protected set; }
 
-        public AnimationController  animationController;
+        public AnimationController  _animationController;
         public float                animationSpeed =1f;
 
         public virtual void Update(float p_delta)
         {
-            if (animationController != null)
-                animationController.UpdateAnimationController(p_delta * animationSpeed);
+            if (_animationController != null)
+                _animationController.UpdateAnimationController(p_delta * animationSpeed);
         }
         public virtual void Update(float p_delta, Collider p_collider)
         {
-            if (animationController != null)
-                animationController.UpdateAnimationController(p_delta * animationSpeed);
+            if (_animationController != null)
+                _animationController.UpdateAnimationController(p_delta * animationSpeed);
         }
         public virtual void Draw(SpriteBatch p_spriteBatch) { }
         public virtual void DebugDraw(SpriteBatch p_spriteBatch) { }

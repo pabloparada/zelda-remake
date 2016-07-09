@@ -37,7 +37,7 @@ namespace LegendOfZelda.Animations
                     AddAllDirectionAnimation(TilesetManager.EnemyTileSet.GORIYA_R1);
                     break;
                 case "Stalfos":
-                    AddTwoFrameAnimation("Stalfos", TilesetManager.EnemyTileSet.STALFOS_1);
+                    AddTwoFrameAnimation("Stalfos", TilesetManager.EnemyTileSet.STALFOS_1, 0.15f);
                     break;
                 case "Keese":
                     AddTwoFrameAnimation("Keese", TilesetManager.EnemyTileSet.KEESE_1);

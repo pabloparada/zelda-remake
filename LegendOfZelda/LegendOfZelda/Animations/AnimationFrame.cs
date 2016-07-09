@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LegendOfZelda.Items;
-
-namespace LegendOfZelda.Animations
+﻿namespace LegendOfZelda.Animations
 {
     public class AnimationFrame
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LegendOfZelda.Animations;
+using LegendOfZelda.Util;
 
 namespace LegendOfZelda.Items
 {
@@ -12,7 +13,7 @@ namespace LegendOfZelda.Items
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;
-            animationController = new AnimationController("Fire");
+            _animationController = new AnimationController("Fire");
         }
         public override void Update(float delta, Collider p_collider)
         {
@@ -21,7 +22,7 @@ namespace LegendOfZelda.Items
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            animationController.DrawFrame(spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            _animationController.DrawFrame(spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
         }
     }
 }
