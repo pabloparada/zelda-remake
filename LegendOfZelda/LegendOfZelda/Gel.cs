@@ -7,17 +7,18 @@ namespace LegendOfZelda
     public class Gel : Enemy
     {
         private Direction[] _direction;
-        private Vector2 _velocity;
-        private float _targetDistance;
+        private int _numSquaresToMove;
         private float _tick = -1.5f;
         private Vector2 _startPosition;
         private Vector2 _targetPosition;
         private Direction _targetDirection;
         private Vector2 _targetDirectionVector;
 
+        private float _timeBetweenMoviment = -1.8f;
+        private float _timeBetweenSquares = -0.9f;
+
         public Gel(Vector2 p_position) : base(p_position, new Vector2(6.0f, 6.0f))
         {
-            _velocity = new Vector2(4.0f, 4.0f);
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
             _startPosition = position;
             _targetPosition = position;
@@ -29,21 +30,27 @@ namespace LegendOfZelda
             if (_tick >= -0.5f && _tick < 0.0f)
             {
                 SortNextMove();
-                
-                _tick = 0.0f;
+
+                if (_numSquaresToMove != 0)
+                {
+                    _targetPosition = _startPosition + (16.0f * _targetDirectionVector);
+
+                    _numSquaresToMove--;
+
+                    _tick = 0.0f;
+                }
             }
             else if(_tick > 0.0f)
             {
-                if (CollisionDetected(_targetPosition, p_collider) || _tick >= 1.0f)
+                var __tmpAABB = new AABB(_targetPosition, _targetPosition + size);
+
+                if (p_collider.IsColliding(__tmpAABB, _targetDirection) || _tick >= 1.0f)
                 {
-                    _tick = -1.5f;
+                    _tick = _numSquaresToMove != 0 ? _timeBetweenSquares : _timeBetweenMoviment;
                 }
                 else
                 {
-                    var __tmpPosition = InterpolatePosition(_targetPosition, _tick);
-                    var __tmpAABB = new AABB(__tmpPosition, __tmpPosition + size);
-
-                    position = __tmpPosition;
+                    position = InterpolatePosition(_targetPosition, _tick);
 
                     aabb.Min = position;
                     aabb.Max = position + size;
@@ -59,27 +66,17 @@ namespace LegendOfZelda
             base.Update(p_delta);
         }
 
-        private bool CollisionDetected(Vector2 p_position, Collider p_collider)
-        {
-            var __targetPos = new Vector2(p_position.X, p_position.Y);
-            var __col = (int) __targetPos.X / 16;
-            var __row = (int) __targetPos.Y / 16;
-
-            return __row <= 1 || __row >= 9 || __col <= 1 || __col >= 14;
-        }
-
         private void SortNextMove()
         {
-            _targetDistance = 16 * World.random.Next(1, 3);
+            _numSquaresToMove = World.random.Next(1, 3);
             _targetDirection = _direction[World.random.Next(4)];
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
             _startPosition = position;
-            _targetPosition = _startPosition + (_targetDistance * _targetDirectionVector);
         }
 
         private Vector2 InterpolatePosition(Vector2 p_target, float tick)
         {
-            return Vector2.Lerp(_startPosition, _startPosition + (_targetDistance * _targetDirectionVector), tick);
+            return Vector2.Lerp(_startPosition, _startPosition + (16.0f * _targetDirectionVector), tick);
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)
