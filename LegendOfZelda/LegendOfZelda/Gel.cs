@@ -6,7 +6,7 @@ namespace LegendOfZelda
 {
     public class Gel : Enemy
     {
-        private Direction[] _direction;
+        private readonly Direction[] _direction;
         private int _numSquaresToMove;
         private float _tick = -1.5f;
         private Vector2 _startPosition;
@@ -62,7 +62,7 @@ namespace LegendOfZelda
                 }
                 else
                 {
-                    position = InterpolatePosition(_targetPosition, _tick);
+                    position = InterpolatePosition(_tick);
 
                     aabb.Min = position;
                     aabb.Max = position + size;
@@ -85,9 +85,9 @@ namespace LegendOfZelda
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
         }
 
-        private Vector2 InterpolatePosition(float tick)
+        private Vector2 InterpolatePosition(float p_tick)
         {
-            return Vector2.Lerp(_startPosition, _startPosition + (16.0f * _targetDirectionVector), tick);
+            return Vector2.Lerp(_startPosition, _startPosition + (16.0f * _targetDirectionVector), p_tick);
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)
