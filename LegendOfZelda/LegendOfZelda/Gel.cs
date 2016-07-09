@@ -14,7 +14,7 @@ namespace LegendOfZelda
         private Direction _targetDirection;
         private Vector2 _targetDirectionVector;
 
-        private float _timeBetweenMoviment = -1.8f;
+        private float _timeBetweenMoviment = -1.5f;
         private float _timeBetweenSquares = -0.9f;
 
         public Gel(Vector2 p_position) : base(p_position, new Vector2(6.0f, 6.0f))
@@ -29,7 +29,7 @@ namespace LegendOfZelda
         {
             if (_tick >= -0.5f && _tick < 0.0f)
             {
-                SortNextMove();
+                _startPosition = position;
 
                 if (_numSquaresToMove != 0)
                 {
@@ -39,12 +39,24 @@ namespace LegendOfZelda
 
                     _tick = 0.0f;
                 }
+                else
+                {
+                    SortNextMove();
+
+                    _tick = -0.5f;
+                }
             }
             else if(_tick > 0.0f)
             {
                 var __tmpAABB = new AABB(_targetPosition, _targetPosition + size);
+                var __collisionFound = p_collider.IsColliding(__tmpAABB, _targetDirection);
 
-                if (p_collider.IsColliding(__tmpAABB, _targetDirection) || _tick >= 1.0f)
+                if (__collisionFound)
+                {
+                    _numSquaresToMove = 0;
+                }
+
+                if (__collisionFound || _tick >= 1.0f)
                 {
                     _tick = _numSquaresToMove != 0 ? _timeBetweenSquares : _timeBetweenMoviment;
                 }
@@ -71,7 +83,6 @@ namespace LegendOfZelda
             _numSquaresToMove = World.random.Next(1, 3);
             _targetDirection = _direction[World.random.Next(4)];
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
-            _startPosition = position;
         }
 
         private Vector2 InterpolatePosition(Vector2 p_target, float tick)
