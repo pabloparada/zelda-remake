@@ -85,7 +85,7 @@ namespace LegendOfZelda
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
         }
 
-        private Vector2 InterpolatePosition(Vector2 p_target, float tick)
+        private Vector2 InterpolatePosition(float tick)
         {
             return Vector2.Lerp(_startPosition, _startPosition + (16.0f * _targetDirectionVector), tick);
         }
