@@ -7,7 +7,7 @@ namespace LegendOfZelda.Animations
         public string               name;
         public float                timer;
 
-        public List<AnimationFrame>         FramesList { get; private set; }
+        public List<AnimationFrame>         FramesList { get; }
         public AnimationFrame               Frame { get; private set; }
         
         public Animation(string p_animationName)

@@ -46,10 +46,7 @@ namespace LegendOfZelda
 
         private bool IsColliding(Collider p_collider, Vector2 p_targetPos)
         {
-            var __line = (int) ( (p_targetPos.Y) / 16.0f );
-            var __col = (int) ( p_targetPos.X / 16.0f );
-
-            var __isOutOfRange = __col >= 13 || __col <= 1 || __line <= 1 || __line >= 9;
+            var __isOutOfRange = IsBoundary(p_targetPos);
 
             _tmpAABB.Min = p_targetPos;
             _tmpAABB.Max = p_targetPos + size;
@@ -64,7 +61,7 @@ namespace LegendOfZelda
             _targetDirection = _direction[World.random.Next(4)];
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
 
-            var __targetDistance = 16.0f * World.random.Next(5);
+            var __targetDistance = 16.0f * World.random.Next(1, 5);
 
             _targetPosition = position + (_targetDirectionVector * __targetDistance);
         }
@@ -75,7 +72,7 @@ namespace LegendOfZelda
 
             var __dist = (p_pos - p_target).Length();
 
-            return __dist >= 0.5f && __dist <= 1.0f;
+            return __dist >= -0.5f && __dist <= 0.5f;
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)

@@ -16,5 +16,13 @@ namespace LegendOfZelda
         {
             return p_position - (size * 0.55f) + (Vector2.One * 8.0f);
         }
+
+        protected bool IsBoundary(Vector2 p_pos)
+        {
+            var __line = (int)((p_pos.Y) / 16.0f);
+            var __col = (int)(p_pos.X / 16.0f);
+
+            return __col >= 13 || __col <= 1 || __line <= 1 || __line >= 9;
+        }
     }
 }

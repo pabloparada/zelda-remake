@@ -69,6 +69,7 @@
     <Compile Include="Items\Rupee.cs" />
     <Compile Include="Items\Triforce.cs" />
     <Compile Include="Items\WoodSwordItem.cs" />
+    <Compile Include="Kesee.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Portal.cs" />

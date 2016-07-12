@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,7 +6,7 @@ namespace LegendOfZelda.Animations
 {
     public class AnimationController
     {
-        public List<Animation>  AnimationsList { get; private set; }
+        public List<Animation>  AnimationsList { get; }
         public Animation        Animation { get; private set; }
 
         public AnimationController(string p_animatorType)
@@ -39,7 +38,7 @@ namespace LegendOfZelda.Animations
                 case "Stalfos":
                     AddTwoFrameAnimation("Stalfos", TilesetManager.EnemyTileSet.STALFOS_1, 0.15f);
                     break;
-                case "Keese":
+                case "Kesee":
                     AddTwoFrameAnimation("Keese", TilesetManager.EnemyTileSet.KEESE_1);
                     break;
                 case "Zora":
@@ -110,7 +109,7 @@ namespace LegendOfZelda.Animations
         
         public void ChangeAnimation(string p_animationName)
         {
-            foreach(Animation __anim in AnimationsList)
+            foreach(var __anim in AnimationsList)
                 if (__anim.name == p_animationName)
                 {
                     Animation = __anim;
@@ -119,26 +118,24 @@ namespace LegendOfZelda.Animations
         }
         public void UpdateAnimationController(float p_deltaTime)
         {
-            if (Animation == null)
-                Animation = AnimationsList[0];
+            if (Animation == null) Animation = AnimationsList[0];
+
             Animation.UpdateAnimation(p_deltaTime);
         }
 
         public void DrawFrame(SpriteBatch p_spriteBatch, Rectangle p_pos, Color p_color)
         {
-            if (Animation == null || Animation.Frame == null)
-                return;
+            if (Animation?.Frame == null) return;
+
             p_spriteBatch.Draw(TilesetManager.GetTileSet(Animation.Frame.frameType), p_pos, 
-                TilesetManager.GetSourceRectangle(Animation.Frame.frameType, Animation.Frame.GetFrameIndex()), p_color);
+                               TilesetManager.GetSourceRectangle(Animation.Frame.frameType, Animation.Frame.GetFrameIndex()), p_color);
         }
         public void DrawFrame(SpriteBatch p_spriteBatch, Rectangle p_pos)
         {
-            Console.WriteLine("Hey");
-            if (Animation == null || Animation.Frame == null)
-                return;
-            Console.WriteLine("Hey2");
+            if (Animation?.Frame == null) return;
+
             p_spriteBatch.Draw(TilesetManager.GetTileSet(Animation.Frame.frameType), p_pos, 
-                TilesetManager.GetSourceRectangle(Animation.Frame.frameType, Animation.Frame.GetFrameIndex()), Color.White);
+                               TilesetManager.GetSourceRectangle(Animation.Frame.frameType, Animation.Frame.GetFrameIndex()), Color.White);
         }
     }
 }
