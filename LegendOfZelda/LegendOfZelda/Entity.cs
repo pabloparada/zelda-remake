@@ -38,18 +38,18 @@ namespace LegendOfZelda
         public Direction    direction { get; protected set; }
 
         public AnimationController  _animationController;
-        public float                animationSpeed =1f;
+        public float                animationSpeed = 1.0f;
 
         public virtual void Update(float p_delta)
         {
-            if (_animationController != null)
-                _animationController.UpdateAnimationController(p_delta * animationSpeed);
+            _animationController?.UpdateAnimationController(p_delta * animationSpeed);
         }
+
         public virtual void Update(float p_delta, Collider p_collider)
         {
-            if (_animationController != null)
-                _animationController.UpdateAnimationController(p_delta * animationSpeed);
+            _animationController?.UpdateAnimationController(p_delta * animationSpeed);
         }
+
         public virtual void Draw(SpriteBatch p_spriteBatch) { }
         public virtual void DebugDraw(SpriteBatch p_spriteBatch) { }
     }

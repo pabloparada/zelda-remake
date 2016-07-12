@@ -10,5 +10,10 @@ namespace LegendOfZelda.Util
                 (int)(p_parentPosition.Y + p_position.Y) * Main.s_scale,
                 (int)p_size.X * Main.s_scale, (int)p_size.Y * Main.s_scale);
         }
+
+        public static Vector2 AddHUDMargin(Vector2 p_vec)
+        {
+            return new Vector2(p_vec.X, p_vec.Y + 48.0f);
+        }
     }
 }

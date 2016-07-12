@@ -12,9 +12,13 @@ namespace LegendOfZelda.Util
             { 
                 return new Gel(new Vector2(p_object.x, p_object.y));
             }
-            else
+            if ("Stalfos".Equals(__name))
             {
                 return new Stalfos(new Vector2(p_object.x, p_object.y));
+            }
+            else
+            {
+                return new Kesee(new Vector2(p_object.x, p_object.y));
             }
         }
     }
