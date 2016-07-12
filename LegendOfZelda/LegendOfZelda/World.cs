@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LegendOfZelda.GUI;
 
 namespace LegendOfZelda
 {
@@ -10,7 +11,7 @@ namespace LegendOfZelda
         public Scene CurrentScene { get; private set; }
         private Scene previousScene;
 
-        public HUD hud;
+        public GUIManager guiManager;
 
         private TiledReader _tileReader;
 
@@ -22,14 +23,18 @@ namespace LegendOfZelda
         private List<Vector2> _transitionPositions;
 
         public static Random random;
+        public static string mapName;
 
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
             state = State.ACTIVE;
             tag = "World";
             _tileReader = new TiledReader();
-            hud = new HUD();
+            guiManager = new GUIManager();
             CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-1"), new Player(graphicsDeviceManager));
+            mapName = "Dungeon_2-1";
+            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), new Player(graphicsDeviceManager));
+            //mapName = "Room_7-7";
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
             random = new Random();
@@ -38,6 +43,7 @@ namespace LegendOfZelda
         private void Scene_OnPortalEnter(Portal p_portal)
         {
             ChangeScene(new Scene(_tileReader.LoadTiledJson(p_portal.targetMap), CurrentScene.Player), p_portal);
+            mapName = p_portal.targetMap;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -56,7 +62,7 @@ namespace LegendOfZelda
             if (_transitionType == TransitionType.BLINK && _transitionCount <= 0.8f * _transitionDuration)
                 spriteBatch.FillRectangle(new Rectangle(0, 48 * Main.s_scale, 256 * Main.s_scale, 176 * Main.s_scale), Color.Black);
 
-            hud.DrawHUD(spriteBatch);
+            guiManager.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
@@ -76,11 +82,35 @@ namespace LegendOfZelda
                 previousScene.Update(delta);
             if (CurrentScene.state != State.DISABLED)
                 CurrentScene.Update(delta);
-            
+
+            guiManager.Update(delta);
+
             base.Update(delta);
-            
         }
 
+        public void OpenCloseInventory()
+        {
+            if (isTransitioning)
+                return;
+
+            isTransitioning = true;
+            _transitionCount = 0f;
+            _transitionPositions = new List<Vector2>();
+            _transitionPositions.Add(guiManager.position);
+            CurrentScene.state = State.DRAW_ONLY;
+            if (Main.s_gameState == Main.GameState.PLAYING)
+            {
+                _transitionType = TransitionType.OPEN_INVENTORY;
+                Main.s_gameState = Main.GameState.INVENTORY;
+                _transitionPositions.Add(Vector2.Zero);
+            }
+            else
+            {
+                _transitionType = TransitionType.CLOSE_INVENTORY;
+                Main.s_gameState = Main.GameState.PLAYING;
+                _transitionPositions.Add(new Vector2(0f, -176f));
+            }
+        }
         public void ChangeScene(Scene nextScene, Portal p_portal)
         {
             previousScene = CurrentScene;
@@ -124,7 +154,13 @@ namespace LegendOfZelda
         private void UpdateTransition(float p_delta)
         {
             _transitionCount += p_delta;
-            if (_transitionType != TransitionType.BLINK)
+            if (_transitionType == TransitionType.OPEN_INVENTORY || _transitionType == TransitionType.CLOSE_INVENTORY)
+            {
+                _transitionCount += p_delta;
+                guiManager.ForcePosition(Vector2.Lerp(_transitionPositions[0],
+                    _transitionPositions[1], _transitionCount / _transitionDuration));
+            }
+            else if (_transitionType != TransitionType.BLINK)
             {
                 previousScene.scenePosition = Vector2.Lerp(_transitionPositions[0],
                     _transitionPositions[1], _transitionCount / _transitionDuration);
@@ -136,10 +172,15 @@ namespace LegendOfZelda
 
             if (_transitionCount >= _transitionDuration)
             {
-                CurrentScene.scenePosition = new Vector2(0f, 48f);
-                CurrentScene.state = State.ACTIVE;
-                CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
-                previousScene = null;
+                if (_transitionType != TransitionType.OPEN_INVENTORY
+                    && _transitionType != TransitionType.CLOSE_INVENTORY)
+                {
+                    CurrentScene.scenePosition = new Vector2(0f, 48f);
+                    CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
+                    previousScene = null;
+                }
+                if (_transitionType != TransitionType.OPEN_INVENTORY)
+                    CurrentScene.state = State.ACTIVE;
                 isTransitioning = false;
             }
         }

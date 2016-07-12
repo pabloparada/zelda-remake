@@ -8,13 +8,22 @@ namespace LegendOfZelda
     {
         public static int s_scale = 4;
         public static Game s_game;
-        public static bool s_isOnDebugMode = true;
+        public static bool s_isOnDebugMode = false;
+        public static GameState s_gameState = GameState.PLAYING;
+
+        public enum GameState
+        {
+            PLAYING,
+            INVENTORY,
+            PAUSE
+        }
 
         public InputManager inputManager;
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private World world;
 
+       
         public Main()
         {
             s_game = this;
@@ -29,6 +38,7 @@ namespace LegendOfZelda
         protected override void Initialize()
         {
             TilesetManager.Setup();
+            GraphicAssets.LoadContent();
             world = new World(spriteBatch, graphics);
             
             base.Initialize();
@@ -52,6 +62,8 @@ namespace LegendOfZelda
             if (InputManager.GetKeyChange(Keys.F1)) s_isOnDebugMode = !s_isOnDebugMode;
 
             if (InputManager.GetKeyChange(Keys.F2)) ChangeScale();
+
+            if (InputManager.GetKeyChange(Keys.F3)) world.OpenCloseInventory();
 
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
 

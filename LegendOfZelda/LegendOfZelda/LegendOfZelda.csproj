@@ -49,6 +49,10 @@
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationController.cs" />
     <Compile Include="Animations\AnimationFrame.cs" />
+    <Compile Include="GraphicAssets.cs" />
+    <Compile Include="GUI\GUIInventory.cs" />
+    <Compile Include="GUI\GUIItems.cs" />
+    <Compile Include="GUI\GUIMap.cs" />
     <Compile Include="Items\BoomerangItem.cs" />
     <Compile Include="BoomerangProjectile.cs" />
     <Compile Include="Collider.cs" />
@@ -59,7 +63,7 @@
     <Compile Include="Items\BowItem.cs" />
     <Compile Include="Items\Compass.cs" />
     <Compile Include="Items\Fire.cs" />
-    <Compile Include="HUD.cs" />
+    <Compile Include="GUI\GUIManager.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Items\Heart.cs" />
     <Compile Include="Items\HeartContainer.cs" />

@@ -16,7 +16,9 @@ namespace LegendOfZelda
         MOVE_SCENE_DOWN,
         MOVE_SCENE_RIGHT,
         MOVE_SCENE_UP,
-        BLINK
+        BLINK,
+        OPEN_INVENTORY,
+        CLOSE_INVENTORY
     }
     public class Portal : Entity
     {

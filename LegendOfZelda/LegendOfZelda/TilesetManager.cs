@@ -103,7 +103,18 @@ namespace LegendOfZelda
         }
         public enum InventoryTileSet
         {
-
+            HEART_FULL,
+            HEART_HALF,
+            HEART_EMPTY,
+            MAP,
+            COMPASS,
+            BOW_AND_ARROW,
+            ARROW,
+            BOOMERANG,
+            BOMB,
+            WOODEN_SWORD,
+            WHITE_SWORD,
+            MAGICAL_SWORD
         }
         public static Texture2D itemsTileset { get; protected set; }
         public static Texture2D enemiesTileset { get; protected set; }
@@ -115,6 +126,7 @@ namespace LegendOfZelda
         {
             itemsTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Items");
             enemiesTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Enemies");
+            inventoryTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Inventory");
         }
         public static Texture2D GetTileSet(TileSetType p_tileType)
         {
@@ -142,6 +154,11 @@ namespace LegendOfZelda
             {
                 __sourceRect.X = (p_index % (enemiesTileset.Width / 16)) * 16;
                 __sourceRect.Y = (p_index / (enemiesTileset.Height / 16)) * 16;
+            }
+            else if (p_type == TileSetType.INVENTORY)
+            {
+                __sourceRect.X = (p_index % (inventoryTileset.Width / 16)) * 16;
+                __sourceRect.Y = (p_index / (inventoryTileset.Height / 16)) * 16;
             }
             return __sourceRect;
         }

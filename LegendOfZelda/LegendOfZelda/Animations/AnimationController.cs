@@ -133,10 +133,8 @@ namespace LegendOfZelda.Animations
         }
         public void DrawFrame(SpriteBatch p_spriteBatch, Rectangle p_pos)
         {
-            Console.WriteLine("Hey");
             if (Animation == null || Animation.Frame == null)
                 return;
-            Console.WriteLine("Hey2");
             p_spriteBatch.Draw(TilesetManager.GetTileSet(Animation.Frame.frameType), p_pos, 
                 TilesetManager.GetSourceRectangle(Animation.Frame.frameType, Animation.Frame.GetFrameIndex()), Color.White);
         }
