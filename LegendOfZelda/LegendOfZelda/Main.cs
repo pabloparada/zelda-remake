@@ -37,10 +37,8 @@ namespace LegendOfZelda
 
         protected override void Initialize()
         {
-            TilesetManager.Setup();
             GraphicAssets.LoadContent();
             world = new World(spriteBatch, graphics);
-            
             base.Initialize();
         }
 

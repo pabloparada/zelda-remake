@@ -28,17 +28,17 @@ namespace LegendOfZelda.GUI
                 0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
 
             //Draw Rupees
-                p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "X" + World.random.Next(0,5),
-                    new Vector2((parentPosition.X + 97f) * Main.s_scale, (parentPosition.Y + 188f) * Main.s_scale), Color.White,
+            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "X" + Inventory.Instance.rupeeCount,
+                new Vector2((parentPosition.X + 97f) * Main.s_scale, (parentPosition.Y + 188f) * Main.s_scale), Color.White,
                 0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
 
             //Draw Keys
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "X" + World.random.Next(0, 5),
+            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "X" + Inventory.Instance.keyCount,
                 new Vector2((parentPosition.X + 97f) * Main.s_scale, (parentPosition.Y + 204f) * Main.s_scale), Color.White,
                 0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
 
             //Draw Bombs
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "X" + World.random.Next(0, 5),
+            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "X" + Inventory.Instance.bombCount,
                 new Vector2((parentPosition.X + 97f) * Main.s_scale, (parentPosition.Y + 212f) * Main.s_scale), Color.White,
                 0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
 
@@ -46,7 +46,7 @@ namespace LegendOfZelda.GUI
             p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "B",
                 new Vector2((parentPosition.X + 129f) * Main.s_scale, (parentPosition.Y + 188f) * Main.s_scale), Color.White,
                 0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
-            p_spriteBatch.Draw(TilesetManager.inventoryTileset,
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
                        new Rectangle((124 + (int)parentPosition.X) * Main.s_scale,
                        (196 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
                        TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 7), Color.White);
@@ -54,7 +54,7 @@ namespace LegendOfZelda.GUI
             p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "A",
                 new Vector2((parentPosition.X + 153f) * Main.s_scale, (parentPosition.Y + 188f) * Main.s_scale), Color.White,
                 0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
-            p_spriteBatch.Draw(TilesetManager.inventoryTileset,
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
                         new Rectangle((148 + (int)parentPosition.X) * Main.s_scale,
                         (196 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
                         TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 9), Color.White);
@@ -69,7 +69,7 @@ namespace LegendOfZelda.GUI
                     __type = 1;
                 else
                     __type = 2;
-                p_spriteBatch.Draw(TilesetManager.inventoryTileset,
+                p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
                         new Rectangle((176 + (int)parentPosition.X + __x * 8) * Main.s_scale,
                         (208 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
                         TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, __type), Color.White);

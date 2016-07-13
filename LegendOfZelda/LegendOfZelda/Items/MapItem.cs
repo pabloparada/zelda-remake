@@ -12,6 +12,9 @@ namespace LegendOfZelda.Items
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;
+            hitboxSize = new Vector2(8f, 12f);
+            hitboxOffset = new Vector2(4f, 2f);
+            UpdateAABB();
         }
         public override void Update(float delta, Collider p_collider)
         {
@@ -20,8 +23,15 @@ namespace LegendOfZelda.Items
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            spriteBatch.Draw(TilesetManager.itemsTileset, MathUtil.GetDrawRectangle(position, size, parentPosition), 
+            spriteBatch.Draw(GraphicAssets.itemsTileset, MathUtil.GetDrawRectangle(position, size, parentPosition), 
                 TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, (int)TilesetManager.ItemTileSet.MAP), Color.White);
+        }
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+            Inventory.Instance.hasMap = true;
+            if (p_entity.type == EntityType.PLAYER)
+                DestroyEntity();
         }
     }
 }

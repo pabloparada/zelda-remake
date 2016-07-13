@@ -116,49 +116,38 @@ namespace LegendOfZelda
             WHITE_SWORD,
             MAGICAL_SWORD
         }
-        public static Texture2D itemsTileset { get; protected set; }
-        public static Texture2D enemiesTileset { get; protected set; }
-        public static Texture2D playerTileset { get; protected set; }
-        public static Texture2D projectilesTileset { get; protected set; }
-        public static Texture2D inventoryTileset { get; protected set; }
-
-        public static void Setup()
-        {
-            itemsTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Items");
-            enemiesTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Enemies");
-            inventoryTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Inventory");
-        }
+        
         public static Texture2D GetTileSet(TileSetType p_tileType)
         {
             if (p_tileType == TileSetType.ITEMS)
-                return itemsTileset;
+                return GraphicAssets.itemsTileset;
             else if (p_tileType == TileSetType.ENEMIES)
-                return enemiesTileset;
+                return GraphicAssets.enemiesTileset;
             else if (p_tileType == TileSetType.PLAYER)
-                return playerTileset;
+                return GraphicAssets.playerTileset;
             else if (p_tileType == TileSetType.PROJECTILES)
-                return projectilesTileset;
+                return GraphicAssets.projectilesTileset;
             else if (p_tileType == TileSetType.INVENTORY)
-                return inventoryTileset;
-            return itemsTileset;
+                return GraphicAssets.inventoryTileset;
+            return GraphicAssets.itemsTileset;
         }
         public static Rectangle GetSourceRectangle(TileSetType p_type, int p_index)
         {
             Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
             if (p_type == TileSetType.ITEMS)
             {
-                __sourceRect.X = (p_index % (itemsTileset.Width / 16)) * 16;
-                __sourceRect.Y = (p_index / (itemsTileset.Height / 16)) * 16;
+                __sourceRect.X = (p_index % (GraphicAssets.itemsTileset.Width / 16)) * 16;
+                __sourceRect.Y = (p_index / (GraphicAssets.itemsTileset.Height / 16)) * 16;
             }
             else if (p_type == TileSetType.ENEMIES)
             {
-                __sourceRect.X = (p_index % (enemiesTileset.Width / 16)) * 16;
-                __sourceRect.Y = (p_index / (enemiesTileset.Height / 16)) * 16;
+                __sourceRect.X = (p_index % (GraphicAssets.enemiesTileset.Width / 16)) * 16;
+                __sourceRect.Y = (p_index / (GraphicAssets.enemiesTileset.Height / 16)) * 16;
             }
             else if (p_type == TileSetType.INVENTORY)
             {
-                __sourceRect.X = (p_index % (inventoryTileset.Width / 16)) * 16;
-                __sourceRect.Y = (p_index / (inventoryTileset.Height / 16)) * 16;
+                __sourceRect.X = (p_index % (GraphicAssets.inventoryTileset.Width / 16)) * 16;
+                __sourceRect.Y = (p_index / (GraphicAssets.inventoryTileset.Height / 16)) * 16;
             }
             return __sourceRect;
         }

@@ -35,37 +35,45 @@ namespace LegendOfZelda.GUI
             p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "USE B BUTTON\n  FOR THIS",
                 new Vector2(16f * Main.s_scale, (parentPosition.Y + 71f) * Main.s_scale), Color.White,
                 0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
-            p_spriteBatch.Draw(TilesetManager.inventoryTileset,
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
                         new Rectangle((63 + (int)parentPosition.X) * Main.s_scale,
                         (47 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
                         TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 6), Color.White);
 
             //Draw Map
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "MAP",
-                new Vector2(40f * Main.s_scale, (parentPosition.Y + 95f) * Main.s_scale), GraphicAssets.guiRedColor,
-                0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
-            p_spriteBatch.Draw(TilesetManager.inventoryTileset,
-                        new Rectangle((44 + (int)parentPosition.X) * Main.s_scale,
-                        (111 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
-                        TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 3), Color.White);
-            //Draw Compass
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "COMPASS",
-                new Vector2(24f * Main.s_scale, (parentPosition.Y + 135f) * Main.s_scale), GraphicAssets.guiRedColor,
-                0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
-            p_spriteBatch.Draw(TilesetManager.inventoryTileset,
+            if (Inventory.Instance.hasMap)
+            {
+                p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "MAP",
+                    new Vector2(40f * Main.s_scale, (parentPosition.Y + 95f) * Main.s_scale), GraphicAssets.guiRedColor,
+                    0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
+                p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
+                    new Rectangle((44 + (int)parentPosition.X) * Main.s_scale,
+                    (111 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
+                    TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 3), Color.White);
+
+                //Draw Compass
+                if (Inventory.Instance.hasCompass)
+                {
+                    p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "COMPASS",
+                        new Vector2(24f * Main.s_scale, (parentPosition.Y + 135f) * Main.s_scale), GraphicAssets.guiRedColor,
+                        0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
+                    p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
                         new Rectangle((44 + (int)parentPosition.X) * Main.s_scale,
                         (151 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
                         TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 4), Color.White);
-
+                }
+            }
             //Draw Big Triforce
-            p_spriteBatch.Draw(GraphicAssets.guiInventoryBigTriforce, new Rectangle(80 * Main.s_scale,
-                ((int)parentPosition.Y + 103) * Main.s_scale, 96 * Main.s_scale, 48 * Main.s_scale), Color.White);
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "TRIFORCE",
-               new Vector2(97f * Main.s_scale, (parentPosition.Y + 159f) * Main.s_scale), GraphicAssets.guiRedColor,
-               0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
-
+            else
+            {
+                p_spriteBatch.Draw(GraphicAssets.guiInventoryBigTriforce, new Rectangle(80 * Main.s_scale,
+                    ((int)parentPosition.Y + 103) * Main.s_scale, 96 * Main.s_scale, 48 * Main.s_scale), Color.White);
+                p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "TRIFORCE",
+                   new Vector2(97f * Main.s_scale, (parentPosition.Y + 159f) * Main.s_scale), GraphicAssets.guiRedColor,
+                   0f, Vector2.Zero, Main.s_scale / 2f, SpriteEffects.None, 0f);
+            }
             //Draw Items
-            p_spriteBatch.Draw(TilesetManager.inventoryTileset,
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
                         new Rectangle((63 + (int)parentPosition.X) * Main.s_scale,
                         (47 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
                         TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 6), Color.White);

@@ -117,8 +117,8 @@ namespace LegendOfZelda
 
         private bool IsBoomerangMovimentEnded(Collider p_collider)
         {
-            return p_collider.PointInsideRectangle(_aabb.Min, _currentPlayerPosition, _currentPlayerPosition + _playerSize) || 
-                   p_collider.PointInsideRectangle(_aabb.Max, _currentPlayerPosition, _currentPlayerPosition + _playerSize);
+            return p_collider.IsPointInsideRectangle(_aabb.Min, _currentPlayerPosition, _currentPlayerPosition + _playerSize) || 
+                   p_collider.IsPointInsideRectangle(_aabb.Max, _currentPlayerPosition, _currentPlayerPosition + _playerSize);
         }
 
         private bool ShouldSwitchDirection()

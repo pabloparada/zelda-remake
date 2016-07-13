@@ -12,7 +12,6 @@ namespace LegendOfZelda
         private Vector2 _direction;
 
         private AABB _weaponAABB;
-        public AABB _playerAABB;
         private Rectangle _hitbox;
 
         private bool _isColliding;
@@ -35,13 +34,13 @@ namespace LegendOfZelda
             tag = "Player";
             name = "Player";
             state = State.ACTIVE;
-            position = new Vector2(190, 80);
+            position = new Vector2(150, 80);
             _velocity = new Vector2(80.0f, 80.0f);
             _direction = new Vector2(0, 0);
             _linkSpriteSize = new Vector2(12, 12);
             _swordSpriteSize = new Vector2(12, 4);
             _lasDirection = Direction.DOWN;
-            _playerAABB = new AABB(position, position + _linkSpriteSize);
+            aabb = new AABB(position, position + _linkSpriteSize);
             _hitbox = new Rectangle(position.ToPoint(), _linkSpriteSize.ToPoint());
             _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
@@ -71,12 +70,12 @@ namespace LegendOfZelda
 
             var __tempPos = position + _direction * _velocity * p_delta;
 
-            _playerAABB.Min = __tempPos;
-            _playerAABB.Max = __tempPos + _linkSpriteSize;
+            aabb.Min = __tempPos;
+            aabb.Max = __tempPos + _linkSpriteSize;
 
             if (Math.Abs(_direction.X) > 0 || Math.Abs(_direction.Y) > 0)
             {
-                _isColliding = p_collider.IsColliding(_playerAABB, p_direction);
+                _isColliding = p_collider.IsColliding(aabb, p_direction);
             }
 
             if (_isColliding)

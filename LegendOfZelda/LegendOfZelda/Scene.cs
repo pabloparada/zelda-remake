@@ -77,9 +77,7 @@ namespace LegendOfZelda
             if (p_layer == null) return;
 
             foreach (Object __obj in p_layer.objects) 
-            {
                 _enemies.Add(EnemyFactory.CreateEnemyByObject(__obj));
-            }
         }
 
         private void SetItems(Layer p_layer)
@@ -96,9 +94,11 @@ namespace LegendOfZelda
                 __tempItem = Item.SpawnItem(p_obj);
                 __tempItem.name = p_obj.name;
                 __tempItem.type = EntityType.ITEM;
+                __tempItem.OnDestroyEntity += RemoveEntity;
                 entities.Add(__tempItem);
             }
         }
+        
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
@@ -143,9 +143,22 @@ namespace LegendOfZelda
                     __e.parentPosition = scenePosition;
                     __e.Update(delta, _collider);
                 }
+                CheckCollisions();
                 CheckPortalCollision();
             }
             base.Update(delta);
+        }
+        private void CheckCollisions()
+        {
+            for (int i = 0; i < entities.Count - 2; i ++)
+                for (int j = i + 1; j < entities.Count - 1; j++)
+                {
+                    if (_collider.IsIntersectingRectangle(entities[i].aabb, entities[j].aabb))
+                    {
+                        entities[i].OnCollide(entities[j]);
+                        entities[j].OnCollide(entities[i]);
+                    }
+                }
         }
         private void CheckPortalCollision()
         {
@@ -155,17 +168,14 @@ namespace LegendOfZelda
                     continue;
                 if (__portal.collideOnHit)
                 {
-                    if (_collider.PointInsideRectangle(Player._playerAABB.Min, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(Player._playerAABB.Max, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(Player._playerAABB.TopRight, __portal.aabb.Min, __portal.aabb.Max)
-                        || _collider.PointInsideRectangle(Player._playerAABB.BottomLeft, __portal.aabb.Min, __portal.aabb.Max))
+                    if (_collider.IsIntersectingRectangle(__portal.aabb, Player.aabb))
                     {
                         OnPortalEnter?.Invoke(__portal);
                         return;
                     }
                 }
-                else if (_collider.PointInsideRectangle(Player._playerAABB.Min, __portal.aabb.Min, __portal.aabb.Max)
-                        && _collider.PointInsideRectangle(Player._playerAABB.Max, __portal.aabb.Min, __portal.aabb.Max))
+                else if (_collider.IsPointInsideRectangle(Player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max)
+                        && _collider.IsPointInsideRectangle(Player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
                     OnPortalEnter?.Invoke(__portal);
                     return;

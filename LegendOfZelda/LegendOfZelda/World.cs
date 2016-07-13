@@ -27,17 +27,18 @@ namespace LegendOfZelda
 
         public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
         {
+            random = new Random();
             state = State.ACTIVE;
             tag = "World";
             _tileReader = new TiledReader();
             guiManager = new GUIManager();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-1"), new Player(graphicsDeviceManager));
-            mapName = "Dungeon_2-1";
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_3-3"), new Player(graphicsDeviceManager));
+            mapName = "Dungeon_3-3";
             //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), new Player(graphicsDeviceManager));
             //mapName = "Room_7-7";
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
-            random = new Random();
+            
         }
 
         private void Scene_OnPortalEnter(Portal p_portal)

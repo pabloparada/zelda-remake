@@ -53,6 +53,7 @@
     <Compile Include="GUI\GUIInventory.cs" />
     <Compile Include="GUI\GUIItems.cs" />
     <Compile Include="GUI\GUIMap.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="Items\BoomerangItem.cs" />
     <Compile Include="BoomerangProjectile.cs" />
     <Compile Include="Collider.cs" />

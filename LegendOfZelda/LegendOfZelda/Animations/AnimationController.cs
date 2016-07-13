@@ -109,7 +109,7 @@ namespace LegendOfZelda.Animations
         
         public void ChangeAnimation(string p_animationName)
         {
-            foreach(var __anim in AnimationsList)
+            foreach(Animation __anim in AnimationsList)
                 if (__anim.name == p_animationName)
                 {
                     Animation = __anim;

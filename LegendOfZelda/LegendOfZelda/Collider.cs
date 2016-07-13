@@ -86,45 +86,45 @@ namespace LegendOfZelda
         {
             if (p_tileAABB.Mask == CollisionMask.NONE) return false;
 
-            else if (p_tileAABB.Mask == CollisionMask.FULL) return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Max, false);
+            else if (p_tileAABB.Mask == CollisionMask.FULL) return IsPointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Max, false);
 
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_TOP_LEFT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.TopRight, p_tileAABB.BottomLeft)
-                    || PointInsideRectangle(p_tileAABB.TopRight, p_targetAABB.Min, p_targetAABB.Max)
-                    || PointInsideRectangle(p_tileAABB.BottomLeft, p_targetAABB.Min, p_targetAABB.Max);
+                return IsPointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.TopRight, p_tileAABB.BottomLeft)
+                    || IsPointInsideRectangle(p_tileAABB.TopRight, p_targetAABB.Min, p_targetAABB.Max)
+                    || IsPointInsideRectangle(p_tileAABB.BottomLeft, p_targetAABB.Min, p_targetAABB.Max);
             }
 
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_TOP_RIGHT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, p_tileAABB.TopRight)
-                    || PointInsideRectangle(p_tileAABB.Min + (Vector2.UnitX * 0.3f), p_targetAABB.Min, p_targetAABB.Max)
-                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max);
+                return IsPointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, p_tileAABB.TopRight)
+                    || IsPointInsideRectangle(p_tileAABB.Min + (Vector2.UnitX * 0.3f), p_targetAABB.Min, p_targetAABB.Max)
+                    || IsPointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max);
             }
 
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_BOTTOM_LEFT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, p_tileAABB.BottomLeft)
-                    || PointInsideRectangle(p_tileAABB.Min + (Vector2.UnitY * 0.3f), p_targetAABB.Min, p_targetAABB.Max)
-                    || PointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max);
+                return IsPointInsideTriangle(p_point, p_tileAABB.Min, p_tileAABB.Max, p_tileAABB.BottomLeft)
+                    || IsPointInsideRectangle(p_tileAABB.Min + (Vector2.UnitY * 0.3f), p_targetAABB.Min, p_targetAABB.Max)
+                    || IsPointInsideRectangle(p_tileAABB.Max, p_targetAABB.Min, p_targetAABB.Max);
             }
             else if (p_tileAABB.Mask == CollisionMask.DIAGONAL_BOTTOM_RIGHT)
             {
-                return PointInsideTriangle(p_point, p_tileAABB.Max, p_tileAABB.BottomLeft, p_tileAABB.TopRight)
-                    || PointInsideRectangle(p_tileAABB.TopRight, p_targetAABB.Min, p_targetAABB.Max)
-                    || PointInsideRectangle(p_tileAABB.BottomLeft, p_targetAABB.Min, p_targetAABB.Max);
+                return IsPointInsideTriangle(p_point, p_tileAABB.Max, p_tileAABB.BottomLeft, p_tileAABB.TopRight)
+                    || IsPointInsideRectangle(p_tileAABB.TopRight, p_targetAABB.Min, p_targetAABB.Max)
+                    || IsPointInsideRectangle(p_tileAABB.BottomLeft, p_targetAABB.Min, p_targetAABB.Max);
             }
             else if (p_tileAABB.Mask == CollisionMask.HALF_TOP)
-                return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Right, false);
+                return IsPointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Right, false);
 
             else if (p_tileAABB.Mask == CollisionMask.HALF_BOTTOM)
-                return PointInsideRectangle(p_point, p_tileAABB.Left, p_tileAABB.Max, false);
+                return IsPointInsideRectangle(p_point, p_tileAABB.Left, p_tileAABB.Max, false);
 
             else if (p_tileAABB.Mask == CollisionMask.HALF_LEFT)
-                return PointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Bottom, false);
+                return IsPointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Bottom, false);
 
             else if (p_tileAABB.Mask == CollisionMask.HALF_RIGHT)
-                return PointInsideRectangle(p_point, p_tileAABB.Top, p_tileAABB.Max, false);
+                return IsPointInsideRectangle(p_point, p_tileAABB.Top, p_tileAABB.Max, false);
 
 
             return false;
@@ -135,7 +135,21 @@ namespace LegendOfZelda
             return (p_point1.X - p_point3.X) * (p_point2.Y - p_point3.Y) - (p_point2.X - p_point3.X) * (p_point1.Y - p_point3.Y);
         }
 
-        public bool PointInsideTriangle(Vector2 p_point, Vector2 p_vertex1, Vector2 p_vertex2, Vector2 p_vertex3)
+        public bool IsIntersectingRectangle(Rectangle p_rec1, Rectangle p_rec2)
+        {
+            if (p_rec1.X < p_rec2.X + p_rec2.Width && p_rec1.X + p_rec1.Width > p_rec2.X && 
+                p_rec1.Y < p_rec2.Y + p_rec2.Height && p_rec1.Y + p_rec1.Height > p_rec2.Y)
+                return true;
+            return false;
+        }
+        public bool IsIntersectingRectangle(AABB p_aabb1, AABB p_aabb2)
+        {
+            if (p_aabb1.Min.X < p_aabb2.Max.X && p_aabb1.Max.X > p_aabb2.Min.X
+                && p_aabb1.Min.Y < p_aabb2.Max.Y && p_aabb1.Max.Y > p_aabb2.Min.Y)
+                return true;
+            return false;
+        }
+        public bool IsPointInsideTriangle(Vector2 p_point, Vector2 p_vertex1, Vector2 p_vertex2, Vector2 p_vertex3)
         {
             bool __b1, __b2, __b3;
 
@@ -145,7 +159,7 @@ namespace LegendOfZelda
             
             return ((__b1 == __b2) && (__b2 == __b3));
         }
-        public bool PointInsideRectangle(Vector2 p_point, Vector2 p_min, Vector2 p_max, bool p_collisionOnHover = true)
+        public bool IsPointInsideRectangle(Vector2 p_point, Vector2 p_min, Vector2 p_max, bool p_collisionOnHover = true)
         {
             if (p_collisionOnHover && p_point.X >= p_min.X && p_point.X <= p_max.X &&
                 p_point.Y >= p_min.Y && p_point.Y <= p_max.Y)

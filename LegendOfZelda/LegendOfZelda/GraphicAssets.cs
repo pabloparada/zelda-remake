@@ -5,14 +5,24 @@ namespace LegendOfZelda
 {
     public class GraphicAssets
     {
+        //Images
         public static Texture2D dungeonMiniMap;
         public static Texture2D guiItemsBackground;
         public static Texture2D guiInventorySmallItemFrame;
         public static Texture2D guiInventoryBigItemFrame;
         public static Texture2D guiInventoryBigTriforce;
 
+        //TileSets
+        public static Texture2D itemsTileset { get; protected set; }
+        public static Texture2D enemiesTileset { get; protected set; }
+        public static Texture2D playerTileset { get; protected set; }
+        public static Texture2D projectilesTileset { get; protected set; }
+        public static Texture2D inventoryTileset { get; protected set; }
+
+        //Fonts
         public static SpriteFont zeldaFont12;
 
+        //Colors
         public static Color guiGreenColor;
         public static Color guiRedColor;
         public static Color guiGrayColor; 
@@ -24,6 +34,10 @@ namespace LegendOfZelda
             guiInventorySmallItemFrame = Main.s_game.Content.Load<Texture2D>("GUIInventorySmallItemFrame");
             guiInventoryBigItemFrame = Main.s_game.Content.Load<Texture2D>("GUIInventoryBigItemFrame");
             guiInventoryBigTriforce = Main.s_game.Content.Load<Texture2D>("GUIInventoryBigTriforce");
+
+            itemsTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Items");
+            enemiesTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Enemies");
+            inventoryTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Inventory");
 
             zeldaFont12 = Main.s_game.Content.Load<SpriteFont>("ZeldaFont12");
 
