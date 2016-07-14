@@ -6,32 +6,33 @@ using LegendOfZelda.Util;
 
 namespace LegendOfZelda
 {
+    public enum State
+    {
+        ACTIVE,
+        DRAW_ONLY,
+        DISABLED
+    }
+
+    public enum EntityType
+    {
+        EMPTY,
+        WORLD,
+        SCENE,
+        PLAYER,
+        ENEMY,
+        PROJECTILE,
+        PORTAL,
+        ITEM
+    }
+
     public class Entity
     {
         public event Action<Entity> OnDestroyEntity;
-        public enum State
-        {
-            ACTIVE,
-            DRAW_ONLY,
-            DISABLED
-        }
-        public enum EntityType
-        {
-            EMPTY,
-            WORLD,
-            SCENE,
-            PLAYER,
-            ENEMY,
-            PROJECTILE,
-            PORTAL,
-            ITEM
-        }
-
+        
         public string       tag = "Entity";
         public string       name = "Entity";
         public EntityType   type = EntityType.EMPTY;
         public State        state = State.DISABLED;
-
        
         public Vector2      parentPosition;
         public Vector2      position { get; protected set; }
@@ -57,17 +58,21 @@ namespace LegendOfZelda
             _animationController?.UpdateAnimationController(p_delta * animationSpeed);
         }
 
-        public virtual void Draw(SpriteBatch p_spriteBatch) { }
+        public virtual void Draw(SpriteBatch p_spriteBatch) {}
+
         public virtual void DebugDraw(SpriteBatch p_spriteBatch)
         {
             p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(hitbox, parentPosition), Color.Yellow, 3f);
         }
-        public virtual void OnCollide(Entity p_entity) { }
+
+        public virtual void OnCollide(Entity p_entity) {}
+
         public void UpdateAABB()
         {
             aabb = new AABB(position + hitboxOffset, position + hitboxOffset + hitboxSize);
             hitbox = aabb.ToRectangle((int)hitboxSize.X,(int)hitboxSize.Y);
         }
+
         protected void DestroyEntity()
         {
             OnDestroyEntity?.Invoke(this);

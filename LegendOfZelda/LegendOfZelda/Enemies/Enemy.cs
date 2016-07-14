@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace LegendOfZelda
+namespace LegendOfZelda.Enemies
 {
     public class Enemy : Entity
     {

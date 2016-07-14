@@ -24,7 +24,7 @@ namespace LegendOfZelda.Items
             p_spriteBatch.Draw(GraphicAssets.itemsTileset, 
                                MathUtil.GetDrawRectangle(position,size,parentPosition), 
                                TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, 
-                               (int)TilesetManager.ItemTileSet.BOOMERANG), 
+                               (int) TilesetManager.ItemTileSet.BOOMERANG), 
                                Color.White);
         }
         public override void OnCollide(Entity p_entity)

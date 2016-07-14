@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LegendOfZelda
+namespace LegendOfZelda.Weapons
 {
-    public class SwordProjectile : Projectile
+    public class PlayerSword : Weapon
     {
         private Vector2 _velocity;
         private Rectangle _hitbox;
@@ -14,7 +14,7 @@ namespace LegendOfZelda
         private bool _switchedComponents;
         private bool _isColliding;
 
-        public SwordProjectile(Vector2 p_position, Direction p_direction) : base(p_position, p_direction)
+        public PlayerSword(Entity p_source, Direction p_direction) : base(p_source, new Vector2(5.0f, 5.0f), p_direction)
         {
             _projectileSize = GetProjectileSizeAndControlComponentSwitch(new Vector2(12, 4));
             _playerSize = new Vector2(12, 12);
@@ -22,16 +22,16 @@ namespace LegendOfZelda
 
             _maxCooldown = 2.0f;
 
-            position = p_position = GetInitialPositionByDirection(_playerSize, _projectileSize);
+            position = CenterPositionByDirection(_playerSize, _projectileSize);
             
-            _aabb = new AABB(p_position, p_position + _projectileSize);
+            _aabb = new AABB(p_source.position, p_source.position + _projectileSize);
         }
 
-        public override void Update(float p_delta, Collider p_collider, Vector2 p_playerPosition)
+        public override void Update(float p_delta, Collider p_collider)
         {
             _cooldown += p_delta;
 
-            if (!alive) return;
+            if (state != State.ACTIVE) return;
 
             var __direction = InputManager.GetDirectionVectorByDirectionEnum(direction);
 
@@ -46,7 +46,7 @@ namespace LegendOfZelda
 
             if (_isColliding)
             {
-                alive = false;
+                state = State.DISABLED;
             }
 
             base.Update(p_delta, p_collider);

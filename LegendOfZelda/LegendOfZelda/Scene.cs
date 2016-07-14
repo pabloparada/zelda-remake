@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using LegendOfZelda.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LegendOfZelda.Items;
 using LegendOfZelda.Util;
+using LegendOfZelda.Weapons;
+using Microsoft.Xna.Framework.Input;
 
 namespace LegendOfZelda
 {
@@ -21,8 +24,7 @@ namespace LegendOfZelda
         private Texture2D _collisionMask;
         public Vector2 scenePosition = new Vector2(0f, 48f );
         private Collider _collider;
-
-        private SpriteFont _font;
+        private WeaponManager _weaponManager;
 
         public Scene(RootObject p_rootObject, Player p_player,params Entity[] p_entities)
         {
@@ -30,6 +32,8 @@ namespace LegendOfZelda
             Player = p_player;
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
+
+            _weaponManager = new WeaponManager(p_player);
 
             entities = new List<Entity>(p_entities);
 
@@ -43,8 +47,6 @@ namespace LegendOfZelda
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
-
-            _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
 
         private void SetPortals(Layer p_layer)
@@ -102,31 +104,49 @@ namespace LegendOfZelda
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
+
             foreach(Entity __e in entities)
+            {
                 if (__e.state != State.DISABLED)
+                {
                     __e.Draw(p_spriteBatch);
+                }
+            }
+
+            _weaponManager.Draw(p_spriteBatch);
+
             base.Draw(p_spriteBatch);
         }
+
         public void DrawForeground(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMapForeground"), p_spriteBatch, _worldTileSet, 1f);
         }
+
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask"), p_spriteBatch, _collisionMask, 0.35f);
             DrawCollisionMap(p_spriteBatch);
 
             foreach (Entity __e in entities)
+            {
                 if (__e.state != State.DISABLED)
+                {
                     __e.DebugDraw(p_spriteBatch);
+                }
+            }
+
+            _weaponManager.DebugDraw(p_spriteBatch);
 
             base.DebugDraw(p_spriteBatch);
         }
+
         public void RemoveEntity(Entity p_ent)
         {
             entities.Remove(p_ent);
         }
-        public override void Update(float delta)
+
+        public override void Update(float p_delta)
         {
             if (state == State.DRAW_ONLY)
                 foreach (Entity __e in entities)
@@ -141,13 +161,19 @@ namespace LegendOfZelda
                         continue;
 
                     __e.parentPosition = scenePosition;
-                    __e.Update(delta, _collider);
+                    __e.Update(p_delta, _collider);
                 }
+
+                
+                _weaponManager.Update(p_delta, _collider);
+
                 CheckCollisions();
                 CheckPortalCollision();
             }
-            base.Update(delta);
+
+            base.Update(p_delta);
         }
+
         private void CheckCollisions()
         {
             for (int i = 0; i < entities.Count - 2; i ++)
@@ -160,6 +186,7 @@ namespace LegendOfZelda
                     }
                 }
         }
+
         private void CheckPortalCollision()
         {
             foreach (Portal __portal in _portals)
@@ -182,6 +209,7 @@ namespace LegendOfZelda
                 }
             }
         }
+
         private void DrawCollisionMap(SpriteBatch p_spriteBatch)
         {
             foreach (var __collider in _collider.Collisions)
@@ -196,7 +224,7 @@ namespace LegendOfZelda
                 if (__collider.Mask != CollisionMask.NONE)
                 {
                     p_spriteBatch.DrawRectangle(rect, Color.DarkRed, 3.0f);
-                    p_spriteBatch.DrawString(_font, "X:" + oldRect.X + " Y:" + oldRect.Y, new Vector2(rect.X, rect.Y), Color.White);
+                    p_spriteBatch.DrawString(Main.s_debugFont, "X:" + oldRect.X + " Y:" + oldRect.Y, new Vector2(rect.X, rect.Y), Color.White);
                 }
             }
         }

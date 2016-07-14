@@ -4,19 +4,19 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/DebugFontFace.spritefont</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_World.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_CollisionMask.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_Items.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_Enemies.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/Dungeon1_MiniMap.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIItemsBackground.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/ZeldaFont8.spritefont</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/ZeldaFont12.spritefont</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/ZeldaFont18.spritefont</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIInventoryBigItemFrame.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIInventorySmallItemFrame.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_Inventory.png</File>
-    <File>C:/Users/Gabriel/Documents/GitHub/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIInventoryBigTriforce.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/DebugFontFace.spritefont</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_World.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_CollisionMask.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_Items.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_Enemies.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/Dungeon1_MiniMap.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIItemsBackground.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/ZeldaFont8.spritefont</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/ZeldaFont12.spritefont</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/ZeldaFont18.spritefont</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIInventoryBigItemFrame.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIInventorySmallItemFrame.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/TileSet_Inventory.png</File>
+    <File>C:/opt/projects/zelda-remake/LegendOfZelda/LegendOfZelda/Content/GUIInventoryBigTriforce.png</File>
   </SourceFiles>
 </SourceFileCollection>

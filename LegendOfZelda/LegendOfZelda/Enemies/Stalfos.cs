@@ -3,7 +3,7 @@ using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LegendOfZelda
+namespace LegendOfZelda.Enemies
 {
     public class Stalfos : Enemy
     {

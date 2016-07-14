@@ -3,7 +3,7 @@ using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LegendOfZelda
+namespace LegendOfZelda.Enemies
 {
     public class Kesee : Enemy
     {
@@ -38,7 +38,7 @@ namespace LegendOfZelda
 
                 _interpolatedTime = InOutQuad(_animationTick);
 
-                var __tmpPosition = position + (_velocity*_interpolatedTime)*_targetDirection*p_delta;
+                var __tmpPosition = position + (_velocity * _interpolatedTime) * _targetDirection * p_delta;
 
                 if (ReachedTargetPosition(__tmpPosition, _targetPosition) || IsColliding(__tmpPosition))
                 {

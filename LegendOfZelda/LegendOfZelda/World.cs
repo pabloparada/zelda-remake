@@ -17,28 +17,26 @@ namespace LegendOfZelda
 
         private TransitionType _transitionType = TransitionType.MOVE_SCENE_LEFT;
         private Vector2 _targetPosition;
-        private bool isTransitioning = false;
+        private bool _isTransitioning = false;
         private float _transitionDuration = 2f;
         private float _transitionCount;
         private List<Vector2> _transitionPositions;
 
         public static Random random;
         public static string mapName;
+        
 
-        public World(SpriteBatch spriteBatch, GraphicsDeviceManager graphicsDeviceManager)
+        public World()
         {
             random = new Random();
             state = State.ACTIVE;
             tag = "World";
             _tileReader = new TiledReader();
             guiManager = new GUIManager();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_3-3"), new Player(graphicsDeviceManager));
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_3-3"), new Player());
             mapName = "Dungeon_3-3";
-            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), new Player(graphicsDeviceManager));
-            //mapName = "Room_7-7";
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
-            
         }
 
         private void Scene_OnPortalEnter(Portal p_portal)
@@ -77,7 +75,7 @@ namespace LegendOfZelda
         }
         public override void Update(float delta)
         {
-            if (isTransitioning)
+            if (_isTransitioning)
                 UpdateTransition(delta);
             if (previousScene != null && previousScene.state == State.ACTIVE)
                 previousScene.Update(delta);
@@ -91,10 +89,10 @@ namespace LegendOfZelda
 
         public void OpenCloseInventory()
         {
-            if (isTransitioning)
+            if (_isTransitioning)
                 return;
 
-            isTransitioning = true;
+            _isTransitioning = true;
             _transitionCount = 0f;
             _transitionPositions = new List<Vector2>();
             _transitionPositions.Add(guiManager.position);
@@ -139,7 +137,7 @@ namespace LegendOfZelda
                 CurrentScene.Player.ForcePosition(_targetPosition);
             }
 
-            isTransitioning = true;
+            _isTransitioning = true;
             _transitionCount = 0f;
         }
         private void AddTransitionPositions(Vector2 p_previousEnd, Vector2 p_currentStart, Vector2 p_playerEnd)
@@ -182,7 +180,7 @@ namespace LegendOfZelda
                 }
                 if (_transitionType != TransitionType.OPEN_INVENTORY)
                     CurrentScene.state = State.ACTIVE;
-                isTransitioning = false;
+                _isTransitioning = false;
             }
         }
     }

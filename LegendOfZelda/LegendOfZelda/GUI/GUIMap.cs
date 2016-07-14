@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace LegendOfZelda.GUI
 {
     public class GUIMap : Entity
     {
-        public float mapCounter = 0f;
+        public float mapCounter = 0.0f;
 
         public override void Update(float p_delta)
         {
@@ -29,6 +23,7 @@ namespace LegendOfZelda.GUI
             {
                 __x = int.Parse(World.mapName.Substring(5, 1));
                 __y = int.Parse(World.mapName.Substring(7, 1));
+
                 //BG
                 p_spriteBatch.FillRectangle(new Rectangle(16 * Main.s_scale, ((int)position.Y + 188) * Main.s_scale,
                     64 * Main.s_scale, 32 * Main.s_scale), GraphicAssets.guiGrayColor);
