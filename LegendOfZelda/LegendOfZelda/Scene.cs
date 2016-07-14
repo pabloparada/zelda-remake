@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using LegendOfZelda.Items;
 using LegendOfZelda.Util;
 using LegendOfZelda.Weapons;
-using Microsoft.Xna.Framework.Input;
 
 namespace LegendOfZelda
 {
@@ -22,25 +21,25 @@ namespace LegendOfZelda
         private RootObject _rootObject;
         private Texture2D _worldTileSet;
         private Texture2D _collisionMask;
-        public Vector2 scenePosition = new Vector2(0f, 48f );
+        public Vector2 scenePosition = new Vector2(0f, 48f);
         private Collider _collider;
-        private WeaponManager _weaponManager;
+        private PlayerWeaponManager _weaponManager;
 
-        public Scene(RootObject p_rootObject, Player p_player,params Entity[] p_entities)
+        public Scene(RootObject p_rootObject, Player p_player, params Entity[] p_entities)
         {
             tag = "Scene";
             Player = p_player;
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
-            _weaponManager = new WeaponManager(p_player);
+            _weaponManager = new PlayerWeaponManager(p_player);
 
             entities = new List<Entity>(p_entities);
 
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
             SetItems(RootObjectUtil.GetLayerByName(p_rootObject, "Items"));
             SetEnemies(RootObjectUtil.GetLayerByName(p_rootObject, "Enemies"));
-           
+
             entities.Add(Player);
             _portals.ForEach(__portal => entities.Add(__portal));
             _enemies.ForEach(__enemy => entities.Add(__enemy));
@@ -60,7 +59,7 @@ namespace LegendOfZelda
             Portal __tempPortal;
             foreach (Object p_obj in p_layer.objects)
             {
-                __tempPortal = new Portal(new Vector2(p_obj.x,p_obj.y), new Vector2(p_obj.width, p_obj.height));
+                __tempPortal = new Portal(new Vector2(p_obj.x, p_obj.y), new Vector2(p_obj.width, p_obj.height));
                 __tempPortal.transitionType = (TransitionType)p_obj.properties.TransitionType;
                 if (p_obj.properties.TransitionType == (int)TransitionType.BLINK)
                 {
@@ -78,7 +77,7 @@ namespace LegendOfZelda
 
             if (p_layer == null) return;
 
-            foreach (Object __obj in p_layer.objects) 
+            foreach (Object __obj in p_layer.objects)
                 _enemies.Add(EnemyFactory.CreateEnemyByObject(__obj));
         }
 
@@ -100,12 +99,12 @@ namespace LegendOfZelda
                 entities.Add(__tempItem);
             }
         }
-        
+
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
 
-            foreach(Entity __e in entities)
+            foreach (Entity __e in entities)
             {
                 if (__e.state != State.DISABLED)
                 {
@@ -164,7 +163,7 @@ namespace LegendOfZelda
                     __e.Update(p_delta, _collider);
                 }
 
-                
+
                 _weaponManager.Update(p_delta, _collider);
 
                 CheckCollisions();
@@ -176,7 +175,7 @@ namespace LegendOfZelda
 
         private void CheckCollisions()
         {
-            for (int i = 0; i < entities.Count - 2; i ++)
+            for (int i = 0; i < entities.Count - 2; i++)
                 for (int j = i + 1; j < entities.Count - 1; j++)
                 {
                     if (_collider.IsIntersectingRectangle(entities[i].aabb, entities[j].aabb))
@@ -234,7 +233,7 @@ namespace LegendOfZelda
             if (p_layer == null)
                 return;
             Rectangle __destinationRect = new Rectangle((int)(Main.s_scale * scenePosition.X),
-                (int)(Main.s_scale * scenePosition.Y),Main.s_scale * 16, Main.s_scale * 16);
+                (int)(Main.s_scale * scenePosition.Y), Main.s_scale * 16, Main.s_scale * 16);
             Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
             for (int i = 0; i < p_layer.data.Count; i++)
             {
