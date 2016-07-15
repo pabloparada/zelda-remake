@@ -22,18 +22,20 @@ namespace LegendOfZelda
         private float _transitionCount;
         private List<Vector2> _transitionPositions;
 
-        public static Random random;
+        public static Random s_random;
         public static string mapName;
-        
+
+        private Player _player;
 
         public World()
         {
-            random = new Random();
+            s_random = new Random();
             state = State.ACTIVE;
             tag = "World";
+            _player = new Player();
             _tileReader = new TiledReader();
-            guiManager = new GUIManager();
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_3-3"), new Player());
+            guiManager = new GUIManager(_player);
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_3-3"), _player);
             mapName = "Dungeon_3-3";
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
@@ -45,91 +47,140 @@ namespace LegendOfZelda
             mapName = p_portal.targetMap;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public static bool IsOpenWorld()
+        {
+            return !mapName.StartsWith("Dungeon");
+        }
+
+        public override void Draw(SpriteBatch p_spriteBatch)
         {
             if (previousScene != null && previousScene.state != State.DISABLED)
-                previousScene.Draw(spriteBatch);
+            {
+                previousScene.Draw(p_spriteBatch);
+            }
+
             if (CurrentScene.state != State.DISABLED)
-                CurrentScene.Draw(spriteBatch);
+            {
+                CurrentScene.Draw(p_spriteBatch);
+            }
 
             //ForegroundDraw
             if (previousScene != null && previousScene.state != State.DISABLED)
-                previousScene.DrawForeground(spriteBatch);
+            {
+                previousScene.DrawForeground(p_spriteBatch);
+            }
+
             if (CurrentScene.state != State.DISABLED)
-                CurrentScene.DrawForeground(spriteBatch);
+            {
+                CurrentScene.DrawForeground(p_spriteBatch);
+            }
 
-            if (_transitionType == TransitionType.BLINK && _transitionCount <= 0.8f * _transitionDuration)
-                spriteBatch.FillRectangle(new Rectangle(0, 48 * Main.s_scale, 256 * Main.s_scale, 176 * Main.s_scale), Color.Black);
+            if (_transitionType == TransitionType.BLINK && _transitionCount <= 0.8f*_transitionDuration)
+            {
+                p_spriteBatch.FillRectangle(new Rectangle(0, 48 * Main.s_scale, 256 * Main.s_scale, 176 * Main.s_scale), Color.Black);
+            }
+                
+            guiManager.Draw(p_spriteBatch);
 
-            guiManager.Draw(spriteBatch);
-            base.Draw(spriteBatch);
+            base.Draw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
             if (previousScene != null && previousScene.state != State.DISABLED)
+            {
                 previousScene.DebugDraw(p_spriteBatch);
+            }
+
             if (CurrentScene.state != State.DISABLED)
+            {
                 CurrentScene.DebugDraw(p_spriteBatch);
+            }
             
             base.DebugDraw(p_spriteBatch);
         }
-        public override void Update(float delta)
+
+        public override void Update(float p_delta)
         {
             if (_isTransitioning)
-                UpdateTransition(delta);
+            {
+                UpdateTransition(p_delta);
+            }
+
             if (previousScene != null && previousScene.state == State.ACTIVE)
-                previousScene.Update(delta);
+            {
+                previousScene.Update(p_delta);
+            }
+
             if (CurrentScene.state != State.DISABLED)
-                CurrentScene.Update(delta);
+            {
+                CurrentScene.Update(p_delta);
+            }
 
-            guiManager.Update(delta);
+            guiManager.Update(p_delta);
 
-            base.Update(delta);
+            base.Update(p_delta);
         }
 
         public void OpenCloseInventory()
         {
-            if (_isTransitioning)
-                return;
+            if (_isTransitioning) return;
 
             _isTransitioning = true;
-            _transitionCount = 0f;
-            _transitionPositions = new List<Vector2>();
-            _transitionPositions.Add(guiManager.position);
+
+            _transitionCount = 0.0f;
+
+            _transitionPositions = new List<Vector2> { guiManager.position };
+
             CurrentScene.state = State.DRAW_ONLY;
+
             if (Main.s_gameState == Main.GameState.PLAYING)
             {
                 _transitionType = TransitionType.OPEN_INVENTORY;
+
                 Main.s_gameState = Main.GameState.INVENTORY;
+
                 _transitionPositions.Add(Vector2.Zero);
             }
             else
             {
                 _transitionType = TransitionType.CLOSE_INVENTORY;
+
                 Main.s_gameState = Main.GameState.PLAYING;
-                _transitionPositions.Add(new Vector2(0f, -176f));
+
+                _transitionPositions.Add(new Vector2(0.0f, -176.0f));
             }
         }
-        public void ChangeScene(Scene nextScene, Portal p_portal)
+        public void ChangeScene(Scene p_nextScene, Portal p_portal)
         {
             previousScene = CurrentScene;
             previousScene.state = State.DRAW_ONLY;
-            CurrentScene = nextScene;
+
+            CurrentScene = p_nextScene;
             CurrentScene.state = State.DRAW_ONLY;
             CurrentScene.Player = previousScene.Player;
+
             previousScene.RemoveEntity(previousScene.Player);
             previousScene.Player = null;
 
             _transitionType = p_portal.transitionType;
             _transitionPositions = new List<Vector2>();
+
             if (_transitionType == TransitionType.MOVE_SCENE_LEFT)
+            {
                 AddTransitionPositions(Vector2.UnitX * -256, Vector2.UnitX * 256, Vector2.UnitX * 32);
+            }
             else if (_transitionType == TransitionType.MOVE_SCENE_RIGHT)
+            {
                 AddTransitionPositions(Vector2.UnitX * 256, Vector2.UnitX * -256, Vector2.UnitX * -32);
+            }
             else if (_transitionType == TransitionType.MOVE_SCENE_DOWN)
+            {
                 AddTransitionPositions(Vector2.UnitY * 176, Vector2.UnitY * -176, Vector2.UnitY * -32);
+            }
             else if (_transitionType == TransitionType.MOVE_SCENE_UP)
+            {
                 AddTransitionPositions(Vector2.UnitY * -176, Vector2.UnitY * 176, Vector2.UnitY * 32);
+            }
             else if (_transitionType == TransitionType.BLINK)
             {
                 AddTransitionPositions(Vector2.Zero, Vector2.Zero, Vector2.Zero);
@@ -138,8 +189,10 @@ namespace LegendOfZelda
             }
 
             _isTransitioning = true;
-            _transitionCount = 0f;
+
+            _transitionCount = 0.0f;
         }
+
         private void AddTransitionPositions(Vector2 p_previousEnd, Vector2 p_currentStart, Vector2 p_playerEnd)
         {
             _transitionPositions.Add(previousScene.scenePosition);
@@ -148,38 +201,40 @@ namespace LegendOfZelda
             _transitionPositions.Add(CurrentScene.scenePosition);
             _transitionPositions.Add(CurrentScene.Player.position - p_currentStart);
             _transitionPositions.Add(CurrentScene.Player.position - p_currentStart + p_playerEnd);
+
             CurrentScene.scenePosition = _transitionPositions[2];
         }
+
         private void UpdateTransition(float p_delta)
         {
             _transitionCount += p_delta;
+
             if (_transitionType == TransitionType.OPEN_INVENTORY || _transitionType == TransitionType.CLOSE_INVENTORY)
             {
                 _transitionCount += p_delta;
-                guiManager.ForcePosition(Vector2.Lerp(_transitionPositions[0],
-                    _transitionPositions[1], _transitionCount / _transitionDuration));
+                guiManager.ForcePosition(Vector2.Lerp(_transitionPositions[0], _transitionPositions[1], _transitionCount / _transitionDuration));
             }
             else if (_transitionType != TransitionType.BLINK)
             {
-                previousScene.scenePosition = Vector2.Lerp(_transitionPositions[0],
-                    _transitionPositions[1], _transitionCount / _transitionDuration);
-                CurrentScene.scenePosition = Vector2.Lerp(_transitionPositions[2],
-                    _transitionPositions[3], _transitionCount / _transitionDuration);
-                CurrentScene.Player.ForcePosition(Vector2.Lerp(_transitionPositions[4],
-                    _transitionPositions[5], _transitionCount / _transitionDuration));
+                previousScene.scenePosition = Vector2.Lerp(_transitionPositions[0], _transitionPositions[1], _transitionCount / _transitionDuration);
+                CurrentScene.scenePosition = Vector2.Lerp(_transitionPositions[2], _transitionPositions[3], _transitionCount / _transitionDuration);
+                CurrentScene.Player.ForcePosition(Vector2.Lerp(_transitionPositions[4], _transitionPositions[5], _transitionCount / _transitionDuration));
             }
 
             if (_transitionCount >= _transitionDuration)
             {
-                if (_transitionType != TransitionType.OPEN_INVENTORY
-                    && _transitionType != TransitionType.CLOSE_INVENTORY)
+                if (_transitionType != TransitionType.OPEN_INVENTORY && _transitionType != TransitionType.CLOSE_INVENTORY)
                 {
                     CurrentScene.scenePosition = new Vector2(0f, 48f);
                     CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
                     previousScene = null;
                 }
+
                 if (_transitionType != TransitionType.OPEN_INVENTORY)
+                {
                     CurrentScene.state = State.ACTIVE;
+                }
+
                 _isTransitioning = false;
             }
         }

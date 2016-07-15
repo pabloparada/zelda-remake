@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,12 +15,14 @@ namespace LegendOfZelda.GUI
         public GUIMap map;
         public GUIItems items;
         public GUIInventory inventory;
-        public GUIManager()
+
+        public GUIManager(Player p_player)
         {
             position = new Vector2(0f, -176f);
             map = new GUIMap();
-            items = new GUIItems();
+            items = new GUIItems(p_player);
             inventory = new GUIInventory();
+            size = new Vector2(256.0f, 226.0f);
         }
         public void ForcePosition(Vector2 p_pos)
         {
@@ -40,8 +43,7 @@ namespace LegendOfZelda.GUI
             base.Draw(p_spriteBatch);
 
             //Draw Black Fill Background
-            p_spriteBatch.FillRectangle(new Rectangle((int)position.X * Main.s_scale,((int)position.Y) * Main.s_scale, 
-                256 * Main.s_scale, 224 * Main.s_scale), Color.Black);
+            p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Black);
 
             map.Draw(p_spriteBatch);
             items.Draw(p_spriteBatch);

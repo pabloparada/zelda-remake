@@ -9,17 +9,16 @@ namespace LegendOfZelda.Weapons
         private readonly Vector2 _velocity;
 
         private Vector2 _projectileSize;
+        private float _waitUntilDisabled;
 
-        private bool _isColliding;
-
-        public DirectionalSword(Entity p_source) : base(p_source, new Vector2(3.0f, 8.0f), p_source.direction)
+        public DirectionalSword(Entity p_source) : base(p_source, new Vector2(3.6f, 15.0f), p_source.direction)
         {
             state = State.ACTIVE;
 
             _projectileSize = GetProjectileSizeAndControlComponentSwitch(size);
             _velocity = new Vector2(150, 150);
 
-            _maxCooldown = 2.0f;
+            _waitUntilDisabled = 1.0f;
 
             position = CenterPositionByDirection(p_source.position, p_source.size, _projectileSize);
 
@@ -28,7 +27,7 @@ namespace LegendOfZelda.Weapons
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            _cooldown += p_delta;
+            cooldown += p_delta;
 
             if (state != State.ACTIVE) return;
 
@@ -38,14 +37,13 @@ namespace LegendOfZelda.Weapons
 
             _projectileSize = GetProjectileSizeAndControlComponentSwitch(_projectileSize);
 
-            aabb.Min = position;
-            aabb.Max = position + _projectileSize;
-
-            _isColliding = p_collider.IsColliding(aabb, direction);
-
-            if (_isColliding)
+            if (!IsAtScreenBoundaries(position, size) && _waitUntilDisabled <= 0.0f)
             {
                 state = State.DISABLED;
+            }
+            else
+            {
+                _waitUntilDisabled -= p_delta;
             }
 
             base.Update(p_delta, p_collider);

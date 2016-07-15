@@ -20,7 +20,7 @@ namespace LegendOfZelda.Weapons
         {
             state = State.ACTIVE;
 
-            _velocity = new Vector2(160.0f, 160.0f);
+            _velocity = new Vector2(140.0f, 140.0f);
             _maxDistance = p_maxDistance;
             _tick = 0.0f;
             _switchedDirection = false;
@@ -45,9 +45,8 @@ namespace LegendOfZelda.Weapons
             {
                 _tick += p_delta;
             }
-            
 
-            if (!_switchedDirection && ReachedTargetPosition(__tmpPosition, _targetPosition))
+            if (ShouldSwitchDirection(__tmpPosition))
             {
                 _switchedDirection = true;
                 _tick = 0.0f;
@@ -62,6 +61,12 @@ namespace LegendOfZelda.Weapons
             }
 
             base.Update(p_delta, p_collider);
+        }
+
+        private bool ShouldSwitchDirection(Vector2 p_position)
+        {
+            return !_switchedDirection &&
+                   (ReachedTargetPosition(p_position, _targetPosition) || !IsAtScreenBoundaries(p_position, size));
         }
 
         private bool BoomerangArrived(Collider p_collider, Vector2 p_position)

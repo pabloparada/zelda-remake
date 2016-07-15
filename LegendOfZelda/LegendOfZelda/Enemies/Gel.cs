@@ -81,8 +81,8 @@ namespace LegendOfZelda.Enemies
 
         private void SortNextMove()
         {
-            _numSquaresToMove = World.random.Next(1, 3);
-            _targetDirection = _direction[World.random.Next(4)];
+            _numSquaresToMove = World.s_random.Next(1, 3);
+            _targetDirection = _direction[World.s_random.Next(4)];
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
         }
 

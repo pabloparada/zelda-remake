@@ -25,7 +25,7 @@ namespace LegendOfZelda.Enemies
 
             _velocity = new Vector2(35.0f, 35.0f);
             _targetPosition = position;
-            _sleepTime = (float) (World.random.NextDouble() * World.random.Next(1, 6));
+            _sleepTime = (float) (World.s_random.NextDouble() * World.s_random.Next(1, 6));
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -80,8 +80,8 @@ namespace LegendOfZelda.Enemies
 
         private void SortNextMove()
         {
-            var __x = World.random.Next(-1, 2);
-            var __y = World.random.Next(-1, 2);
+            var __x = World.s_random.Next(-1, 2);
+            var __y = World.s_random.Next(-1, 2);
 
             _targetDirection = new Vector2(__x, __y);
 
@@ -89,7 +89,7 @@ namespace LegendOfZelda.Enemies
                 _targetDirection.Normalize();
             }
 
-            var __targetDistance = 16.0f * World.random.Next(1, 5);
+            var __targetDistance = 16.0f * World.s_random.Next(1, 5);
 
             _targetPosition = position + (_targetDirection * __targetDistance);
         }

@@ -10,15 +10,22 @@ namespace LegendOfZelda.GUI
         public override void Update(float p_delta)
         {
             base.Update(p_delta);
+
             mapCounter += p_delta;
+
             if (mapCounter >= 1f)
+            {
                 mapCounter -= 1f;
+            }
         }
+
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             base.Draw(p_spriteBatch);
-            int __x = 0;
-            int __y = 0;
+
+            var __x = 0;
+            var __y = 0;
+
             if (World.mapName.StartsWith("Room"))
             {
                 __x = int.Parse(World.mapName.Substring(5, 1));

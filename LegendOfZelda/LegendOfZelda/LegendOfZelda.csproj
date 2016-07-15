@@ -39,7 +39,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>LegendOfZelda.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -81,6 +81,7 @@
     <Compile Include="Util\Primitives2D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Weapons\DirectionalSword.cs" />
+    <Compile Include="Weapons\MeleeSword.cs" />
     <Compile Include="Weapons\PlayerWeaponManager.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,15 +108,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Room_7-7.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LegendOfZelda.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

@@ -7,13 +7,14 @@ namespace LegendOfZelda
 {
     public class Player : Entity
     {
+        public int health { get; set; }
+
         private readonly Vector2 _velocity;
-        private Vector2 _directionVector;
+        private readonly int _maximumLife;
 
         private bool _isColliding;
 
-        private readonly SpriteFont _font;
-
+        private Vector2 _directionVector;
         private Direction _lasDirection;
 
         public Player()
@@ -22,19 +23,26 @@ namespace LegendOfZelda
             tag = "Player";
             name = "Player";
             state = State.ACTIVE;
+
+            health = 16;
+            _maximumLife = 16;
+            
             position = new Vector2(150, 80);
             size = new Vector2(12, 12);
             direction = GetDefaultDirection();
+
             _lasDirection = Direction.DOWN;
             _velocity = new Vector2(80.0f, 80.0f);
             _directionVector = new Vector2(0, 0);
+
             aabb = new AABB(position, position + size);
-            _font = Main.s_game.Content.Load<SpriteFont>("DebugFontFace");
         }
+
         public void ForcePosition(Vector2 p_pos)
         {
             position = p_pos;
         }
+
         public override void Update(float p_delta, Collider p_collider)
         {
             direction = GetDefaultDirection();
@@ -99,6 +107,11 @@ namespace LegendOfZelda
             }
         }
 
+        public bool IsHealthFull()
+        {
+            return _maximumLife == health;
+        }
+
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Green);
@@ -115,7 +128,7 @@ namespace LegendOfZelda
 
             var __msgPos = new Vector2((parentPosition.X + position.X) * Main.s_scale, (parentPosition.Y + position.Y) * Main.s_scale);
 
-            p_spriteBatch.DrawString(_font, "X:" + (int) position.X + " Y:" + (int) position.Y, __msgPos, Color.Black);
+            p_spriteBatch.DrawString(Main.s_debugFont, "X:" + (int) position.X + " Y:" + (int) position.Y, __msgPos, Color.Black);
 
             base.DebugDraw(p_spriteBatch);
         }

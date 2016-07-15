@@ -14,10 +14,9 @@ namespace LegendOfZelda
         OPEN_INVENTORY,
         CLOSE_INVENTORY
     }
+
     public class Portal : Entity
     {
-        //public AABB aabb;
-
         public bool collideOnHit = true;
         public string targetMap;
         public TransitionType transitionType;
@@ -28,21 +27,17 @@ namespace LegendOfZelda
             state = State.ACTIVE;
             position = p_position;
             size = p_size;
-            //aabb = new AABB(position, position + size);
-            //hitbox = aabb.ToRectangle((int)size.X, (int)size.Y);
             hitboxSize = p_size;
             hitboxOffset = Vector2.Zero;
             UpdateAABB();
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
+
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
             base.DebugDraw(p_spriteBatch);
             p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Blue, 3.0f);
         }
+
         public override void Update(float p_delta, Collider p_collider)
         {
             base.Update(p_delta);

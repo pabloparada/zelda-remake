@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 
 namespace LegendOfZelda
@@ -12,27 +10,27 @@ namespace LegendOfZelda
     {
         public RootObject LoadTiledJson(string p_fileName)
         {
-            Console.WriteLine(System.IO.Path.GetFullPath("../../../TileMaps/" + p_fileName + ".json"));
-            using (StreamReader sr = new StreamReader(System.IO.Path.GetFullPath("../../../TileMaps/" + p_fileName + ".json")))
+            using (var __sr = new StreamReader(Path.GetFullPath("../../../TileMaps/" + p_fileName + ".json")))
             {
-                RootObject __rootObj = JsonConvert.DeserializeObject<RootObject>(sr.ReadToEnd());
-                foreach (Layer __layer in __rootObj.layers)
+                var __rootObj = JsonConvert.DeserializeObject<RootObject>(__sr.ReadToEnd());
+                foreach (var __layer in __rootObj.layers)
                 {
                     if (__layer.name == "CollisionMask")
                     {
-                        for (int i = 0; i < __layer.data.Count; i++)
-                            __layer.data[i] -= 1025;
+                        for (var __i = 0; __i < __layer.data.Count; __i++)
+                            __layer.data[__i] -= 1025;
                     }
                     else if (__layer.name.StartsWith("TileMap"))
                     {
-                        for (int i = 0; i < __layer.data.Count; i++)
-                            __layer.data[i] -= 1;
+                        for (var __i = 0; __i < __layer.data.Count; __i++)
+                            __layer.data[__i] -= 1;
                     }
                 }
                 return __rootObj;
             }
         }
     }
+
     public class Properties
     {
         public string TargetMap { get; set; }
@@ -130,10 +128,7 @@ namespace LegendOfZelda
     {
         public static Layer GetLayerByName(RootObject p_root, string p_layerName)
         {
-            foreach (Layer __layer in p_root.layers)
-                if (__layer.name == p_layerName)
-                    return __layer;
-            return null;
+            return p_root.layers.FirstOrDefault(p_layer => p_layer.name == p_layerName);
         }
 
         public static Tileset FindTilesetByName(RootObject p_root, string p_tilesetName)

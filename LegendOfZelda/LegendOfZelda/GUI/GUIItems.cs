@@ -5,8 +5,12 @@ namespace LegendOfZelda.GUI
 {
     public class GUIItems : Entity
     {
-        public int linkMaxLife = 16;
-        public int linkLife = 11;
+        private readonly Player _player;
+
+        public GUIItems(Player p_player)
+        {
+            _player = p_player;
+        }
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
@@ -59,15 +63,15 @@ namespace LegendOfZelda.GUI
             //Draw Hearts
             var __x = 0;
 
-            for (var __i = 0; __i < linkMaxLife; __i += 2)
+            for (var __i = 0; __i < _player.health; __i += 2)
             {
                 var __type = 0;
 
-                if (linkLife - __i > 1)
+                if (_player.health - __i > 1)
                 {
                     __type = 0;
                 }
-                else if (linkLife - __i == 1)
+                else if (_player.health - __i == 1)
                 {
                     __type = 1;
                 }
