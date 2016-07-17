@@ -22,7 +22,8 @@ namespace LegendOfZelda
         ENEMY,
         PROJECTILE,
         PORTAL,
-        ITEM
+        ITEM,
+        WEAPON
     }
 
     public class Entity
@@ -47,6 +48,11 @@ namespace LegendOfZelda
         
         public AnimationController  _animationController;
         public float                animationSpeed = 1.0f;
+
+        public Entity()
+        {
+            aabb = new AABB();
+        }
 
         public virtual void Update(float p_delta)
         {
@@ -76,6 +82,13 @@ namespace LegendOfZelda
         protected void DestroyEntity()
         {
             OnDestroyEntity?.Invoke(this);
+        }
+
+        public AABB CalculateAABBWithOffset(Vector2 p_position, Vector2 p_hitboxOffset, Vector2 p_size)
+        {
+            var __min = new Vector2(p_position.X + p_hitboxOffset.X, p_position.Y + p_hitboxOffset.Y);
+            var __max = new Vector2(p_position.X + p_size.X - p_hitboxOffset.X, p_position.Y + p_size.Y - p_hitboxOffset.Y);
+            return new AABB(__min, __max);
         }
     }
 }

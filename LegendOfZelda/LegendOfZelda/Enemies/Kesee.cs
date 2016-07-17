@@ -17,7 +17,7 @@ namespace LegendOfZelda.Enemies
         private float _interpolatedTime;
         private float _sleepTime;
 
-        public Kesee(Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f))
+        public Kesee(Vector2 p_position) : base(p_position, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 2.0f))
         {
             _animationTick = 0.0f;
             _animationSpeed = 2.5f;
@@ -54,12 +54,21 @@ namespace LegendOfZelda.Enemies
                 _sleepTime -= p_delta;
             }
 
-            base.Update(p_delta);
+            base.Update(p_delta, p_collider);
         }
 
         private bool IsColliding(Vector2 p_targetPos)
         {
             return IsBoundary(p_targetPos) || IsBoundary(p_targetPos + size);
+        }
+
+        public override void OnCollide(Entity p_entity)
+        {
+            if (p_entity.type != EntityType.WEAPON) return;
+
+            state = State.DISABLED;
+
+            base.OnCollide(p_entity);
         }
 
         private static float InOutQuad(float p_time)
@@ -111,7 +120,7 @@ namespace LegendOfZelda.Enemies
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Bisque);
+            p_spriteBatch.DrawRectangle(aabb.ScaledRectangleFromAABB(), Color.Orange, 2.0f);
             base.DebugDraw(p_spriteBatch);
         }
     }

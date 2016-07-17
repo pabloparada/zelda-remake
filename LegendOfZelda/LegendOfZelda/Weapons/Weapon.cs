@@ -16,6 +16,8 @@ namespace LegendOfZelda.Weapons
 
         public Weapon(Entity p_source, Vector2 p_size, Direction p_direction)
         {
+            state = State.ACTIVE;
+            type = EntityType.WEAPON;
             source = p_source;
             direction = p_direction;
             size = GetProjectileSizeAndControlComponentSwitch(p_size);
@@ -33,6 +35,14 @@ namespace LegendOfZelda.Weapons
         protected Vector2 CenterPositionByDirection(Vector2 p_sourceSize, Vector2 p_weaponSize)
         {
             return CenterPositionByDirection(position, p_sourceSize, p_weaponSize);
+        }
+
+        public override void Update(float p_delta, Collider p_collider)
+        {
+            aabb.Min = position;
+            aabb.Max = position + size;
+
+            base.Update(p_delta, p_collider);
         }
 
         public Vector2 CenterPositionByDirection(Vector2 p_position, Vector2 p_sourceSize, Vector2 p_weaponSize)

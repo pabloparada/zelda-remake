@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LegendOfZelda.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,7 @@ namespace LegendOfZelda
 
         private List<Portal> _portals;
         private List<Enemy> _enemies;
+        private List<Weapon> _weapons;
 
         private readonly RootObject _rootObject;
         private readonly Texture2D _worldTileSet;
@@ -34,8 +36,6 @@ namespace LegendOfZelda
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
-            _weaponManager = new PlayerWeaponManager(p_player);
-
             entities = new List<Entity>(p_entities);
 
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
@@ -43,11 +43,14 @@ namespace LegendOfZelda
             SetEnemies(RootObjectUtil.GetLayerByName(p_rootObject, "Enemies"));
 
             entities.Add(Player);
+
             _portals.ForEach(p_portal => entities.Add(p_portal));
             _enemies.ForEach(p_enemy => entities.Add(p_enemy));
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
+
+            _weaponManager = new PlayerWeaponManager(p_player);
         }
 
         private void SetPortals(Layer p_layer)
@@ -85,7 +88,13 @@ namespace LegendOfZelda
             if (p_layer == null) return;
 
             foreach (Object __obj in p_layer.objects)
-                _enemies.Add(EnemyFactory.CreateEnemyByObject(__obj));
+            {
+                var __enemy = EnemyFactory.CreateEnemyByObject(__obj);
+
+                __enemy.OnDestroyEntity += RemoveEntity;
+
+                _enemies.Add(__enemy);
+            }
         }
 
         private void SetItems(Layer p_layer)
@@ -155,6 +164,8 @@ namespace LegendOfZelda
 
         public override void Update(float p_delta)
         {
+            entities.RemoveAll(p_entity => p_entity.state == State.DISABLED);
+
             if (state == State.DRAW_ONLY)
             {
                 foreach (var __e in entities)
@@ -174,24 +185,46 @@ namespace LegendOfZelda
 
                 _weaponManager.Update(p_delta, _collider);
 
-                CheckCollisions();
+                var __tmpEntities = new List<Entity>(entities);
+
+                __tmpEntities.AddRange(_weaponManager.weapons);
+
+                CheckCollisions(__tmpEntities);
                 CheckPortalCollision();
             }
 
             base.Update(p_delta);
         }
 
-        private void CheckCollisions()
+        private void CheckCollisions(List<Entity> p_entities)
         {
-            for (var __i = 0; __i < entities.Count - 2; __i++)
-                for (var __j = __i + 1; __j < entities.Count - 1; __j++)
+            for (var __i = 0; __i < p_entities.Count; __i++)
+                for (var __j = __i + 1; __j < p_entities.Count; __j++)
                 {
-                    if (_collider.IsIntersectingRectangle(entities[__i].aabb, entities[__j].aabb))
+                    var __entity1 = p_entities[__i];
+                    var __entity2 = p_entities[__j];
+
+                    if (ShouldSkipCollisionCheck(__entity1, __entity2))
                     {
-                        entities[__i].OnCollide(entities[__j]);
-                        entities[__j].OnCollide(entities[__i]);
+                        continue;
+                    }
+
+                    if (_collider.IsIntersectingRectangle(__entity1.aabb, __entity2.aabb))
+                    {
+                        __entity1.OnCollide(__entity2);
+                        __entity2.OnCollide(__entity1);
                     }
                 }
+        }
+
+        // skip weapon vs item | player vs weapon | weapon vs weapon
+        private bool ShouldSkipCollisionCheck(Entity p_entity1, Entity p_entity2)
+        {
+            return p_entity1.type == EntityType.WEAPON && p_entity2.type == EntityType.PLAYER ||
+                   p_entity2.type == EntityType.WEAPON && p_entity1.type == EntityType.PLAYER ||
+                   p_entity1.type == EntityType.WEAPON && p_entity2.type == EntityType.WEAPON ||
+                   p_entity1.type == EntityType.WEAPON && p_entity2.type == EntityType.ITEM ||
+                   p_entity2.type == EntityType.WEAPON && p_entity1.type == EntityType.ITEM;
         }
 
         private void CheckPortalCollision()

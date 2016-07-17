@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace LegendOfZelda.Weapons
@@ -8,33 +9,42 @@ namespace LegendOfZelda.Weapons
         private Weapon _firstProjectile;
         private Weapon _secondProjectile;
         private Weapon _melee;
-
         private readonly Player _source;
 
-        private ProjectileState _firstProjectileState;
-        private ProjectileState _secondProjectileState;
-        private MeleeSwordState _meleeSwordState;
+        private WeaponState _firstProjectileState;
+        private WeaponState _secondProjectileState;
+        private WeaponState _meleeSwordState;
 
-        private enum MeleeSwordState
+        private float _secondProjectileCooldown;
+
+        public List<Weapon> weapons
         {
-            DISABLED,
-            ACTIVE
+            get
+            {
+                var __ws = new List<Weapon>();
+
+                if (_firstProjectileState != WeaponState.DISABLED) __ws.Add(_firstProjectile);
+                if (_secondProjectileState != WeaponState.DISABLED && _secondProjectileState != WeaponState.WAITING_FOR_COOLDOWN) __ws.Add(_secondProjectile);
+                if (_meleeSwordState != WeaponState.DISABLED) __ws.Add(_melee);
+
+                return __ws;
+            }
         }
 
-        private enum ProjectileState
+        private enum WeaponState
         {
-            SHOULD_FIRE,
-            CREATED,
-            FIRED,
-            DISABLED
+            DISABLED,
+            WAITING_FOR_COOLDOWN,
+            ACTIVE
         }
 
         public PlayerWeaponManager(Player p_source)
         {
             _source = p_source;
-            _firstProjectileState = ProjectileState.DISABLED;
-            _secondProjectileState = ProjectileState.DISABLED;
-            _meleeSwordState = MeleeSwordState.DISABLED;
+
+            _firstProjectileState = WeaponState.DISABLED;
+            _secondProjectileState = WeaponState.DISABLED;
+            _meleeSwordState = WeaponState.DISABLED;
         }
 
         public void Update(float p_delta, Collider p_collider)
@@ -48,20 +58,20 @@ namespace LegendOfZelda.Weapons
         {
             if (ShouldCastMeleeAttack())
             {
-                if (InputManager.GetKeyChange(Keys.X) && _meleeSwordState == MeleeSwordState.DISABLED)
+                if (InputManager.GetKeyChange(Keys.X) && _meleeSwordState == WeaponState.DISABLED)
                 {
                     _melee = new MeleeSword(_source);
-                    _meleeSwordState = MeleeSwordState.ACTIVE;
+                    _meleeSwordState = WeaponState.ACTIVE;
                 }
 
-                if (_meleeSwordState == MeleeSwordState.ACTIVE)
+                if (_meleeSwordState == WeaponState.ACTIVE)
                 {
                     _melee.Update(p_delta, p_collider);
                 }
 
-                if (_meleeSwordState == MeleeSwordState.ACTIVE && _melee.state == State.DISABLED)
+                if (_meleeSwordState == WeaponState.ACTIVE && _melee.state == State.DISABLED)
                 {
-                    _meleeSwordState = MeleeSwordState.DISABLED;
+                    _meleeSwordState = WeaponState.DISABLED;
                 }
             }
         }
@@ -69,80 +79,83 @@ namespace LegendOfZelda.Weapons
         private bool ShouldCastMeleeAttack()
         {
             return !_source.IsHealthFull() || 
-                   _firstProjectileState == ProjectileState.FIRED ||
-                   _secondProjectileState == ProjectileState.FIRED || 
-                   _meleeSwordState == MeleeSwordState.ACTIVE;
+                   _firstProjectileState == WeaponState.ACTIVE ||
+                   _secondProjectileState == WeaponState.ACTIVE ||
+                   _secondProjectileState == WeaponState.WAITING_FOR_COOLDOWN ||
+                   _meleeSwordState == WeaponState.ACTIVE;
         }
 
         private void UpdateSecondProjectile(float p_delta, Collider p_collider)
         {
-            if (_source.IsHealthFull() && _firstProjectileState == ProjectileState.DISABLED)
+            if (_source.IsHealthFull() && _firstProjectileState == WeaponState.DISABLED)
             {
-                if (_source.type == EntityType.PLAYER && _secondProjectileState == ProjectileState.SHOULD_FIRE)
-                {
-                    _secondProjectile = new DirectionalSword(_source);
-                    _secondProjectileState = ProjectileState.CREATED;
-                }
-
-                if (_secondProjectileState == ProjectileState.CREATED || _secondProjectileState == ProjectileState.FIRED)
+                if (_secondProjectileState == WeaponState.ACTIVE)
                 {
                     _secondProjectile.Update(p_delta, p_collider);
-                    _secondProjectileState = ProjectileState.FIRED;
                 }
 
-                if (InputManager.GetKeyChange(Keys.X) && _secondProjectileState == ProjectileState.DISABLED)
+                if (InputManager.GetKeyChange(Keys.X) && _secondProjectileState == WeaponState.DISABLED)
                 {
-                    _secondProjectileState = ProjectileState.SHOULD_FIRE;
+                    _secondProjectile = new DirectionalProjectile(_source);
+
+                    _secondProjectileState = WeaponState.ACTIVE;
                 }
 
-                if (_secondProjectileState == ProjectileState.FIRED && _secondProjectile.state != State.ACTIVE)
+                if (_secondProjectileState == WeaponState.ACTIVE && _secondProjectile.state != State.ACTIVE)
                 {
-                    _secondProjectileState = ProjectileState.DISABLED;
+                    _secondProjectileState = WeaponState.WAITING_FOR_COOLDOWN;
+                }
+
+                if (_secondProjectileState == WeaponState.WAITING_FOR_COOLDOWN)
+                {
+                    if (_secondProjectileCooldown >= 1.0f)
+                    {
+                        _secondProjectileState = WeaponState.DISABLED;
+                        _secondProjectileCooldown = 0.0f;
+                    }
+                    else
+                    {
+                        _secondProjectileCooldown += p_delta;
+                    }
                 }
             }
         }
 
         private void UpdateFirstProjectile(float p_delta, Collider p_collider)
         {
-            if (_secondProjectileState == ProjectileState.DISABLED)
+            if (_secondProjectileState == WeaponState.DISABLED)
             {
-                if (_source.type == EntityType.PLAYER && _firstProjectileState == ProjectileState.SHOULD_FIRE)
-                {
-                    _firstProjectile = new Boomerang(_source);
-                    _firstProjectileState = ProjectileState.CREATED;
-                }
-
-                if (_firstProjectileState == ProjectileState.CREATED || _firstProjectileState == ProjectileState.FIRED)
+                if (_firstProjectileState == WeaponState.ACTIVE)
                 {
                     _firstProjectile.Update(p_delta, p_collider);
-                    _firstProjectileState = ProjectileState.FIRED;
                 }
 
-                if (InputManager.GetKeyChange(Keys.Z) && _firstProjectileState == ProjectileState.DISABLED)
+                if (InputManager.GetKeyChange(Keys.Z) && _firstProjectileState == WeaponState.DISABLED)
                 {
-                    _firstProjectileState = ProjectileState.SHOULD_FIRE;
+                    _firstProjectile = new Boomerang(_source);
+                    _firstProjectileState = WeaponState.ACTIVE;
                 }
 
-                if (_firstProjectileState == ProjectileState.FIRED && _firstProjectile.state != State.ACTIVE)
+                if (_firstProjectileState == WeaponState.ACTIVE && _firstProjectile.state != State.ACTIVE)
                 {
-                    _firstProjectileState = ProjectileState.DISABLED;
+                    _firstProjectileState = WeaponState.DISABLED;
                 }
             }
         }
 
         public void Draw(SpriteBatch p_spriteBatch)
         {
-            if (_firstProjectileState == ProjectileState.FIRED)
+            if (_firstProjectileState == WeaponState.ACTIVE)
             {
                 _firstProjectile.Draw(p_spriteBatch);
             }
 
-            if (_secondProjectileState == ProjectileState.FIRED)
+            if (_secondProjectileState == WeaponState.ACTIVE)
             {
                 _secondProjectile.Draw(p_spriteBatch);
             }
 
-            if (_meleeSwordState == MeleeSwordState.ACTIVE)
+            if (_meleeSwordState == WeaponState.ACTIVE)
             {
                 _melee.Draw(p_spriteBatch);
             }
@@ -150,17 +163,17 @@ namespace LegendOfZelda.Weapons
 
         public void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            if (_firstProjectileState == ProjectileState.FIRED)
+            if (_firstProjectileState == WeaponState.ACTIVE)
             {
                 _firstProjectile.DebugDraw(p_spriteBatch);
             }
 
-            if (_secondProjectileState == ProjectileState.FIRED)
+            if (_secondProjectileState == WeaponState.ACTIVE)
             {
                 _secondProjectile.DebugDraw(p_spriteBatch);
             }
 
-            if (_meleeSwordState == MeleeSwordState.ACTIVE)
+            if (_meleeSwordState == WeaponState.ACTIVE)
             {
                 _melee.DebugDraw(p_spriteBatch);
             }

@@ -8,21 +8,28 @@ namespace LegendOfZelda.Enemies
     public class Gel : Enemy
     {
         private readonly Direction[] _direction;
-        private int _numSquaresToMove;
-        private float _tick = -1.5f;
+        private readonly float _timeBetweenMoviment = -1.5f;
+        private readonly float _timeBetweenSquares = -0.9f;
+
+        private Direction _targetDirection;
         private Vector2 _startPosition;
         private Vector2 _targetPosition;
-        private Direction _targetDirection;
         private Vector2 _targetDirectionVector;
 
-        private float _timeBetweenMoviment = -1.5f;
-        private float _timeBetweenSquares = -0.9f;
+        private int _numSquaresToMove;
 
-        public Gel(Vector2 p_position) : base(p_position, new Vector2(6.0f, 6.0f))
+        private float _tick = -1.5f;
+        
+        private AABB _nextMovementAABB;
+
+        public Gel(Vector2 p_position) : base(p_position, new Vector2(16.0f, 16.0f), new Vector2(5.0f, 5.0f))
         {
+            animationSpeed = 7.0f;
+
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
             _startPosition = position;
             _targetPosition = position;
+            _nextMovementAABB = CalculateAABBWithOffset(position, hitboxOffset, size);
             _animationController = new AnimationController("Gel");
         }
 
@@ -49,8 +56,8 @@ namespace LegendOfZelda.Enemies
             }
             else if(_tick > 0.0f)
             {
-                var __tmpAABB = new AABB(_targetPosition, _targetPosition + size);
-                var __collisionFound = p_collider.IsColliding(__tmpAABB, _targetDirection);
+                _nextMovementAABB = CalculateAABBWithOffset(_targetPosition, hitboxOffset, size);
+                var __collisionFound = p_collider.IsColliding(_nextMovementAABB, _targetDirection);
 
                 if (__collisionFound)
                 {
@@ -76,7 +83,7 @@ namespace LegendOfZelda.Enemies
                 _tick += p_delta;
             }
 
-            base.Update(p_delta);
+            base.Update(p_delta, p_collider);
         }
 
         private void SortNextMove()
@@ -99,7 +106,8 @@ namespace LegendOfZelda.Enemies
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Bisque);
+            p_spriteBatch.DrawRectangle(aabb.ScaledRectangleFromAABB(), Color.Orange, 2.0f);
+            p_spriteBatch.DrawRectangle(_nextMovementAABB.ScaledRectangleFromAABB(), Color.Black, 2.0f);
             base.DebugDraw(p_spriteBatch);
         }
     }

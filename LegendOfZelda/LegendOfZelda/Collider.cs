@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Drawing;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace LegendOfZelda
 {
@@ -175,7 +177,9 @@ namespace LegendOfZelda
     {
         private Vector2 _min;
         private Vector2 _max;
+        private Vector2 _size;
         private CollisionMask _mask;
+        public Vector2 Size { get; set; }
         public Vector2 Min { get { return _min; } set { _min = value; } }
         public Vector2 Max { get { return _max; } set { _max = value; } }
         public Vector2 TopRight => new Vector2(_max.X, _min.Y);
@@ -212,9 +216,9 @@ namespace LegendOfZelda
             return new Rectangle((int)_min.X, (int)_min.Y, p_width, p_height);
         }
 
-        public Rectangle ScaledRectangleFromAABB(Vector2 p_scale)
+        public Rectangle ScaledRectangleFromAABB()
         {
-            return ScaledRectangleFromAABB(p_scale.X, p_scale.Y);
+            return ScaledRectangleFromAABB(Math.Abs(Max.X - Min.X), Math.Abs(Max.Y - Min.Y));
         }
 
         public Rectangle ScaledRectangleFromAABB(float p_width, float p_height)

@@ -18,8 +18,6 @@ namespace LegendOfZelda.Weapons
 
         public Boomerang(Entity p_source, float p_maxDistance = 70.0f) : base(p_source, new Vector2(5.0f, 3.0f), p_source.direction)
         {
-            state = State.ACTIVE;
-
             _velocity = new Vector2(140.0f, 140.0f);
             _maxDistance = p_maxDistance;
             _tick = 0.0f;

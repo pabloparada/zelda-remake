@@ -10,9 +10,7 @@ namespace LegendOfZelda.Weapons
 
         public MeleeSword(Player p_source) : base(p_source, new Vector2(3.6f, 15.0f), p_source.direction)
         {
-            state = State.ACTIVE;
             maxCooldown = 0.2f;
-
             _player = p_source;
         }
 
@@ -23,7 +21,6 @@ namespace LegendOfZelda.Weapons
                 cooldown += p_delta;
 
                 _player.ForcePosition(initialSourcePosition);
-                
             }
             else
             {
@@ -36,14 +33,12 @@ namespace LegendOfZelda.Weapons
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Azure);
-
             base.Draw(p_spriteBatch);
         }
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Black, 2.0f);
-
+            p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Orange, 2.0f);
             base.DebugDraw(p_spriteBatch);
         }
     }

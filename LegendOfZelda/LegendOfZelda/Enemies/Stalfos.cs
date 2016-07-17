@@ -1,4 +1,5 @@
-﻿using LegendOfZelda.Animations;
+﻿using System;
+using LegendOfZelda.Animations;
 using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,8 +18,9 @@ namespace LegendOfZelda.Enemies
         private Vector2 _targetPosition;
         
 
-        public Stalfos(Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f))
+        public Stalfos(Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
         {
+            life = 2;
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
             _animationController = new AnimationController("Stalfos");
             _velocity = new Vector2(35.0f, 35.0f);
@@ -41,7 +43,7 @@ namespace LegendOfZelda.Enemies
                 aabb.Max = position + size;
             }
 
-            base.Update(p_delta);
+            base.Update(p_delta, p_collider);
         }
 
         private bool IsColliding(Collider p_collider, Vector2 p_targetPos)
@@ -75,6 +77,11 @@ namespace LegendOfZelda.Enemies
             return __dist >= -0.5f && __dist <= 0.5f;
         }
 
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+        }
+
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
@@ -83,7 +90,7 @@ namespace LegendOfZelda.Enemies
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Bisque);
+            p_spriteBatch.DrawRectangle(aabb.ScaledRectangleFromAABB(), Color.Orange, 2.0f);
             base.DebugDraw(p_spriteBatch);
         }
     }

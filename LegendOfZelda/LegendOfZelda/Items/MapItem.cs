@@ -26,12 +26,15 @@ namespace LegendOfZelda.Items
             spriteBatch.Draw(GraphicAssets.itemsTileset, MathUtil.GetDrawRectangle(position, size, parentPosition), 
                 TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, (int)TilesetManager.ItemTileSet.MAP), Color.White);
         }
+
         public override void OnCollide(Entity p_entity)
         {
             base.OnCollide(p_entity);
-            Inventory.Instance.hasMap = true;
             if (p_entity.type == EntityType.PLAYER)
+            {
+                Inventory.Instance.hasMap = true;
                 DestroyEntity();
+            }
         }
     }
 }
