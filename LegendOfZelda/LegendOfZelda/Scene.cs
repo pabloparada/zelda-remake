@@ -25,7 +25,8 @@ namespace LegendOfZelda
         private readonly Texture2D _worldTileSet;
         private readonly Texture2D _collisionMask;
         private readonly Collider _collider;
-        private readonly PlayerWeaponManager _weaponManager;
+        private readonly PlayerWeaponManager _playerWeaponManager;
+        private readonly EnemyWeaponManager _enemyWeaponManager;
 
         public Vector2 scenePosition = new Vector2(0f, 48f);
 
@@ -38,6 +39,9 @@ namespace LegendOfZelda
 
             entities = new List<Entity>(p_entities);
 
+            _playerWeaponManager = new PlayerWeaponManager(p_player);
+            _enemyWeaponManager = new EnemyWeaponManager();
+
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
             SetItems(RootObjectUtil.GetLayerByName(p_rootObject, "Items"));
             SetEnemies(RootObjectUtil.GetLayerByName(p_rootObject, "Enemies"));
@@ -49,8 +53,6 @@ namespace LegendOfZelda
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
-
-            _weaponManager = new PlayerWeaponManager(p_player);
         }
 
         private void SetPortals(Layer p_layer)
@@ -92,6 +94,8 @@ namespace LegendOfZelda
                 var __enemy = EnemyFactory.CreateEnemyByObject(__obj);
 
                 __enemy.OnDestroyEntity += RemoveEntity;
+                __enemy.AddWeaponToManager += _enemyWeaponManager.AddWeapon;
+                __enemy.RemoveWeaponFromManager += _enemyWeaponManager.RemoveWeapon;
 
                 _enemies.Add(__enemy);
             }
@@ -129,7 +133,8 @@ namespace LegendOfZelda
                 }
             }
 
-            _weaponManager.Draw(p_spriteBatch);
+            _playerWeaponManager.Draw(p_spriteBatch);
+            _enemyWeaponManager.Draw(p_spriteBatch);
 
             base.Draw(p_spriteBatch);
         }
@@ -152,7 +157,8 @@ namespace LegendOfZelda
                 }
             }
 
-            _weaponManager.DebugDraw(p_spriteBatch);
+            _playerWeaponManager.DebugDraw(p_spriteBatch);
+            _enemyWeaponManager.DebugDraw(p_spriteBatch);
 
             base.DebugDraw(p_spriteBatch);
         }
@@ -183,11 +189,13 @@ namespace LegendOfZelda
                     __e.Update(p_delta, _collider);
                 }
 
-                _weaponManager.Update(p_delta, _collider);
+                _playerWeaponManager.Update(p_delta, _collider);
+                _enemyWeaponManager.Update(p_delta, _collider);
 
                 var __tmpEntities = new List<Entity>(entities);
 
-                __tmpEntities.AddRange(_weaponManager.weapons);
+                __tmpEntities.AddRange(_playerWeaponManager.weapons);
+                __tmpEntities.AddRange(_enemyWeaponManager.weapons);
 
                 CheckCollisions(__tmpEntities);
                 CheckPortalCollision();

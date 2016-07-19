@@ -34,6 +34,7 @@ namespace LegendOfZelda
         public string       name = "Entity";
         public EntityType   type = EntityType.EMPTY;
         public State        state = State.DISABLED;
+        public string       id;
        
         public Vector2      parentPosition;
         public Vector2      position { get; protected set; }
@@ -51,6 +52,7 @@ namespace LegendOfZelda
 
         public Entity()
         {
+            id = Guid.NewGuid().ToString();
             aabb = new AABB();
         }
 

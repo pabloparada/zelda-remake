@@ -83,6 +83,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Weapons\DirectionalProjectile.cs" />
     <Compile Include="Weapons\MeleeSword.cs" />
+    <Compile Include="Weapons\EnemyWeaponManager.cs" />
     <Compile Include="Weapons\PlayerWeaponManager.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +93,8 @@
     <Compile Include="TilesetManager.cs" />
     <Compile Include="Util\EnemyFactory.cs" />
     <Compile Include="Util\MathUtil.cs" />
+    <Compile Include="Weapons\WeaponState.cs" />
+    <Compile Include="Weapons\WeaponType.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

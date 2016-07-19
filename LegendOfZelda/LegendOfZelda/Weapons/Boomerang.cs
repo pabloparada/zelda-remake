@@ -93,7 +93,9 @@ namespace LegendOfZelda.Weapons
             {
                 var __dif = CenterPositionByDirection(source.position, source.size, size);
 
-                return position + (__dif - position) * MathUtil.EaseInQuad(_tick);
+                var __t = MathUtil.EaseInQuad(_tick * 0.6f);
+
+                return position + (__dif - position) * __t;
             }
 
             if (_tick >= 0.2f)
