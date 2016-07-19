@@ -47,7 +47,7 @@ namespace LegendOfZelda.Enemies
                 immunityTimeAferHit += p_delta;
             }
 
-            if (immunityTimeAferHit >= 2.5f)
+            if (immunityTimeAferHit >= 1.5f)
             {
                 immunityTimeAferHit = -0.5f;
             }
@@ -57,7 +57,7 @@ namespace LegendOfZelda.Enemies
 
         public override void OnCollide(Entity p_entity)
         {
-            if (p_entity.type == EntityType.WEAPON && immunityTimeAferHit == -0.5f)
+            if (ShouldCountAsHit(p_entity))
             {
                 life -= 1;
 
@@ -71,6 +71,18 @@ namespace LegendOfZelda.Enemies
             }
 
             base.OnCollide(p_entity);
+        }
+
+        private bool ShouldCountAsHit(Entity p_entity)
+        {
+            if (p_entity.type == EntityType.WEAPON && immunityTimeAferHit == -0.5f)
+            {
+                var __weapon = (Weapon) p_entity;
+
+                return __weapon.source.type != EntityType.ENEMY;
+            }
+
+            return false;
         }
 
         protected Vector2 CenterInTile(Vector2 p_position)

@@ -57,8 +57,6 @@ namespace LegendOfZelda.Weapons
 
         public void Update(float p_delta, Collider p_collider)
         {
-            weapons.RemoveAll(p_w => p_w.state != State.ACTIVE);
-
             foreach (var __w in weapons)
             {
                 __w.Update(p_delta, p_collider);
