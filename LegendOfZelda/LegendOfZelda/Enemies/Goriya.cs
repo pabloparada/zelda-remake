@@ -1,4 +1,5 @@
-﻿using LegendOfZelda.Animations;
+﻿using System.Linq;
+using LegendOfZelda.Animations;
 using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -65,6 +66,15 @@ namespace LegendOfZelda.Enemies
             var __targetDistance = 16.0f * World.s_random.Next(1, 5);
 
             _targetPosition = position + (_targetDirectionVector * __targetDistance);
+
+            _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
+        }
+
+        public string GetAnimationNameByDirection(Direction p_direction)
+        {
+            var __name = _targetDirection.ToString();
+
+            return char.ToUpper(__name[0]) + __name.Substring(1).ToLower();
         }
 
         public bool ReachedTargetPosition(Vector2 p_pos, Vector2 p_target)
