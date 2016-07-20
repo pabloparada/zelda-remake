@@ -9,10 +9,14 @@ namespace LegendOfZelda.Enemies
         protected Vector2 aabbSize;
         protected int life;
         protected float immunityTimeAferHit;
+        protected float stunTimer;
+        protected WeaponType hittedBy;
 
         public event Action<Enemy, WeaponType> AddWeaponToManager;
         public event Action<Enemy> RemoveWeaponFromManager;
 
+        public bool isStunned;
+        
         public Weapon weapon { get; set; }
 
         public Enemy(Vector2 p_position, Vector2 p_size, Vector2 p_aabbOffset, int p_life = 1)
@@ -26,6 +30,7 @@ namespace LegendOfZelda.Enemies
             position = CenterInTile(p_position);
             aabb = CalculateAABBWithOffset(position, hitboxOffset, size);
             immunityTimeAferHit = -0.5f;
+            stunTimer = 0.0f;
         }
 
         protected void InvokeAddWeaponToManager(WeaponType p_weaponType)
@@ -47,11 +52,21 @@ namespace LegendOfZelda.Enemies
                 immunityTimeAferHit += p_delta;
             }
 
-            if (immunityTimeAferHit >= 1.0f)
+            if (immunityTimeAferHit >= 1.5f)
             {
                 immunityTimeAferHit = -0.5f;
             }
-            
+
+            if (isStunned && stunTimer <= 3.0f)
+            {
+                stunTimer += p_delta;
+            }
+            else
+            {
+                stunTimer = 0.0f;
+                isStunned = false;
+            }
+
             base.Update(p_delta, p_collider);
         }
 
@@ -59,15 +74,29 @@ namespace LegendOfZelda.Enemies
         {
             if (ShouldCountAsHit(p_entity))
             {
-                life -= 1;
+                var __weapon = (Weapon) p_entity;
 
-                if (life == 0)
+                hittedBy = __weapon.weaponType;
+
+                if (__weapon.weaponType == WeaponType.BOOMERANG)
                 {
-                    state = State.DISABLED;
-                    DestroyEntity();
-                }
+                    var __boom = (Boomerang) __weapon;
 
-                immunityTimeAferHit = 0.0f;
+                    // only stuns if boomerang is going forward
+                    isStunned = !__boom.switchedDirection;
+                }
+                else
+                {
+                    life -= 1;
+
+                    if (life == 0)
+                    {
+                        state = State.DISABLED;
+                        DestroyEntity();
+                    }
+
+                    immunityTimeAferHit = 0.0f;
+                }
             }
 
             base.OnCollide(p_entity);

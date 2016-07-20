@@ -30,39 +30,42 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
-            var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
-            var __isColliding = IsColliding(p_collider, __tmpPosition);
-
-            if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+            if (!isStunned)
             {
-                if (weapon == null)
-                {
-                    InvokeAddWeaponToManager(WeaponType.BOOMERANG);
-                    _throwingBoomerang = true;
-                }
-                else if (weapon.state == State.DISABLED)
-                {
-                    InvokeRemoveWeaponFromManager();
-                    _throwingBoomerang = false;
-                }
-            }
+                var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
+                var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
+                var __isColliding = IsColliding(p_collider, __tmpPosition);
 
-            if (!_throwingBoomerang)
-            {
-                if (__reachedTargetPos || __isColliding)
+                if (__reachedTargetPos && _targetPosition != Vector2.Zero)
                 {
-                    SortNextMove();
-
-                    direction = _targetDirection;
-                    _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
+                    if (weapon == null)
+                    {
+                        InvokeAddWeaponToManager(WeaponType.BOOMERANG);
+                        _throwingBoomerang = true;
+                    }
+                    else if (weapon.state == State.DISABLED)
+                    {
+                        InvokeRemoveWeaponFromManager();
+                        _throwingBoomerang = false;
+                    }
                 }
-                else
-                {
-                    position = __tmpPosition;
 
-                    aabb.Min = position;
-                    aabb.Max = position + size;
+                if (!_throwingBoomerang)
+                {
+                    if (__reachedTargetPos || __isColliding)
+                    {
+                        SortNextMove();
+
+                        direction = _targetDirection;
+                        _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
+                    }
+                    else
+                    {
+                        position = __tmpPosition;
+
+                        aabb.Min = position;
+                        aabb.Max = position + size;
+                    }
                 }
             }
 

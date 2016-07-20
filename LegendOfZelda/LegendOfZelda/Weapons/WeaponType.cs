@@ -2,6 +2,6 @@
 {
     public enum WeaponType
     {
-        BOW, BOOMERANG, SWORD, PROJECTILE_SWORD
+        BOW, BOOMERANG, SWORD, PROJECTILE
     }
 }

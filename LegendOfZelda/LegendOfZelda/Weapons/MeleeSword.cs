@@ -10,6 +10,8 @@ namespace LegendOfZelda.Weapons
 
         public MeleeSword(Player p_source) : base(p_source, new Vector2(3.6f, 15.0f), p_source.direction)
         {
+            weaponType = WeaponType.SWORD;
+
             maxCooldown = 0.2f;
             _player = p_source;
         }

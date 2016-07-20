@@ -14,14 +14,17 @@ namespace LegendOfZelda.Weapons
         private readonly float _maxDistance;
 
         private float _tick;
-        private bool _switchedDirection;
+
+        public bool switchedDirection { get; private set; }
 
         public Boomerang(Entity p_source, float p_maxDistance = 70.0f) : base(p_source, new Vector2(5.0f, 3.0f), p_source.direction)
         {
+            weaponType = WeaponType.BOOMERANG;
+
             _velocity = new Vector2(140.0f, 140.0f);
             _maxDistance = p_maxDistance;
             _tick = 0.0f;
-            _switchedDirection = false;
+            switchedDirection = false;
 
             _targetDirection = InputManager.GetDirectionVectorByDirectionEnum(direction);
             _reverseTargetDirection = MathUtil.Revert(_targetDirection);
@@ -32,10 +35,10 @@ namespace LegendOfZelda.Weapons
         {
             if (_tick >= 1.0f) _tick = 0.0f;
 
-            var __direction = _switchedDirection ? _reverseTargetDirection : _targetDirection;
-            var __tmpPosition = CalculatePositionByDirection(_switchedDirection, p_delta, __direction);
+            var __direction = switchedDirection ? _reverseTargetDirection : _targetDirection;
+            var __tmpPosition = CalculatePositionByDirection(switchedDirection, p_delta, __direction);
 
-            if (!_switchedDirection)
+            if (!switchedDirection)
             {
                 _tick = 1.0f - Vector2.Distance(__tmpPosition, _targetPosition) / _maxDistance;
             }
@@ -46,10 +49,10 @@ namespace LegendOfZelda.Weapons
 
             if (ShouldSwitchDirection(__tmpPosition))
             {
-                _switchedDirection = true;
+                switchedDirection = true;
                 _tick = 0.0f;
             }
-            else if (_switchedDirection && BoomerangArrived(p_collider, __tmpPosition))
+            else if (switchedDirection && BoomerangArrived(p_collider, __tmpPosition))
             {
                 state = State.DISABLED;
             }
@@ -63,7 +66,7 @@ namespace LegendOfZelda.Weapons
 
         private bool ShouldSwitchDirection(Vector2 p_position)
         {
-            return !_switchedDirection &&
+            return !switchedDirection &&
                    (ReachedTargetPosition(p_position, _targetPosition) || !IsAtScreenBoundaries(p_position, size));
         }
 

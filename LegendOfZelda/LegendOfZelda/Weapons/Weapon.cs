@@ -7,6 +7,7 @@ namespace LegendOfZelda.Weapons
         public Direction direction { get; set; }
         public Vector2 position { get; set; }
         public Entity source { get; set; }
+        public WeaponType weaponType { get; protected set; }
 
         protected float cooldown;
         protected float maxCooldown;
