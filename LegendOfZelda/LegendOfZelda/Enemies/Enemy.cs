@@ -80,10 +80,7 @@ namespace LegendOfZelda.Enemies
 
                 if (__weapon.weaponType == WeaponType.BOOMERANG)
                 {
-                    var __boom = (Boomerang) __weapon;
-
-                    // only stuns if boomerang is going forward
-                    isStunned = !__boom.switchedDirection;
+                    isStunned = true;
                 }
                 else
                 {

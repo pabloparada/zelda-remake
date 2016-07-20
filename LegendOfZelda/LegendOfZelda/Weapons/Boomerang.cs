@@ -121,6 +121,16 @@ namespace LegendOfZelda.Weapons
             base.Draw(p_spriteBatch);
         }
 
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+
+            if (p_entity.type == EntityType.ENEMY && !switchedDirection)
+            {
+                state = State.DISABLED;
+            }
+        }
+
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
             var __drawPos = MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition);
