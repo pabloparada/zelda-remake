@@ -35,7 +35,7 @@ namespace LegendOfZelda
             _player = new Player();
             _tileReader = new TiledReader();
             guiManager = new GUIManager(_player);
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_3-2"), _player);
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-3"), _player);
             mapName = "Dungeon_3-2";
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;

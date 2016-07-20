@@ -10,37 +10,62 @@ namespace LegendOfZelda.Enemies
     {
         private readonly Direction[] _direction;
         private readonly Vector2 _velocity;
-        private readonly AABB _tmpAABB;
-
+        
         private Direction _targetDirection;
+        private Direction _hitDirection;
+
+        private AABB _tmpAABB;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
-        
+        private Vector2 _hitPushDistance;
 
-        public Stalfos(Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
+        private bool _hitted;
+
+        private float _hittedTimer;
+
+        public Stalfos(Vector2 p_position) : base(p_position, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 0.0f))
         {
             life = 2;
-            _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
+            _direction = new[] { Direction.LEFT, Direction.UP, Direction.DOWN, Direction.RIGHT };
             _animationController = new AnimationController("Stalfos");
             _velocity = new Vector2(35.0f, 35.0f);
             _tmpAABB = new AABB();
+            _hitPushDistance = Vector2.Zero;
+            _hittedTimer = 0.0f;
+            _hitted = false;
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
-
-            if (ReachedTargetPosition(__tmpPosition, _targetPosition) || IsColliding(p_collider, __tmpPosition))
+            if (_hitted)
             {
-                SortNextMove();
+                var __tmpPosition = Vector2.Lerp(position, _hitPushDistance, _hittedTimer);
+
+                if (ReachedTargetPosition(__tmpPosition, _hitPushDistance) || IsColliding(p_collider, __tmpPosition) || _hittedTimer >= 1.0f)
+                {
+                    _hitted = false;
+                    _hittedTimer = 0.0f;
+                }
+                else
+                {
+                    position = __tmpPosition;
+                }
+
+                _hittedTimer += p_delta * 0.3f;
             }
             else
             {
-                position = __tmpPosition;
+                var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
 
-                aabb.Min = position;
-                aabb.Max = position + size;
+                if (ReachedTargetPosition(__tmpPosition, _targetPosition) || IsColliding(p_collider, __tmpPosition))
+                {
+                    SortNextMove();
+                }
+                else
+                {
+                    position = __tmpPosition;
+                }
             }
 
             base.Update(p_delta, p_collider);
@@ -50,10 +75,10 @@ namespace LegendOfZelda.Enemies
         {
             var __isOutOfRange = IsBoundary(p_targetPos);
 
-            _tmpAABB.Min = p_targetPos;
-            _tmpAABB.Max = p_targetPos + size;
+            _tmpAABB.Min = position;
+            _tmpAABB.Max = position + size;
 
-            var __collisionFound = p_collider.IsColliding(_tmpAABB, _targetDirection);
+            var __collisionFound = p_collider.IsColliding(_tmpAABB, _hitted ? _hitDirection : _targetDirection);
 
             return __collisionFound || __isOutOfRange;
         }
@@ -80,6 +105,14 @@ namespace LegendOfZelda.Enemies
         public override void OnCollide(Entity p_entity)
         {
             base.OnCollide(p_entity);
+
+            if (p_entity.type == EntityType.WEAPON)
+            {
+                var __weaponDirection = InputManager.GetDirectionVectorByDirectionEnum(p_entity.direction);
+                _hitted = true;
+                _hitDirection = p_entity.direction;
+                _hitPushDistance = position + __weaponDirection * Vector2.One * 60.0f;
+            }
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)

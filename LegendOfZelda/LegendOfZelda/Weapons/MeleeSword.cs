@@ -27,6 +27,8 @@ namespace LegendOfZelda.Weapons
                 state = State.DISABLED;
             }
 
+            direction = _player.direction;
+
             base.Update(p_delta, p_collider);
         }
 

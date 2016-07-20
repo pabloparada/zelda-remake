@@ -47,7 +47,7 @@ namespace LegendOfZelda.Enemies
                 immunityTimeAferHit += p_delta;
             }
 
-            if (immunityTimeAferHit >= 1.5f)
+            if (immunityTimeAferHit >= 1.0f)
             {
                 immunityTimeAferHit = -0.5f;
             }

@@ -19,7 +19,7 @@ namespace LegendOfZelda.Weapons
             state = State.ACTIVE;
             type = EntityType.WEAPON;
             source = p_source;
-            direction = p_direction;
+            base.direction = direction = p_direction;
             size = GetProjectileSizeAndControlComponentSwitch(p_size);
             initialSourcePosition = p_source.position;
             position = CenterPositionByDirection(p_source.position, p_source.size, size);
