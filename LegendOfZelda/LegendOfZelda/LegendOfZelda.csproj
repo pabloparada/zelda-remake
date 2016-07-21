@@ -84,6 +84,7 @@
     <Compile Include="Util\Primitives2D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Weapons\DirectionalProjectile.cs" />
+    <Compile Include="Weapons\EnergyBall.cs" />
     <Compile Include="Weapons\MeleeSword.cs" />
     <Compile Include="Weapons\EnemyWeaponManager.cs" />
     <Compile Include="Weapons\PlayerWeaponManager.cs" />

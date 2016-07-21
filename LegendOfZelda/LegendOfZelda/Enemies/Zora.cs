@@ -1,4 +1,5 @@
-﻿using LegendOfZelda.Animations;
+﻿using System;
+using LegendOfZelda.Animations;
 using LegendOfZelda.Util;
 using LegendOfZelda.Weapons;
 using Microsoft.Xna.Framework;
@@ -11,17 +12,13 @@ namespace LegendOfZelda.Enemies
     {
         private readonly Direction[] _direction;
         private readonly Vector2 _velocity;
+        private readonly Player _player;
+        private readonly AABB _spawnRegion;
 
         private Direction _targetDirection;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
-
-        private Player _player;
-
-        private AABB _spawnRegion;
-
-        private float _waitForAttack;
 
         private bool _attacking;
 
@@ -30,28 +27,32 @@ namespace LegendOfZelda.Enemies
             life = 2;
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
             _animationController = new AnimationController("Zora");
-            _velocity = new Vector2(60.0f, 60.0f);
+            _velocity = new Vector2(40.0f, 40.0f);
             _spawnRegion = CalculateSpawnRegion(p_collider);
-            _waitForAttack = 0.0f;
+            _player = p_player;
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
             var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
             var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
-            var __isColliding = IsColliding(p_collider, __tmpPosition);
+            var __isColliding = IsColliding(__tmpPosition);
 
             if (__reachedTargetPos && _targetPosition != Vector2.Zero)
             {
                 if (weapon == null)
                 {
-                    InvokeAddWeaponToManager(new DirectionalProjectile(this, new Vector2(5.0f, 5.0f)), "EnergyBall");
+                    InvokeAddWeaponToManager(new EnergyBall(this, _player, new Vector2(5.0f, 5.0f)), "EnergyBall");
                     _attacking = true;
+
+                    _animationController.ChangeAnimation("Front");
                 }
                 else if (weapon.state == State.DISABLED)
                 {
                     InvokeRemoveWeaponFromManager();
                     _attacking = false;
+
+                    _animationController.ChangeAnimation("Underwater");
                 }
             }
 
@@ -72,21 +73,21 @@ namespace LegendOfZelda.Enemies
             base.Update(p_delta, p_collider);
         }
 
-        private AABB CalculateSpawnRegion(Collider p_collider)
+        private static AABB CalculateSpawnRegion(Collider p_collider)
         {
             var __spawnRegions = p_collider.FilterCollisionsByCollisionMasks(CollisionMask.WATER);
 
             var __aabb = new AABB(new Vector2(int.MaxValue, int.MaxValue), new Vector2(int.MinValue, int.MinValue), CollisionMask.WATER);
 
-            for (var __i = 0; __i < __spawnRegions.Count; __i++)
+            foreach (var __s in __spawnRegions)
             {
                 var __lastMin = __aabb.Min;
-                var __currMin = __spawnRegions[__i].Min;
+                var __currMin = __s.Min;
 
                 __aabb.Min = new Vector2(MathHelper.Min(__lastMin.X, __currMin.X), MathHelper.Min(__lastMin.Y, __currMin.Y));
 
                 var __lastMax = __aabb.Min;
-                var __currMax = __spawnRegions[__i].Max;
+                var __currMax = __s.Max;
 
                 __aabb.Max = new Vector2(MathHelper.Max(__lastMax.X, __currMax.X), MathHelper.Max(__lastMax.Y, __currMax.Y));
             }
@@ -94,7 +95,7 @@ namespace LegendOfZelda.Enemies
             return __aabb;
         }
 
-        private bool IsColliding(Collider p_collider, Vector2 p_targetPos)
+        private bool IsColliding(Vector2 p_targetPos)
         {
             var __minSpawnRegion = _spawnRegion.Min;
             var __maxSpawnRegion = _spawnRegion.Max;
@@ -115,7 +116,7 @@ namespace LegendOfZelda.Enemies
             _targetDirection = _direction[World.s_random.Next(4)];
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
 
-            var __targetDistance = 16.0f * World.s_random.Next(1, 3);
+            var __targetDistance = 16.0f * World.s_random.Next(1, 4);
 
             _targetPosition = position + (_targetDirectionVector * __targetDistance);
         }

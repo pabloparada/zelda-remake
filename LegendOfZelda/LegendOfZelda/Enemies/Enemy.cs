@@ -90,6 +90,9 @@ namespace LegendOfZelda.Enemies
                     if (life == 0)
                     {
                         state = State.DISABLED;
+
+                        if (weapon != null) InvokeRemoveWeaponFromManager();
+
                         DestroyEntity();
                     }
 

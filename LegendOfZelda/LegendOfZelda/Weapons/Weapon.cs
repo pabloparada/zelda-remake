@@ -40,8 +40,7 @@ namespace LegendOfZelda.Weapons
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            aabb.Min = position;
-            aabb.Max = position + size;
+            aabb = CalculateAABBWithOffset(position, hitboxOffset, size);
 
             base.Update(p_delta, p_collider);
         }
