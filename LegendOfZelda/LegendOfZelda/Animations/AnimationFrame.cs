@@ -48,6 +48,12 @@
                 return (int)itemTile;
             else if (frameType == TilesetManager.TileSetType.ENEMIES)
                 return (int)enemyTile;
+            else if (frameType == TilesetManager.TileSetType.PLAYER)
+                return (int)playerTile;
+            else if (frameType == TilesetManager.TileSetType.PROJECTILES)
+                return (int)projectileTile;
+            else if (frameType == TilesetManager.TileSetType.INVENTORY)
+                return (int)inventoryTile;
             return 0;
         }
         
