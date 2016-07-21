@@ -12,7 +12,7 @@ namespace LegendOfZelda.Enemies
         protected float stunTimer;
         protected WeaponType hittedBy;
 
-        public event Action<Enemy, WeaponType> AddWeaponToManager;
+        public event Action<Enemy, Weapon, string> AddWeaponToManager;
         public event Action<Enemy> RemoveWeaponFromManager;
 
         public bool isStunned;
@@ -33,9 +33,9 @@ namespace LegendOfZelda.Enemies
             stunTimer = 0.0f;
         }
 
-        protected void InvokeAddWeaponToManager(WeaponType p_weaponType)
+        protected void InvokeAddWeaponToManager(Weapon p_weapon, string p_animationName)
         {
-            AddWeaponToManager?.Invoke(this, p_weaponType);
+            AddWeaponToManager?.Invoke(this, p_weapon, p_animationName);
         }
 
         protected void InvokeRemoveWeaponFromManager()
@@ -80,7 +80,8 @@ namespace LegendOfZelda.Enemies
 
                 if (__weapon.weaponType == WeaponType.BOOMERANG)
                 {
-                    isStunned = true;
+                    var __bom = (Boomerang) __weapon;
+                    isStunned = !__bom.switchedDirection;
                 }
                 else
                 {

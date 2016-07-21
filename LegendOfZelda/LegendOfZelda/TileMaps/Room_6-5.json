@@ -35,6 +35,57 @@
          "x":0,
          "y":0
         }, 
+		{
+         "draworder":"topdown",
+         "height":0,
+         "name":"Enemies",
+         "objects":[
+                {
+                 "height":16,
+                 "id":7,
+                 "name":"Goriya0",
+                 "properties":
+                    {
+                     "Name":"OctorokBlue"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":80
+                },
+				{
+                 "height":16,
+                 "id":7,
+                 "name":"Goriya0",
+                 "properties":
+                    {
+                     "Name":"OctorokRed"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":132,
+                 "y":32
+                }
+		],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        },
         {
          "draworder":"topdown",
          "height":0,

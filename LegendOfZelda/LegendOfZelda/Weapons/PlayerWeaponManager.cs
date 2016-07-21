@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace LegendOfZelda.Weapons
 {
@@ -96,7 +97,7 @@ namespace LegendOfZelda.Weapons
 
                 if (InputManager.GetKeyChange(Keys.X) && _secondProjectileState == WeaponState.DISABLED)
                 {
-                    _secondProjectile = new DirectionalProjectile(_source);
+                    _secondProjectile = new DirectionalProjectile(_source, new Vector2(3.6f, 15.0f));
 
                     _secondProjectileState = WeaponState.ACTIVE;
                 }

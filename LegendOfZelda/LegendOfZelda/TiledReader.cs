@@ -121,7 +121,8 @@ namespace LegendOfZelda
         HALF_TOP = 6,
         HALF_BOTTOM = 7,
         HALF_LEFT = 8,
-        HALF_RIGHT = 9
+        HALF_RIGHT = 9,
+        WATER = 10
     }
 
     public class RootObjectUtil

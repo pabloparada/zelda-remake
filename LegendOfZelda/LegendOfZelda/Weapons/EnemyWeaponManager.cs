@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendOfZelda.Enemies;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace LegendOfZelda.Weapons
 {
@@ -35,14 +36,12 @@ namespace LegendOfZelda.Weapons
             _weaponsCache = new Dictionary<string, EnemyWeaponHolder>();
         }
 
-        public void AddWeapon(Enemy p_enemy, WeaponType p_weaponType)
+        public void AddWeapon(Enemy p_enemy, Weapon p_weapon, string p_animationName)
         {
-            var __weap = p_weaponType == WeaponType.BOOMERANG ? (Weapon) new Boomerang(p_enemy) : new DirectionalProjectile(p_enemy);
+            p_enemy.weapon = p_weapon;
 
-            p_enemy.weapon = __weap;
-
-            weapons.Add(__weap);
-            _weaponsCache.Add(p_enemy.id, new EnemyWeaponHolder(p_enemy, __weap, p_weaponType));
+            weapons.Add(p_weapon);
+            _weaponsCache.Add(p_enemy.id, new EnemyWeaponHolder(p_enemy, p_weapon, p_weapon.weaponType));
         }
 
         public void RemoveWeapon(Enemy p_enemy)

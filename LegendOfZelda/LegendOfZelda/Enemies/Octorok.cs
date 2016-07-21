@@ -6,81 +6,83 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LegendOfZelda.Enemies
 {
-    public class Goriya : Enemy
+    public enum OktorokType { RED, BLUE }
+
+    public class Octorok : Enemy
     {
         private readonly Direction[] _direction;
         private readonly Vector2 _velocity;
-        private readonly AABB _tmpAABB;
+
+        private AABB _tmpAABB;
 
         private Direction _targetDirection;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
 
-        private bool _throwingBoomerang;
+        private bool _shooting;
 
-        public Goriya(Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
+        private Weapon _weapon;
+
+        public Octorok(OktorokType p_oktorokType, Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
         {
-            life = 3;
+            life = 1;
+            animationSpeed = 2.5f;
+
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
-            _animationController = new AnimationController("Goriya");
+            _animationController = new AnimationController(OktorokTypeToString(p_oktorokType));
             _velocity = new Vector2(35.0f, 35.0f);
+        }
+
+        private string OktorokTypeToString(OktorokType p_type)
+        {
+            return p_type == OktorokType.RED ? "OctorokRed" : "OctorokBlue";
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (!isStunned)
+            var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
+            var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
+            var __isColliding = IsColliding(p_collider, __tmpPosition);
+
+            if (__reachedTargetPos && _targetPosition != Vector2.Zero)
             {
-                var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
-                var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
-                var __isColliding = IsColliding(p_collider, __tmpPosition);
-
-                if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+                if (weapon == null)
                 {
-                    if (weapon == null)
-                    {
-                        InvokeAddWeaponToManager(new Boomerang(this), "Boomerang");
-                        _throwingBoomerang = true;
-                    }
-                    else if (weapon.state == State.DISABLED)
-                    {
-                        InvokeRemoveWeaponFromManager();
-                        _throwingBoomerang = false;
-                    }
+                    InvokeAddWeaponToManager(new DirectionalProjectile(this, new Vector2(5.0f, 5.0f)), "Rock");
+                    _shooting = true;
                 }
-
-                if (!_throwingBoomerang)
+                else if (weapon.state == State.DISABLED)
                 {
-                    if (__reachedTargetPos || __isColliding)
-                    {
-                        SortNextMove();
-
-                        direction = _targetDirection;
-                        _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
-                    }
-                    else
-                    {
-                        position = __tmpPosition;
-
-                        aabb.Min = position;
-                        aabb.Max = position + size;
-                    }
+                    InvokeRemoveWeaponFromManager();
+                    _shooting = false;
                 }
             }
+
+            if (!_shooting)
+            {
+                if (__reachedTargetPos || __isColliding)
+                {
+                    SortNextMove();
+
+                    direction = _targetDirection;
+                    _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
+                }
+                else
+                {
+                    position = __tmpPosition;
+                }
+            }
+
+            direction = _targetDirection;
 
             base.Update(p_delta, p_collider);
         }
 
         private bool IsColliding(Collider p_collider, Vector2 p_targetPos)
         {
-            var __isOutOfRange = IsBoundary(p_targetPos);
-
-            _tmpAABB.Min = p_targetPos;
-            _tmpAABB.Max = p_targetPos + size;
-
-            var __collisionFound = p_collider.IsColliding(_tmpAABB, _targetDirection);
-
-            return __collisionFound || __isOutOfRange;
+            return !IsAtScreenBoundaries(p_targetPos, size) || 
+                   p_collider.IsColliding(CalculateAABBWithOffset(p_targetPos, hitboxOffset, size), _targetDirection);
         }
 
         private void SortNextMove()

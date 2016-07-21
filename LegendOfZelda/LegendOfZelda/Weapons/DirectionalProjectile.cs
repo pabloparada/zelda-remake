@@ -10,10 +10,10 @@ namespace LegendOfZelda.Weapons
 
         private Vector2 _projectileSize;
 
-        public DirectionalProjectile(Entity p_source) : base(p_source, new Vector2(3.6f, 15.0f), p_source.direction)
+        public DirectionalProjectile(Entity p_source, Vector2 p_size) : base(p_source, p_size, p_source.direction)
         {
             weaponType = WeaponType.PROJECTILE;
-
+            
             _projectileSize = GetProjectileSizeAndControlComponentSwitch(size);
             _velocity = new Vector2(150, 150);
         }

@@ -35,15 +35,15 @@ namespace LegendOfZelda
             _player = new Player();
             _tileReader = new TiledReader();
             guiManager = new GUIManager(_player);
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-3"), _player);
-            mapName = "Dungeon_3-2";
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_6-5"), _player);
+            mapName = "Room_6-5";
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
         }
 
         private void Scene_OnPortalEnter(Portal p_portal)
         {
-            ChangeScene(new Scene(_tileReader.LoadTiledJson(p_portal.targetMap), CurrentScene.Player), p_portal);
+            ChangeScene(new Scene(_tileReader.LoadTiledJson(p_portal.targetMap), CurrentScene.player), p_portal);
             mapName = p_portal.targetMap;
         }
 
@@ -157,10 +157,10 @@ namespace LegendOfZelda
 
             CurrentScene = p_nextScene;
             CurrentScene.state = State.DRAW_ONLY;
-            CurrentScene.Player = previousScene.Player;
+            CurrentScene.player = previousScene.player;
 
-            previousScene.RemoveEntity(previousScene.Player);
-            previousScene.Player = null;
+            previousScene.RemoveEntity(previousScene.player);
+            previousScene.player = null;
 
             _transitionType = p_portal.transitionType;
             _transitionPositions = new List<Vector2>();
@@ -185,7 +185,7 @@ namespace LegendOfZelda
             {
                 AddTransitionPositions(Vector2.Zero, Vector2.Zero, Vector2.Zero);
                 _targetPosition = p_portal.targetPosition;
-                CurrentScene.Player.ForcePosition(_targetPosition);
+                CurrentScene.player.ForcePosition(_targetPosition);
             }
 
             _isTransitioning = true;
@@ -199,8 +199,8 @@ namespace LegendOfZelda
             _transitionPositions.Add(previousScene.scenePosition + p_previousEnd);
             _transitionPositions.Add(CurrentScene.scenePosition + p_currentStart);
             _transitionPositions.Add(CurrentScene.scenePosition);
-            _transitionPositions.Add(CurrentScene.Player.position - p_currentStart);
-            _transitionPositions.Add(CurrentScene.Player.position - p_currentStart + p_playerEnd);
+            _transitionPositions.Add(CurrentScene.player.position - p_currentStart);
+            _transitionPositions.Add(CurrentScene.player.position - p_currentStart + p_playerEnd);
 
             CurrentScene.scenePosition = _transitionPositions[2];
         }
@@ -218,7 +218,7 @@ namespace LegendOfZelda
             {
                 previousScene.scenePosition = Vector2.Lerp(_transitionPositions[0], _transitionPositions[1], _transitionCount / _transitionDuration);
                 CurrentScene.scenePosition = Vector2.Lerp(_transitionPositions[2], _transitionPositions[3], _transitionCount / _transitionDuration);
-                CurrentScene.Player.ForcePosition(Vector2.Lerp(_transitionPositions[4], _transitionPositions[5], _transitionCount / _transitionDuration));
+                CurrentScene.player.ForcePosition(Vector2.Lerp(_transitionPositions[4], _transitionPositions[5], _transitionCount / _transitionDuration));
             }
 
             if (_transitionCount >= _transitionDuration)

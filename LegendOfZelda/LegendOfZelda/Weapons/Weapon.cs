@@ -74,23 +74,6 @@ namespace LegendOfZelda.Weapons
             return __initialPosition;
         }
 
-        public bool IsAtScreenBoundaries(Vector2 p_position, Vector2 p_size)
-        {
-            var __min = p_position;
-            var __max = p_position + p_size;
-
-            if (World.IsOpenWorld())
-            {
-                return __min.X > 0.0f && __min.X < 255.0f && __min.Y > 0.0f && __min.Y < 182.0f &&
-                       __max.X > 0.0f && __max.X < 255.0f && __max.Y > 0.0f && __max.Y < 182.0f;
-            }
-            else
-            {
-                return __min.X > 24.0f && __min.X < 232.0f && __min.Y > 16.0f && __min.Y < 152.0f &&
-                       __max.X > 24.0f && __max.X < 232.0f && __max.Y > 16.0f && __max.Y < 152.0f;
-            }
-        }
-
         protected Vector2 Switch(Vector2 p_v1)
         {
             _switchedComponents = true;

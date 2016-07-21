@@ -13,9 +13,17 @@ namespace LegendOfZelda.Util
             { 
                 return new Gel(new Vector2(p_object.x, p_object.y));
             }
-            if ("Stalfos".Equals(__name))
+            else if ("Stalfos".Equals(__name))
             {
                 return new Stalfos(new Vector2(p_object.x, p_object.y));
+            }
+            else if ("OctorokBlue".Equals(__name))
+            {
+                return new Octorok(OktorokType.BLUE, new Vector2(p_object.x, p_object.y));
+            }
+            else if ("OctorokRed".Equals(__name))
+            {
+                return new Octorok(OktorokType.RED, new Vector2(p_object.x, p_object.y));
             }
             else if ("Goriya".Equals(__name))
             {

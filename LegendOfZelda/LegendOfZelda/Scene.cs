@@ -15,9 +15,9 @@ namespace LegendOfZelda
         public event Action<Portal> OnPortalEnter;
 
         private List<Entity> entities { get; }
-        public Player Player { get; set; }
+        public Player player { get; set; }
 
-        private List<Portal> _portals;
+        public List<Portal> portals;
         private List<Enemy> _enemies;
         private List<Weapon> _weapons;
 
@@ -33,7 +33,7 @@ namespace LegendOfZelda
         public Scene(RootObject p_rootObject, Player p_player, params Entity[] p_entities)
         {
             tag = "Scene";
-            Player = p_player;
+            player = p_player;
             _rootObject = p_rootObject;
             _collider = new Collider(p_rootObject);
 
@@ -46,9 +46,9 @@ namespace LegendOfZelda
             SetItems(RootObjectUtil.GetLayerByName(p_rootObject, "Items"));
             SetEnemies(RootObjectUtil.GetLayerByName(p_rootObject, "Enemies"));
 
-            entities.Add(Player);
+            entities.Add(player);
 
-            _portals.ForEach(p_portal => entities.Add(p_portal));
+            portals.ForEach(p_portal => entities.Add(p_portal));
             _enemies.ForEach(p_enemy => entities.Add(p_enemy));
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
@@ -57,7 +57,7 @@ namespace LegendOfZelda
 
         private void SetPortals(Layer p_layer)
         {
-            _portals = new List<Portal>();
+            portals = new List<Portal>();
 
             if (p_layer == null)
             {
@@ -79,7 +79,7 @@ namespace LegendOfZelda
                 }
 
                 __tempPortal.targetMap = __obj.properties.TargetMap;
-                _portals.Add(__tempPortal);
+                portals.Add(__tempPortal);
             }
         }
 
@@ -237,21 +237,21 @@ namespace LegendOfZelda
 
         private void CheckPortalCollision()
         {
-            foreach (var __portal in _portals)
+            foreach (var __portal in portals)
             {
                 if (__portal.state != State.ACTIVE) continue;
 
                 if (__portal.collideOnHit)
                 {
-                    if (_collider.IsIntersectingRectangle(__portal.aabb, Player.aabb))
+                    if (_collider.IsIntersectingRectangle(__portal.aabb, player.aabb))
                     {
                         OnPortalEnter?.Invoke(__portal);
 
                         return;
                     }
                 }
-                else if (_collider.IsPointInsideRectangle(Player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max) &&
-                         _collider.IsPointInsideRectangle(Player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
+                else if (_collider.IsPointInsideRectangle(player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max) &&
+                         _collider.IsPointInsideRectangle(player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
                     OnPortalEnter?.Invoke(__portal);
 
