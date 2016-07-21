@@ -10,60 +10,94 @@ namespace LegendOfZelda.Enemies
     {
         private readonly Direction[] _direction;
         private readonly Vector2 _velocity;
-        private readonly AABB _tmpAABB;
 
         private Direction _targetDirection;
+        private Direction _hitDirection;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
+        private Vector2 _hitPushDistance;
 
         private bool _throwingBoomerang;
+        private bool _hitted;
 
-        public Goriya(Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
+        private float _hittedTimer;
+
+        public Goriya(Vector2 p_position) : base(p_position, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 2.0f))
         {
             life = 3;
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
             _animationController = new AnimationController("Goriya");
             _velocity = new Vector2(35.0f, 35.0f);
+            _hitPushDistance = Vector2.Zero;
+            _hittedTimer = 0.0f;
+            _hitted = false;
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
             if (!isStunned)
             {
-                var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
-                var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
-                var __isColliding = IsColliding(p_collider, __tmpPosition);
-
-                if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+                // dont push when boomerang is being thrown
+                if (_hitted && _throwingBoomerang)
                 {
-                    if (weapon == null)
-                    {
-                        InvokeAddWeaponToManager(new Boomerang(this), "Boomerang");
-                        _throwingBoomerang = true;
-                    }
-                    else if (weapon.state == State.DISABLED)
-                    {
-                        InvokeRemoveWeaponFromManager();
-                        _throwingBoomerang = false;
-                    }
+                    _hitted = false;
+                    _hittedTimer = 0.0f;
                 }
 
-                if (!_throwingBoomerang)
+                if (_hitted)
                 {
-                    if (__reachedTargetPos || __isColliding)
-                    {
-                        SortNextMove();
+                    var __tmpPosition = Vector2.Lerp(position, _hitPushDistance, _hittedTimer);
 
-                        direction = _targetDirection;
-                        _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
+                    if (ReachedTargetPosition(__tmpPosition, _hitPushDistance) || IsColliding(p_collider, __tmpPosition) || _hittedTimer >= 1.0f)
+                    {
+                        _hitted = false;
+                        _hittedTimer = 0.0f;
                     }
                     else
                     {
                         position = __tmpPosition;
+                    }
 
-                        aabb.Min = position;
-                        aabb.Max = position + size;
+                    _hittedTimer += p_delta * 0.3f;
+                }
+                else
+                {
+
+                    var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
+                    var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
+                    var __isColliding = IsColliding(p_collider, __tmpPosition);
+
+                    if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+                    {
+                        if (weapon == null)
+                        {
+                            InvokeAddWeaponToManager(new Boomerang(this), "Boomerang");
+                            _throwingBoomerang = true;
+                        }
+                        else if (weapon.state == State.DISABLED)
+                        {
+                            InvokeRemoveWeaponFromManager();
+                            _throwingBoomerang = false;
+                        }
+                    }
+
+                    if (!_throwingBoomerang)
+                    {
+                        if (__reachedTargetPos || __isColliding)
+                        {
+                            SortNextMove();
+
+                            direction = _targetDirection;
+                            _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
+                        }
+                        else
+                        {
+                            position = __tmpPosition;
+
+                            aabb.Min = position;
+                            aabb.Max = position + size;
+                        }
                     }
                 }
             }
@@ -75,10 +109,7 @@ namespace LegendOfZelda.Enemies
         {
             var __isOutOfRange = IsBoundary(p_targetPos);
 
-            _tmpAABB.Min = p_targetPos;
-            _tmpAABB.Max = p_targetPos + size;
-
-            var __collisionFound = p_collider.IsColliding(_tmpAABB, _targetDirection);
+            var __collisionFound = p_collider.IsColliding(CalculateAABBWithOffset(p_targetPos, hitboxOffset, size), _targetDirection);
 
             return __collisionFound || __isOutOfRange;
         }
@@ -107,6 +138,24 @@ namespace LegendOfZelda.Enemies
             var __dist = (p_pos - p_target).Length();
 
             return __dist >= -0.5f && __dist <= 0.5f;
+        }
+
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+
+            if (p_entity.type == EntityType.WEAPON && !isStunned && hittedBy != WeaponType.BOOMERANG)
+            {
+                var __weap = (Weapon) p_entity;
+
+                if (__weap.source.type != EntityType.ENEMY)
+                {
+                    var __weaponDirection = InputManager.GetDirectionVectorByDirectionEnum(p_entity.direction);
+                    _hitted = true;
+                    _hitDirection = p_entity.direction;
+                    _hitPushDistance = position + __weaponDirection * Vector2.One * 60.0f;
+                }
+            }
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)

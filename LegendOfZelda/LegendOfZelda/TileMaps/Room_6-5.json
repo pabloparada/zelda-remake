@@ -65,6 +65,25 @@
                  "name":"Goriya0",
                  "properties":
                     {
+                     "Name":"Zora"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":34,
+                 "y":34
+                },
+				{
+                 "height":16,
+                 "id":7,
+                 "name":"Goriya0",
+                 "properties":
+                    {
                      "Name":"OctorokRed"
                     },
                  "propertytypes":

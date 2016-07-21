@@ -91,7 +91,7 @@ namespace LegendOfZelda
 
             foreach (Object __obj in p_layer.objects)
             {
-                var __enemy = EnemyFactory.CreateEnemyByObject(__obj);
+                var __enemy = EnemyFactory.CreateEnemyByObject(__obj, player, _collider);
 
                 __enemy.OnDestroyEntity += RemoveEntity;
                 __enemy.AddWeaponToManager += _enemyWeaponManager.AddWeapon;

@@ -127,7 +127,7 @@ namespace LegendOfZelda.Weapons
         {
             base.OnCollide(p_entity);
 
-            if (p_entity.type == EntityType.ENEMY && !switchedDirection)
+            if (p_entity.type == EntityType.ENEMY && !switchedDirection && source.type != EntityType.ENEMY)
             {
                 state = State.DISABLED;
             }

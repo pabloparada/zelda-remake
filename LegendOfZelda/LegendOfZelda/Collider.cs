@@ -1,35 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
 using System;
-using System.Drawing;
-using System.Linq;
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace LegendOfZelda
 {
     public class Collider
     {
-        private readonly Layer _collisionMaskLayer;
-        private readonly List<AABB> _collisionMask;
+        private readonly Layer _collisionMasks;
+        private readonly List<AABB> _collisions;
 
-        public List<AABB> Collisions  => _collisionMask;
+        public List<AABB> Collisions  => _collisions;
 
         public Collider(RootObject p_rootObject)
         {
-            _collisionMaskLayer = RootObjectUtil.GetLayerByName(p_rootObject, "CollisionMask");
+            _collisionMasks = RootObjectUtil.GetLayerByName(p_rootObject, "CollisionMask");
 
-            _collisionMask = new List<AABB>();
+            _collisions = new List<AABB>();
 
             var __x = 0;
             var __y = 0;
 
-            for (var i = 0; i < _collisionMaskLayer.data.Count; i++)
+            for (var i = 0; i < _collisionMasks.data.Count; i++)
             {
-                var __mask = (CollisionMask)_collisionMaskLayer.data[i];
+                var __mask = (CollisionMask) _collisionMasks.data[i];
                 var __position = new Vector2(__x, __y);
                 var __aabb = new AABB(__position, __position + new Vector2(16), __mask);
 
-                _collisionMask.Add(__aabb);
+                _collisions.Add(__aabb);
 
                 __x += 16;
 
@@ -41,7 +39,54 @@ namespace LegendOfZelda
             }
         }
 
-        public bool IsColliding(AABB aabb, Direction p_direction)
+        public List<AABB> FilterCollisionsByCollisionMasks(CollisionMask p_mask)
+        {
+            return _collisions.FindAll(p_aabb => p_aabb.Mask == p_mask);
+        }
+
+        public List<CollisionMask> FindCollisionMasksByDirection(AABB p_aabb, Direction p_direction)
+        {
+            var __points = GetPointsByDirection(p_aabb, p_direction);
+
+            var __pos1 = __points.Item1;
+            var __pos2 = __points.Item2;
+
+            return new List<CollisionMask> {
+                _collisions[GetIndexByPosition(__pos1)].Mask,
+                _collisions[GetIndexByPosition(__pos1)].Mask
+            };
+        }
+
+        public bool IsColliding(AABB p_aabb, Direction p_direction)
+        {
+            var __points = GetPointsByDirection(p_aabb, p_direction);
+
+            var __pos1 = __points.Item1;
+            var __pos2 = __points.Item2;
+
+            var __index = GetIndexByPosition(__pos1);
+
+            if (CheckCollision(_collisions[__index], __pos1, p_aabb))
+            {
+                return true;
+            }
+
+            __index = GetIndexByPosition(__pos2);
+
+            if (CheckCollision(_collisions[__index], __pos2, p_aabb))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private int GetIndexByPosition(Vector2 p_pos)
+        {
+            return (int) (p_pos.X / 16.0f) + ( (int) (p_pos.Y / 16.0f) * 16);
+        }
+
+        private Tuple<Vector2, Vector2> GetPointsByDirection(AABB aabb, Direction p_direction)
         {
             var __pos1 = new Vector2();
             var __pos2 = new Vector2();
@@ -67,21 +112,7 @@ namespace LegendOfZelda
                 __pos2 = new Vector2(aabb.Min.X, aabb.Max.Y);
             }
 
-            var __index = (int)(__pos1.X / 16f) + ((int)(__pos1.Y/16f)*16);
-
-            if (CheckCollision(_collisionMask[__index], __pos1, aabb))
-            {
-                return true;
-            }
-
-            __index = (int)(__pos2.X / 16f) + ((int)(__pos2.Y / 16f) * 16);
-
-            if (CheckCollision(_collisionMask[__index], __pos2, aabb))
-            {
-                return true;
-            }
-
-            return false;
+            return new Tuple<Vector2, Vector2>(__pos1, __pos2);
         }
 
         private bool CheckCollision(AABB p_tileAABB, Vector2 p_point, AABB p_targetAABB)

@@ -1,5 +1,4 @@
-﻿using System;
-using LegendOfZelda.Animations;
+﻿using LegendOfZelda.Animations;
 using LegendOfZelda.Util;
 using LegendOfZelda.Weapons;
 using Microsoft.Xna.Framework;
@@ -31,7 +30,6 @@ namespace LegendOfZelda.Enemies
             _direction = new[] { Direction.LEFT, Direction.UP, Direction.DOWN, Direction.RIGHT };
             _animationController = new AnimationController("Stalfos");
             _velocity = new Vector2(35.0f, 35.0f);
-            _tmpAABB = new AABB();
             _hitPushDistance = Vector2.Zero;
             _hittedTimer = 0.0f;
             _hitted = false;
