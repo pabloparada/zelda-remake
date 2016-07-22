@@ -68,5 +68,12 @@ namespace LegendOfZelda
         {
             return _directionCache[p_direction].Item2;
         }
+
+        public static string GetAnimationNameByDirection(Direction p_direction)
+        {
+            var __name = p_direction.ToString();
+
+            return char.ToUpper(__name[0]) + __name.Substring(1).ToLower();
+        }
     }
 }

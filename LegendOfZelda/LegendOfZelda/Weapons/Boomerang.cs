@@ -1,4 +1,5 @@
 ﻿using System;
+using LegendOfZelda.Animations;
 using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,6 +21,8 @@ namespace LegendOfZelda.Weapons
         public Boomerang(Entity p_source, float p_maxDistance = 70.0f) : base(p_source, new Vector2(5.0f, 3.0f), p_source.direction)
         {
             weaponType = WeaponType.BOOMERANG;
+            size = new Vector2(16.0f, 16.0f);
+            hitboxOffset = new Vector2(4.0f, 5.0f);
 
             _velocity = new Vector2(140.0f, 140.0f);
             _maxDistance = p_maxDistance;
@@ -29,6 +32,9 @@ namespace LegendOfZelda.Weapons
             _targetDirection = InputManager.GetDirectionVectorByDirectionEnum(direction);
             _reverseTargetDirection = MathUtil.Revert(_targetDirection);
             _targetPosition = CalculateTargetPosition();
+
+            _animationController = new AnimationController("Boomerang");
+            _animationController.ChangeAnimation(InputManager.GetAnimationNameByDirection(p_source.direction));
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -72,8 +78,10 @@ namespace LegendOfZelda.Weapons
 
         private bool BoomerangArrived(Collider p_collider, Vector2 p_position)
         {
-            return p_collider.IsPointInsideRectangle(p_position + size, source.position, source.position + source.size)  || 
-                   p_collider.IsPointInsideRectangle(p_position, source.position, source.position + source.size);
+            var __tmpAABB = CalculateAABBWithOffset(p_position, hitboxOffset, size);
+
+            return p_collider.IsPointInsideRectangle(__tmpAABB.Max, source.position, source.position + source.size)  || 
+                   p_collider.IsPointInsideRectangle(__tmpAABB.Min, source.position, source.position + source.size);
         }
 
         public Vector2 Revert(Vector2 p_vec)
@@ -94,13 +102,15 @@ namespace LegendOfZelda.Weapons
 
             if (p_switchedDirection)
             {
-                var __dif = CenterPositionByDirection(source.position, source.size, size);
+                var __dif = MathUtil.GetEntityCenter(source.position, source.size);
+
+                __dif.Y -= size.Y * 0.5f;
 
                 var __direction = (__dif - position);
 
                 __direction.Normalize();
 
-                return position + __direction * Vector2.One * 140.0f * p_delta;
+                return position + __direction * Vector2.One * 150.0f * p_delta;
             }
 
             if (_tick >= 0.2f)
@@ -118,7 +128,7 @@ namespace LegendOfZelda.Weapons
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Red);
+            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition));
 
             base.Draw(p_spriteBatch);
         }
@@ -135,9 +145,7 @@ namespace LegendOfZelda.Weapons
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            var __drawPos = MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition);
-
-            p_spriteBatch.DrawRectangle(__drawPos, Color.White, 2.0f);
+            p_spriteBatch.DrawRectangle(aabb.ScaledRectangleFromAABB(), Color.Orange, 2.0f);
 
             base.DebugDraw(p_spriteBatch);
         }

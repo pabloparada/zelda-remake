@@ -12,7 +12,7 @@ namespace LegendOfZelda.Enemies
         protected float stunTimer;
         protected WeaponType hittedBy;
 
-        public event Action<Enemy, Weapon, string> AddWeaponToManager;
+        public event Action<Enemy, Weapon> AddWeaponToManager;
         public event Action<Enemy> RemoveWeaponFromManager;
 
         public bool isStunned;
@@ -33,9 +33,9 @@ namespace LegendOfZelda.Enemies
             stunTimer = 0.0f;
         }
 
-        protected void InvokeAddWeaponToManager(Weapon p_weapon, string p_animationName)
+        protected void InvokeAddWeaponToManager(Weapon p_weapon)
         {
-            AddWeaponToManager?.Invoke(this, p_weapon, p_animationName);
+            AddWeaponToManager?.Invoke(this, p_weapon);
         }
 
         protected void InvokeRemoveWeaponFromManager()

@@ -97,7 +97,7 @@ namespace LegendOfZelda.Weapons
 
                 if (InputManager.GetKeyChange(Keys.X) && _secondProjectileState == WeaponState.DISABLED)
                 {
-                    _secondProjectile = new DirectionalProjectile(_source, new Vector2(3.6f, 15.0f));
+                    _secondProjectile = new DirectionalProjectile(_source, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 5.0f), "LinkSword");
 
                     _secondProjectileState = WeaponState.ACTIVE;
                 }

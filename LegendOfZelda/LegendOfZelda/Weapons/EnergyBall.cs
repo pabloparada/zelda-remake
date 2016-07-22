@@ -1,4 +1,5 @@
-﻿using LegendOfZelda.Util;
+﻿using LegendOfZelda.Animations;
+using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,14 +16,17 @@ namespace LegendOfZelda.Weapons
         {
             _velocity = new Vector2(120.0f, 120.0f);
             _player = p_player;
-            _direction = Vector2.Normalize(GetEntityCenter(p_player.position, p_player.size) - GetEntityCenter(p_source.position, p_source.size));
+            _direction = Vector2.Normalize(MathUtil.GetEntityCenter(p_player.position, p_player.size) - MathUtil.GetEntityCenter(p_source.position, p_source.size));
+            _animationController = new AnimationController(SortEnergyBallAnimation());
 
-            position = GetEntityCenter(p_source.position, p_source.size);
+            hitboxOffset = new Vector2(5.0f, 2.5f);
+            position = MathUtil.GetEntityCenter(p_source.position, p_source.size);
+            size = GetProjectileSizeAndControlComponentSwitch(p_size);
         }
 
-        private static Vector2 GetEntityCenter(Vector2 p_position, Vector2 p_size)
+        private string SortEnergyBallAnimation()
         {
-            return p_position + p_size * 0.5f;
+            return World.s_random.Next(1, 3) == 1 ? "EnergyBallA" : "EnergyBallB";
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -45,16 +49,16 @@ namespace LegendOfZelda.Weapons
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Blue);
+            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition));
 
             base.Draw(p_spriteBatch);
         }
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.DrawLine(MathUtil.ScaleVectorForDrawing(GetEntityCenter(source.position, source.size)), MathUtil.ScaleVectorForDrawing(GetEntityCenter(_player.position, _player.size)), Color.Orange, 2.0f);
+            p_spriteBatch.DrawLine(MathUtil.ScaleVectorForDrawing(MathUtil.GetEntityCenter(source.position, source.size)), MathUtil.ScaleVectorForDrawing(MathUtil.GetEntityCenter(_player.position, _player.size)), Color.Orange, 2.0f);
             p_spriteBatch.DrawCircle(MathUtil.ScaleVectorForDrawing(position), 10.0f, 100, Color.Orange, 2.0f);
-            p_spriteBatch.DrawCircle(MathUtil.ScaleVectorForDrawing(GetEntityCenter(_player.position, _player.size)), 10.0f, 100, Color.Orange, 2.0f);
+            p_spriteBatch.DrawCircle(MathUtil.ScaleVectorForDrawing(MathUtil.GetEntityCenter(_player.position, _player.size)), 10.0f, 100, Color.Orange, 2.0f);
             p_spriteBatch.DrawRectangle(aabb.ScaledRectangleFromAABB(), Color.Orange, 2.0f);
 
             base.DebugDraw(p_spriteBatch);

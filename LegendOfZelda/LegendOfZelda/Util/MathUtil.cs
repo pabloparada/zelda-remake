@@ -33,6 +33,11 @@ namespace LegendOfZelda.Util
             return new Vector2(p_vec.X, p_vec.Y + 48.0f);
         }
 
+        public static Vector2 GetEntityCenter(Vector2 p_position, Vector2 p_size)
+        {
+            return p_position + p_size * 0.5f;
+        }
+
         public static float Linear(float p_t)
         {
             return p_t;

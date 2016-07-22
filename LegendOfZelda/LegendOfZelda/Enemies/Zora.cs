@@ -42,7 +42,7 @@ namespace LegendOfZelda.Enemies
             {
                 if (weapon == null)
                 {
-                    InvokeAddWeaponToManager(new EnergyBall(this, _player, new Vector2(5.0f, 5.0f)), "EnergyBall");
+                    InvokeAddWeaponToManager(new EnergyBall(this, _player, new Vector2(16, 12.0f)));
                     _attacking = true;
 
                     _animationController.ChangeAnimation("Front");

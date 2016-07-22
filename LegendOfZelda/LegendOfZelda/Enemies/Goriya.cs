@@ -72,7 +72,7 @@ namespace LegendOfZelda.Enemies
                     {
                         if (weapon == null)
                         {
-                            InvokeAddWeaponToManager(new Boomerang(this), "Boomerang");
+                            InvokeAddWeaponToManager(new Boomerang(this));
                             _throwingBoomerang = true;
                         }
                         else if (weapon.state == State.DISABLED)
@@ -89,7 +89,7 @@ namespace LegendOfZelda.Enemies
                             SortNextMove();
 
                             direction = _targetDirection;
-                            _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
+                            _animationController.ChangeAnimation(InputManager.GetAnimationNameByDirection(_targetDirection));
                         }
                         else
                         {
@@ -122,13 +122,6 @@ namespace LegendOfZelda.Enemies
             var __targetDistance = 16.0f * World.s_random.Next(1, 12);
 
             _targetPosition = position + (_targetDirectionVector * __targetDistance);
-        }
-
-        public string GetAnimationNameByDirection(Direction p_direction)
-        {
-            var __name = _targetDirection.ToString();
-
-            return char.ToUpper(__name[0]) + __name.Substring(1).ToLower();
         }
 
         public bool ReachedTargetPosition(Vector2 p_pos, Vector2 p_target)

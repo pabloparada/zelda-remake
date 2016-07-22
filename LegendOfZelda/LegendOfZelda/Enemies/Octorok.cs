@@ -49,7 +49,7 @@ namespace LegendOfZelda.Enemies
             {
                 if (weapon == null)
                 {
-                    InvokeAddWeaponToManager(new DirectionalProjectile(this, new Vector2(5.0f, 5.0f)), "Rock");
+                    InvokeAddWeaponToManager(new DirectionalProjectile(this, new Vector2(12.0f, 12.0f), new Vector2(2.5f, 2.5f), "Rock"));
                     _shooting = true;
                 }
                 else if (weapon.state == State.DISABLED)

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using LegendOfZelda.Enemies;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 
 namespace LegendOfZelda.Weapons
 {
@@ -36,7 +33,7 @@ namespace LegendOfZelda.Weapons
             _weaponsCache = new Dictionary<string, EnemyWeaponHolder>();
         }
 
-        public void AddWeapon(Enemy p_enemy, Weapon p_weapon, string p_animationName)
+        public void AddWeapon(Enemy p_enemy, Weapon p_weapon)
         {
             p_enemy.weapon = p_weapon;
 

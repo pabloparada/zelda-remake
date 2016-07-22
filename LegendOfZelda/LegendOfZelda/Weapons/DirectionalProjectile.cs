@@ -1,4 +1,6 @@
-﻿using LegendOfZelda.Util;
+﻿using System.Diagnostics;
+using LegendOfZelda.Animations;
+using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,12 +12,18 @@ namespace LegendOfZelda.Weapons
 
         private Vector2 _projectileSize;
 
-        public DirectionalProjectile(Entity p_source, Vector2 p_size) : base(p_source, p_size, p_source.direction)
+        public DirectionalProjectile(Entity p_source, Vector2 p_size, Vector2 p_aabbOffset, string p_animationName) : base(p_source, p_size, p_source.direction)
         {
             weaponType = WeaponType.PROJECTILE;
-            
+            hitboxOffset = p_aabbOffset;
+
             _projectileSize = GetProjectileSizeAndControlComponentSwitch(size);
-            _velocity = new Vector2(150, 150);
+            _velocity = new Vector2(180.0f, 180.0f);
+
+            _animationController = new AnimationController(p_animationName);
+            _animationController.ChangeAnimation(InputManager.GetAnimationNameByDirection(p_source.direction));
+
+            animationSpeed = 4.0f;
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -54,7 +62,7 @@ namespace LegendOfZelda.Weapons
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Blue);
+            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition));
         }
     }
 }
