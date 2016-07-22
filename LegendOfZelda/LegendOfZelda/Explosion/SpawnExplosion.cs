@@ -17,7 +17,6 @@ namespace LegendOfZelda
             state = State.ACTIVE;
             _animationController = new AnimationController("SpawnExplosion");
             _animationController.Animation.OnAnimationEnd += DestroyEntity;
-            //_animationController.Animation.OnAnimationEnd += Animation_OnAnimationEnd;
             hitboxSize = new Vector2(8f, 12f);
             hitboxOffset = new Vector2(4f, 2f);
             UpdateAABB();
@@ -45,7 +44,6 @@ namespace LegendOfZelda
         public override void OnCollide(Entity p_entity)
         {
             base.OnCollide(p_entity);
-            Inventory.Instance.keyCount++;
             if (p_entity.type == EntityType.PLAYER)
                 DestroyEntity();
         }

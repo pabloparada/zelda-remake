@@ -34,9 +34,11 @@ namespace LegendOfZelda.Items
         public override void OnCollide(Entity p_entity)
         {
             base.OnCollide(p_entity);
-            Inventory.Instance.keyCount++;
             if (p_entity.type == EntityType.PLAYER)
+            {
                 DestroyEntity();
+                Inventory.Instance.keyCount++;
+            }
         }
     }
 }
