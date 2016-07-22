@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LegendOfZelda.Animations
 {
     public class Animation
     {
+        public event Action         OnAnimationEnd;
         public string               name;
         public float                timer;
+
+        private bool                resetAnimation = false;
 
         public List<AnimationFrame>         FramesList { get; }
         public AnimationFrame               Frame { get; private set; }
@@ -25,6 +29,9 @@ namespace LegendOfZelda.Animations
             if (Frame == null)
                 Frame = FramesList[0];
 
+            //if (resetAnimation)
+            //    Frame = FramesList[0];
+
             timer += p_deltaTime;
             float __tempTimer = timer;
             foreach (AnimationFrame __frame in FramesList)
@@ -36,8 +43,9 @@ namespace LegendOfZelda.Animations
                     return;
                 }
             }
+            resetAnimation = true;
             timer = __tempTimer * -1f;
-            Frame = FramesList[0];
+            OnAnimationEnd?.Invoke();
         }
     }
 }

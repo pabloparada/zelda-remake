@@ -52,6 +52,7 @@
     <Compile Include="Enemies\Goriya.cs" />
     <Compile Include="Enemies\Octorok.cs" />
     <Compile Include="Enemies\Zora.cs" />
+    <Compile Include="Explosion\SpawnExplosion.cs" />
     <Compile Include="GraphicAssets.cs" />
     <Compile Include="GUI\GUIInventory.cs" />
     <Compile Include="GUI\GUIItems.cs" />

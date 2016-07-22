@@ -23,7 +23,8 @@ namespace LegendOfZelda
         PROJECTILE,
         PORTAL,
         ITEM,
-        WEAPON
+        WEAPON,
+        EFFECTS
     }
 
     public class Entity

@@ -27,7 +27,7 @@ namespace LegendOfZelda
             health = 16;
             _maximumLife = 16;
             
-            position = new Vector2(150, 80);
+            position = new Vector2(120, 120);
             size = new Vector2(12, 12);
             direction = GetDefaultDirection();
 

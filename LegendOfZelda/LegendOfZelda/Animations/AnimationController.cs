@@ -74,38 +74,44 @@ namespace LegendOfZelda.Animations
                     break;
                 //Projectiles
                 case "LinkSword":
-                    AddFourFrameAnimation("Right", TilesetManager.ProjectileTileSet.SWORD_R1);
-                    AddFourFrameAnimation("Up", TilesetManager.ProjectileTileSet.SWORD_U1);
-                    AddFourFrameAnimation("Left", TilesetManager.ProjectileTileSet.SWORD_L1);
-                    AddFourFrameAnimation("Down", TilesetManager.ProjectileTileSet.SWORD_D1);
+                    AddMultipleFrameAnimation("Right", TilesetManager.ProjectileTileSet.SWORD_R1, 2, 0.1f);
+                    AddMultipleFrameAnimation("Up", TilesetManager.ProjectileTileSet.SWORD_U1, 2, 0.1f);
+                    AddMultipleFrameAnimation("Left", TilesetManager.ProjectileTileSet.SWORD_L1, 2, 0.1f);
+                    AddMultipleFrameAnimation("Down", TilesetManager.ProjectileTileSet.SWORD_D1, 2, 0.1f);
                     break;
                 case "Arrow":
                     AddAllDirectionAnimation(TilesetManager.ProjectileTileSet.ARROW_R);
                     break;
                 case "Boomerang":
-                    AddAllDirectionAnimation(TilesetManager.ProjectileTileSet.BOOMERANG_R);
+                    AddMultipleFrameAnimation("Boomerang", TilesetManager.ProjectileTileSet.BOOMERANG_1, 8, 0.05f);
                     break;
                 //Up-Left, Up-Right, Down-Left, Down-Right
                 case "SwordExplosionUL":
-                    AddFourFrameAnimation("UL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UL1);
+                    AddMultipleFrameAnimation("UL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UL1, 4);
                     break;
                 case "SwordExplosionUR":
-                    AddFourFrameAnimation("UR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UR1);
+                    AddMultipleFrameAnimation("UR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UR1, 4);
                     break;
                 case "SwordExplosionDL":
-                    AddFourFrameAnimation("DL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DL1);
+                    AddMultipleFrameAnimation("DL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DL1, 4);
                     break;
                 case "SwordExplosionDR":
-                    AddFourFrameAnimation("DR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DR1);
+                    AddMultipleFrameAnimation("DR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DR1, 3);
                     break;
                 case "EnergyBallA":
-                    AddTwoFrameAnimation("EnergyBallA", TilesetManager.ProjectileTileSet.ENERGY_BALL_A1);
+                    AddMultipleFrameAnimation("EnergyBallA", TilesetManager.ProjectileTileSet.ENERGY_BALL_A1, 2);
                     break;
                 case "EnergyBallB":
-                    AddTwoFrameAnimation("EnergyBallB", TilesetManager.ProjectileTileSet.ENERGY_BALL_B1);
+                    AddMultipleFrameAnimation("EnergyBallB", TilesetManager.ProjectileTileSet.ENERGY_BALL_B1, 2);
                     break;
                 case "Rock":
                     AddOneFrameAnimation("Rock", TilesetManager.ProjectileTileSet.ROCK);
+                    break;
+                case "DeathExplosion":
+                    AddMultipleFrameAnimation("Death", TilesetManager.ProjectileTileSet.DEATH_EXPLOSION_1, 8);
+                    break;
+                case "SpawnExplosion":
+                    AddMultipleFrameAnimation("Spawn", TilesetManager.ProjectileTileSet.SPAWN_EXPLOSION_1, 3, 0.3f);
                     break;
                 //Player
                 case "Player":
@@ -149,25 +155,17 @@ namespace LegendOfZelda.Animations
             AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile, p_frameDuration));
             AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + 1, p_frameDuration));
         }
-        private void AddTwoFrameAnimation(string p_animName, TilesetManager.ProjectileTileSet p_tile, float p_frameDuration = 0.2f)
-        {
-            AnimationsList.Add(new Animation(p_animName));
-            AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile, p_frameDuration));
-            AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + 1, p_frameDuration));
-        }
         private void AddTwoFrameAnimation(string p_animName, TilesetManager.PlayerTileSet p_tile, float p_frameDuration = 0.2f)
         {
             AnimationsList.Add(new Animation(p_animName));
             AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile, p_frameDuration));
             AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + 1, p_frameDuration));
         }
-        private void AddFourFrameAnimation(string p_animName, TilesetManager.ProjectileTileSet p_tile, float p_frameDuration = 0.2f)
+        private void AddMultipleFrameAnimation(string p_animName, TilesetManager.ProjectileTileSet p_tile, int p_frameCount, float p_frameDuration = 0.2f)
         {
             AnimationsList.Add(new Animation(p_animName));
-            AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile, p_frameDuration));
-            AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + 1, p_frameDuration));
-            AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + 2, p_frameDuration));
-            AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + 3, p_frameDuration));
+            for(int i = 0; i < p_frameCount; i ++)
+                AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + i, p_frameDuration));
         }
         private void AddAllDirectionAnimation(TilesetManager.ProjectileTileSet p_tile, float p_frameDuration = 0.2f)
         {

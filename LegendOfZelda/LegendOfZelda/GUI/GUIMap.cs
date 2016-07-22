@@ -32,22 +32,22 @@ namespace LegendOfZelda.GUI
                 __y = int.Parse(World.mapName.Substring(7, 1));
 
                 //BG
-                p_spriteBatch.FillRectangle(new Rectangle(16 * Main.s_scale, ((int)position.Y + 188) * Main.s_scale,
+                p_spriteBatch.FillRectangle(new Rectangle(16 * Main.s_scale, ((int)parentPosition.Y + 188) * Main.s_scale,
                     64 * Main.s_scale, 32 * Main.s_scale), GraphicAssets.guiGrayColor);
 
                 //Player
                 p_spriteBatch.FillRectangle(new Rectangle((16 + __x * 4) * Main.s_scale, 
-                    ((int)position.Y + 188 + __y * 4) * Main.s_scale,4 * Main.s_scale, 4 * Main.s_scale), 
+                    ((int)parentPosition.Y + 188 + __y * 4) * Main.s_scale,4 * Main.s_scale, 4 * Main.s_scale), 
                     new Color(128f / 256f, 208f / 256f, 16f / 256f));
             }
             else if (World.mapName.StartsWith("Sword"))
             {
                 //BG
-                p_spriteBatch.FillRectangle(new Rectangle(16 * Main.s_scale, ((int)position.Y + 188) * Main.s_scale,
+                p_spriteBatch.FillRectangle(new Rectangle(16 * Main.s_scale, ((int)parentPosition.Y + 188) * Main.s_scale,
                     64 * Main.s_scale, 32 * Main.s_scale), GraphicAssets.guiGrayColor);
 
                 //Player
-                p_spriteBatch.FillRectangle(new Rectangle(44 * Main.s_scale, 216 * Main.s_scale, 
+                p_spriteBatch.FillRectangle(new Rectangle(44 * Main.s_scale, ((int)parentPosition.Y + 216) * Main.s_scale, 
                     4 * Main.s_scale, 4 * Main.s_scale), GraphicAssets.guiGreenColor);
             }
             else

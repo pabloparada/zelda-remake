@@ -15,6 +15,7 @@ namespace LegendOfZelda
         public event Action<Portal> OnPortalEnter;
 
         private List<Entity> entities { get; }
+        private List<Entity> entitiesToRemove;
         public Player player { get; set; }
 
         public List<Portal> portals;
@@ -38,6 +39,7 @@ namespace LegendOfZelda
             _collider = new Collider(p_rootObject);
 
             entities = new List<Entity>(p_entities);
+            entitiesToRemove = new List<Entity>();
 
             _playerWeaponManager = new PlayerWeaponManager(p_player);
             _enemyWeaponManager = new EnemyWeaponManager();
@@ -98,9 +100,16 @@ namespace LegendOfZelda
                 __enemy.RemoveWeaponFromManager += _enemyWeaponManager.RemoveWeapon;
 
                 _enemies.Add(__enemy);
+
+                CreateExplosion(__obj, true);
             }
         }
-
+        private void CreateExplosion(Object p_obj, bool p_spawnExplosion)
+        {
+            if (p_spawnExplosion)
+                entities.Add(new SpawnExplosion(p_obj));
+            entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+        }
         private void SetItems(Layer p_layer)
         {
             if (p_layer == null)
@@ -165,13 +174,19 @@ namespace LegendOfZelda
 
         public void RemoveEntity(Entity p_ent)
         {
-            entities.Remove(p_ent);
+            //entities.Remove(p_ent);
+            entitiesToRemove.Add(p_ent);
         }
-
+        private void RemoveEntities()
+        {
+            foreach (Entity __en in entitiesToRemove)
+                entities.Remove(__en);
+            entitiesToRemove.Clear();
+        }
         public override void Update(float p_delta)
         {
             entities.RemoveAll(p_entity => p_entity.state == State.DISABLED);
-
+            RemoveEntities();
             if (state == State.DRAW_ONLY)
             {
                 foreach (var __e in entities)
