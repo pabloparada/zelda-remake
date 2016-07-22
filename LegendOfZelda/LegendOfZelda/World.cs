@@ -49,7 +49,7 @@ namespace LegendOfZelda
 
         public static bool IsOpenWorld()
         {
-            return !mapName.StartsWith("Dungeon");
+            return mapName.StartsWith("Room");
         }
 
         public override void Draw(SpriteBatch p_spriteBatch)

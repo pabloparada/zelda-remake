@@ -95,11 +95,67 @@ namespace LegendOfZelda
         }
         public enum PlayerTileSet
         {
-
+            LINK_WALK_R1,
+            LINK_WALK_R2,
+            LINK_WALK_U1,
+            LINK_WALK_U2,
+            LINK_WALK_L1,
+            LINK_WALK_L2,
+            LINK_WALK_D1,
+            LINK_WALK_D2,
+            LINK_ATTACK_R,
+            LINK_ATTACK_U,
+            LINK_ATTACK_L,
+            LINK_ATTACK_D,
+            LINK_HOLD_TRIFORCE
         }
         public enum ProjectileTileSet
         {
-
+            SWORD_R1,
+            SWORD_R2,
+            SWORD_R3,
+            SWORD_R4,
+            SWORD_U1,
+            SWORD_U2,
+            SWORD_U3,
+            SWORD_U4,
+            SWORD_L1,
+            SWORD_L2,
+            SWORD_L3,
+            SWORD_L4,
+            SWORD_D1,
+            SWORD_D2,
+            SWORD_D3,
+            SWORD_D4,
+            ARROW_R,
+            ARROW_U,
+            ARROW_L,
+            ARROW_D,
+            BOOMERANG_R,
+            BOOMERANG_U,
+            BOOMERANG_L,
+            BOOMERANG_D,
+            SWORD_EXPLOSION_UL1,
+            SWORD_EXPLOSION_UL2,
+            SWORD_EXPLOSION_UL3,
+            SWORD_EXPLOSION_UL4,
+            SWORD_EXPLOSION_UR1,
+            SWORD_EXPLOSION_UR2,
+            SWORD_EXPLOSION_UR3,
+            SWORD_EXPLOSION_UR4,
+            SWORD_EXPLOSION_DL1,
+            SWORD_EXPLOSION_DL2,
+            SWORD_EXPLOSION_DL3,
+            SWORD_EXPLOSION_DL4,
+            SWORD_EXPLOSION_DR1,
+            SWORD_EXPLOSION_DR2,
+            SWORD_EXPLOSION_DR3,
+            SWORD_EXPLOSION_DR4,
+            ENERGY_BALL_A1,
+            ENERGY_BALL_A2,
+            ENERGY_BALL_B1,
+            ENERGY_BALL_B2,
+            ROCK
         }
         public enum InventoryTileSet
         {
@@ -134,11 +190,17 @@ namespace LegendOfZelda
         public static Rectangle GetSourceRectangle(TileSetType p_type, int p_index)
         {
             Rectangle __sourceRect = new Rectangle(0, 0, 16, 16);
-            if (p_type == TileSetType.ITEMS)
+            if (p_type == TileSetType.PLAYER)
             {
-                __sourceRect.X = (p_index % (GraphicAssets.itemsTileset.Width / 16)) * 16;
-                __sourceRect.Y = (p_index / (GraphicAssets.itemsTileset.Height / 16)) * 16;
+                __sourceRect.X = (p_index % (GraphicAssets.playerTileset.Width / 16)) * 16;
+                __sourceRect.Y = (p_index / (GraphicAssets.playerTileset.Height / 16)) * 16;
             }
+            else if (p_type == TileSetType.PROJECTILES)
+            {
+                __sourceRect.X = (p_index % (GraphicAssets.projectilesTileset.Width / 16)) * 16;
+                __sourceRect.Y = (p_index / (GraphicAssets.projectilesTileset.Height / 16)) * 16;
+            }
+            
             else if (p_type == TileSetType.ENEMIES)
             {
                 __sourceRect.X = (p_index % (GraphicAssets.enemiesTileset.Width / 16)) * 16;
@@ -148,6 +210,11 @@ namespace LegendOfZelda
             {
                 __sourceRect.X = (p_index % (GraphicAssets.inventoryTileset.Width / 16)) * 16;
                 __sourceRect.Y = (p_index / (GraphicAssets.inventoryTileset.Height / 16)) * 16;
+            }
+            else if (p_type == TileSetType.ITEMS)
+            {
+                __sourceRect.X = (p_index % (GraphicAssets.itemsTileset.Width / 16)) * 16;
+                __sourceRect.Y = (p_index / (GraphicAssets.itemsTileset.Height / 16)) * 16;
             }
             return __sourceRect;
         }

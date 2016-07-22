@@ -38,7 +38,8 @@ namespace LegendOfZelda
             itemsTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Items");
             enemiesTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Enemies");
             inventoryTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Inventory");
-
+            projectilesTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Projectiles");
+            playerTileset = Main.s_game.Content.Load<Texture2D>("TileSet_Link");
             zeldaFont12 = Main.s_game.Content.Load<SpriteFont>("ZeldaFont12");
 
             guiGreenColor = new Color(128f / 256f, 208f / 256f, 16f / 256f);
