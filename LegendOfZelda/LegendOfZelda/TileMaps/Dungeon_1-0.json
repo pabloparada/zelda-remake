@@ -178,11 +178,15 @@
                  "name":"BladeTrap0",
                  "properties":
                     {
-                     "Name":"BladeTrap"
+                     "Name":"BladeTrap",
+                     "TriggerA":"Zone0",
+                     "TriggerB":"Zone1"
                     },
                  "propertytypes":
                     {
-                     "Name":"string"
+                     "Name":"string",
+                     "TriggerA":"string",
+                     "TriggerB":"string"
                     },
                  "rotation":0,
                  "type":"",
@@ -197,11 +201,15 @@
                  "name":"BladeTrap1",
                  "properties":
                     {
-                     "Name":"BladeTrap"
+                     "Name":"BladeTrap",
+                     "TriggerA":"Zone0",
+                     "TriggerB":"Zone2"
                     },
                  "propertytypes":
                     {
-                     "Name":"string"
+                     "Name":"string",
+                     "TriggerA":"string",
+                     "TriggerB":"string"
                     },
                  "rotation":0,
                  "type":"",
@@ -216,11 +224,15 @@
                  "name":"BladeTrap2",
                  "properties":
                     {
-                     "Name":"BladeTrap"
+                     "Name":"BladeTrap",
+                     "TriggerA":"Zone1",
+                     "TriggerB":"Zone3"
                     },
                  "propertytypes":
                     {
-                     "Name":"string"
+                     "Name":"string",
+                     "TriggerA":"string",
+                     "TriggerB":"string"
                     },
                  "rotation":0,
                  "type":"",
@@ -235,11 +247,15 @@
                  "name":"BladeTrap3",
                  "properties":
                     {
-                     "Name":"BladeTrap"
+                     "Name":"BladeTrap",
+                     "TriggerA":"Zone3",
+                     "TriggerB":"Zone2"
                     },
                  "propertytypes":
                     {
-                     "Name":"string"
+                     "Name":"string",
+                     "TriggerA":"string",
+                     "TriggerB":"string"
                     },
                  "rotation":0,
                  "type":"",
@@ -285,8 +301,64 @@
          "width":0,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":11,
+         "name":"IA",
+         "objects":[
+                {
+                 "height":80,
+                 "id":12,
+                 "name":"Zone0",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":36,
+                 "y":48
+                }, 
+                {
+                 "height":8,
+                 "id":13,
+                 "name":"Zone1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":160,
+                 "x":48,
+                 "y":36
+                }, 
+                {
+                 "height":8,
+                 "id":14,
+                 "name":"Zone2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":160,
+                 "x":48,
+                 "y":132
+                }, 
+                {
+                 "height":80,
+                 "id":15,
+                 "name":"Zone3",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":212,
+                 "y":48
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":16,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":12,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tileheight":16,

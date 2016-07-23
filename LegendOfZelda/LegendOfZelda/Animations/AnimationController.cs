@@ -63,7 +63,7 @@ namespace LegendOfZelda.Animations
                     AddTwoFrameAnimation("Right", TilesetManager.EnemyTileSet.WALLMASTER_R1);
                     break;
                 case "Gel":
-                    AddTwoFrameAnimation("Gel", TilesetManager.EnemyTileSet.GEL_1);
+                    AddTwoFrameAnimation("Gel", TilesetManager.EnemyTileSet.GEL_1, 0.3f);
                     break;
                 case "BladeTrap":
                     AddOneFrameAnimation("Blade", TilesetManager.EnemyTileSet.BLADETRAP_1);
@@ -111,7 +111,7 @@ namespace LegendOfZelda.Animations
                     AddMultipleFrameAnimation("Death", TilesetManager.ProjectileTileSet.DEATH_EXPLOSION_1, 8);
                     break;
                 case "SpawnExplosion":
-                    AddMultipleFrameAnimation("Spawn", TilesetManager.ProjectileTileSet.SPAWN_EXPLOSION_1, 3, 0.3f);
+                    AddMultipleFrameAnimation("Spawn", TilesetManager.ProjectileTileSet.SPAWN_EXPLOSION_1, 3);
                     break;
                 //Player
                 case "Player":

@@ -174,7 +174,6 @@ namespace LegendOfZelda
 
         public void RemoveEntity(Entity p_ent)
         {
-            //entities.Remove(p_ent);
             entitiesToRemove.Add(p_ent);
         }
         private void RemoveEntities()
@@ -185,7 +184,6 @@ namespace LegendOfZelda
         }
         public override void Update(float p_delta)
         {
-            entities.RemoveAll(p_entity => p_entity.state == State.DISABLED);
             RemoveEntities();
             if (state == State.DRAW_ONLY)
             {
