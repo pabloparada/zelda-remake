@@ -14,18 +14,24 @@ namespace LegendOfZelda.Enemies
         private readonly Vector2 _velocity;
 
         private Direction _targetDirection;
+        private Direction _hitDirection;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
+        private Vector2 _hitPushDistance;
 
         private float _waitForDig;
         private bool _digging;
 
-        private Player _player;
+        private Color _lastHitColor;
 
-        public Leever(EnemyType p_enemyType, Vector2 p_position, Player p_player) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
+        private bool _hitted;
+
+        private float _hittedTimer;
+
+        public Leever(EnemyType p_enemyType, Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
         {
-            life = 1;
+            life = 2;
             animationSpeed = 2.5f;
 
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
@@ -33,9 +39,9 @@ namespace LegendOfZelda.Enemies
             _animationController.AnimationsList[1].OnAnimationEnd += LeeverOnAnimationEnd;
             _velocity = new Vector2(35.0f, 35.0f);
        
-            _player = p_player;
             _waitForDig = 0.0f;
             _digging = true;
+            _hitPushDistance = Vector2.Zero;
         }
 
         private void LeeverOnAnimationEnd()
@@ -45,46 +51,71 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (!_digging)
+            if (!isStunned)
             {
-                var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
-                var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
-                var __isColliding = IsColliding(p_collider, __tmpPosition);
+                if (_hitted)
+                {
+                    var __tmpPosition = Vector2.Lerp(position, _hitPushDistance, _hittedTimer);
 
-                if (__reachedTargetPos && _targetPosition != Vector2.Zero)
-                {
-                    _waitForDig = 0.0f;
-                    _digging = true; 
-                }
-                else if (__isColliding || __reachedTargetPos)
-                {
-                    SortNextMove();
+                    if (ReachedTargetPosition(__tmpPosition, _hitPushDistance) ||
+                        IsColliding(p_collider, __tmpPosition) || _hittedTimer >= 1.0f)
+                    {
+                        _hitted = false;
+                        _hittedTimer = 0.0f;
+                    }
+                    else
+                    {
+                        position = __tmpPosition;
+                    }
+
+                    _hittedTimer += p_delta * 0.3f;
                 }
                 else
                 {
-                    position = __tmpPosition;
-                    
-                }
-            } else
-            {
-                if (_waitForDig <= 0.8f && _digging)
-                {
-                    if (_animationController.Animation.name != "Underground")
+                    if (!_digging)
                     {
-                        _animationController.ChangeAnimation("Underground");
+
+                        var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
+                        var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
+                        var __isColliding = IsColliding(p_collider, __tmpPosition);
+
+                        if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+                        {
+                            _waitForDig = 0.0f;
+                            _digging = true;
+                        }
+                        else if (__isColliding || __reachedTargetPos)
+                        {
+                            SortNextMove();
+                        }
+                        else
+                        {
+                            position = __tmpPosition;
+
+                        }
+                    }
+                    else
+                    {
+                        if (_waitForDig <= 0.8f && _digging)
+                        {
+                            if (_animationController.Animation.name != "Underground")
+                            {
+                                _animationController.ChangeAnimation("Underground");
+                            }
+                        }
+                        else if (_waitForDig > 0.8f && _waitForDig <= 1.0f)
+                        {
+                            _animationController.ChangeAnimation("Emerging");
+                        }
+                        else
+                        {
+                            _digging = false;
+                            SortNextMove();
+                        }
+
+                        _waitForDig += p_delta;
                     }
                 }
-                else if (_waitForDig > 0.8f && _waitForDig <= 1.0f)
-                {
-                    _animationController.ChangeAnimation("Emerging");
-                }
-                else
-                {
-                    _digging = false;
-                    SortNextMove();
-                }
-
-                _waitForDig += p_delta;
             }
 
             direction = _targetDirection;
@@ -119,8 +150,38 @@ namespace LegendOfZelda.Enemies
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            if (immunityTimeAferHit >= 0.0f)
+            {
+                var __currentColor = Color.White.Equals(_lastHitColor) ?
+                                                   Color.Red :
+                                                   Color.White;
+
+                _animationController.DrawFrame(p_spriteBatch,
+                                               MathUtil.GetDrawRectangle(position, size, parentPosition),
+                                               __currentColor);
+
+                _lastHitColor = __currentColor;
+            }
+            else
+            {
+                _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            }
+
             base.Draw(p_spriteBatch);
+        }
+
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+
+            if (p_entity.type == EntityType.WEAPON && !isStunned && hittedBy != WeaponType.BOOMERANG)
+            {
+                var __weaponDirection = InputManager.GetDirectionVectorByDirectionEnum(p_entity.direction);
+
+                _hitted = true;
+                _hitDirection = p_entity.direction;
+                _hitPushDistance = position + __weaponDirection * Vector2.One * 60.0f;
+            }
         }
 
         public override void DebugDraw(SpriteBatch p_spriteBatch)

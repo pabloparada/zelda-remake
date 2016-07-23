@@ -4,17 +4,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LegendOfZelda.Weapons
 {
-    
-
     public class EnemyWeaponManager
     {
         public struct EnemyWeaponHolder
         {
-            public EnemyWeaponHolder(Enemy p_enemy, Weapon p_weapon, WeaponType p_type)
+            public EnemyWeaponHolder(Weapon p_weapon, WeaponType p_type)
             {
-                enemy = p_enemy;
                 weapon = p_weapon;
                 type = p_type;
+                enemy = null;
+            }
+
+            public EnemyWeaponHolder(Enemy p_enemy, Weapon p_weapon, WeaponType p_type) : this(p_weapon, p_type)
+            {
+                enemy = p_enemy;
             }
 
             public Enemy enemy { get; }
@@ -39,6 +42,24 @@ namespace LegendOfZelda.Weapons
 
             weapons.Add(p_weapon);
             _weaponsCache.Add(p_enemy.id, new EnemyWeaponHolder(p_enemy, p_weapon, p_weapon.weaponType));
+        }
+
+        public void AddWeapons(List<Weapon> p_weapons)
+        {
+            weapons.AddRange(p_weapons);
+
+            foreach (var __w in p_weapons)
+            {
+                _weaponsCache.Add(__w.id, new EnemyWeaponHolder(__w, __w.weaponType));
+            }
+        }
+
+        public void RemoveWeaponFromManagerByWeaponId(string p_id)
+        {
+            var __holder = _weaponsCache[p_id];
+
+            weapons.Remove(__holder.weapon);
+            _weaponsCache.Remove(p_id);
         }
 
         public void RemoveWeapon(Enemy p_enemy)

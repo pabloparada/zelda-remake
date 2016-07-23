@@ -35,52 +35,55 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (_tick >= -0.5f && _tick < 0.0f)
+            if (!isStunned)
             {
-                _startPosition = position;
-
-                if (_numSquaresToMove != 0)
+                if (_tick >= -0.5f && _tick < 0.0f)
                 {
-                    _targetPosition = _startPosition + (16.0f * _targetDirectionVector);
+                    _startPosition = position;
 
-                    _numSquaresToMove--;
+                    if (_numSquaresToMove != 0)
+                    {
+                        _targetPosition = _startPosition + (16.0f*_targetDirectionVector);
 
-                    _tick = 0.0f;
+                        _numSquaresToMove--;
+
+                        _tick = 0.0f;
+                    }
+                    else
+                    {
+                        SortNextMove();
+
+                        _tick = -0.5f;
+                    }
+                }
+                else if (_tick > 0.0f)
+                {
+                    _nextMovementAABB = CalculateAABBWithOffset(_targetPosition, hitboxOffset, size);
+                    var __collisionFound = p_collider.IsColliding(_nextMovementAABB, _targetDirection);
+
+                    if (__collisionFound)
+                    {
+                        _numSquaresToMove = 0;
+                    }
+
+                    if (__collisionFound || _tick >= 1.0f)
+                    {
+                        _tick = _numSquaresToMove != 0 ? _timeBetweenSquares : _timeBetweenMoviment;
+                    }
+                    else
+                    {
+                        position = InterpolatePosition(_tick);
+
+                        aabb.Min = position;
+                        aabb.Max = position + size;
+
+                        _tick += p_delta*2.5f;
+                    }
                 }
                 else
                 {
-                    SortNextMove();
-
-                    _tick = -0.5f;
+                    _tick += p_delta;
                 }
-            }
-            else if(_tick > 0.0f)
-            {
-                _nextMovementAABB = CalculateAABBWithOffset(_targetPosition, hitboxOffset, size);
-                var __collisionFound = p_collider.IsColliding(_nextMovementAABB, _targetDirection);
-
-                if (__collisionFound)
-                {
-                    _numSquaresToMove = 0;
-                }
-
-                if (__collisionFound || _tick >= 1.0f)
-                {
-                    _tick = _numSquaresToMove != 0 ? _timeBetweenSquares : _timeBetweenMoviment;
-                }
-                else
-                {
-                    position = InterpolatePosition(_tick);
-
-                    aabb.Min = position;
-                    aabb.Max = position + size;
-
-                    _tick += p_delta * 2.5f;
-                }
-            }
-            else
-            {
-                _tick += p_delta;
             }
 
             base.Update(p_delta, p_collider);

@@ -12,7 +12,6 @@ namespace LegendOfZelda.Enemies
         private readonly Vector2 _velocity;
 
         private Direction _targetDirection;
-        private Direction _hitDirection;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
@@ -23,6 +22,8 @@ namespace LegendOfZelda.Enemies
 
         private float _hittedTimer;
 
+        private Color _lastHitColor;
+
         public Goriya(Vector2 p_position) : base(p_position, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 2.0f))
         {
             life = 3;
@@ -32,6 +33,7 @@ namespace LegendOfZelda.Enemies
             _hitPushDistance = Vector2.Zero;
             _hittedTimer = 0.0f;
             _hitted = false;
+            _lastHitColor = Color.White;
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -94,9 +96,6 @@ namespace LegendOfZelda.Enemies
                         else
                         {
                             position = __tmpPosition;
-
-                            aabb.Min = position;
-                            aabb.Max = position + size;
                         }
                     }
                 }
@@ -109,7 +108,7 @@ namespace LegendOfZelda.Enemies
         {
             var __isOutOfRange = IsBoundary(p_targetPos);
 
-            var __collisionFound = p_collider.IsColliding(CalculateAABBWithOffset(p_targetPos, hitboxOffset, size), _targetDirection);
+            var __collisionFound = p_collider.IsColliding(CalculateAABBWithOffset(p_targetPos, hitboxOffset, size));
 
             return __collisionFound || __isOutOfRange;
         }
@@ -145,7 +144,6 @@ namespace LegendOfZelda.Enemies
                 {
                     var __weaponDirection = InputManager.GetDirectionVectorByDirectionEnum(p_entity.direction);
                     _hitted = true;
-                    _hitDirection = p_entity.direction;
                     _hitPushDistance = position + __weaponDirection * Vector2.One * 60.0f;
                 }
             }
@@ -153,7 +151,23 @@ namespace LegendOfZelda.Enemies
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            if (immunityTimeAferHit >= 0.0f)
+            {
+                var __currentColor = Color.White.Equals(_lastHitColor) ?
+                                                   Color.Red :
+                                                   Color.White;
+
+                _animationController.DrawFrame(p_spriteBatch, 
+                                               MathUtil.GetDrawRectangle(position, size, parentPosition),
+                                               __currentColor);
+
+                _lastHitColor = __currentColor;
+            }
+            else
+            {
+                _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            }
+            
             base.Draw(p_spriteBatch);
         }
 

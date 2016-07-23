@@ -27,11 +27,11 @@ namespace LegendOfZelda.Util
             }
             else if ("LeeverBlue".Equals(__name))
             {
-                return new Leever(EnemyType.BLUE, new Vector2(p_object.x, p_object.y), p_player);
+                return new Leever(EnemyType.BLUE, new Vector2(p_object.x, p_object.y));
             }
             else if ("LeeverRed".Equals(__name))
             {
-                return new Leever(EnemyType.RED, new Vector2(p_object.x, p_object.y), p_player);
+                return new Leever(EnemyType.RED, new Vector2(p_object.x, p_object.y));
             }
             else if ("Zora".Equals(__name))
             {
@@ -40,6 +40,10 @@ namespace LegendOfZelda.Util
             else if ("Goriya".Equals(__name))
             {
                 return new Goriya(new Vector2(p_object.x, p_object.y));
+            }
+            else if ("Aquamentus".Equals(__name))
+            {
+                return new Aquamentus(new Vector2(p_object.x, p_object.y), p_collider, p_player);
             }
             else
             {

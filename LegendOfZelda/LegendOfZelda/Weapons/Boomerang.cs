@@ -60,6 +60,7 @@ namespace LegendOfZelda.Weapons
             }
             else if (switchedDirection && BoomerangArrived(p_collider, __tmpPosition))
             {
+                DestroyEntity();
                 state = State.DISABLED;
             }
             else

@@ -12,11 +12,15 @@ namespace LegendOfZelda.Weapons
 
         private readonly Player _player;
 
-        public EnergyBall(Entity p_source, Player p_player, Vector2 p_size) : base(p_source, p_size, p_source.direction)
+        private float _yPositionOffset;
+
+        public EnergyBall(Entity p_source, Player p_player, Vector2 p_size, float p_yPositionOffset = 0.0f) : base(p_source, p_size, p_source.direction)
         {
             _velocity = new Vector2(120.0f, 120.0f);
             _player = p_player;
             _direction = Vector2.Normalize(MathUtil.GetEntityCenter(p_player.position, p_player.size) - MathUtil.GetEntityCenter(p_source.position, p_source.size));
+            _yPositionOffset = p_yPositionOffset;
+
             _animationController = new AnimationController(SortEnergyBallAnimation());
 
             hitboxOffset = new Vector2(5.0f, 2.5f);
@@ -34,9 +38,15 @@ namespace LegendOfZelda.Weapons
             if (state != State.ACTIVE) return;
 
             var __tmpPos = position + _direction * _velocity * p_delta;
-            
+
+            if (_yPositionOffset != 0.0f)
+            {
+                __tmpPos.Y += _yPositionOffset * p_delta;
+            }
+
             if (!IsAtScreenBoundaries(__tmpPos, size))
             {
+                DestroyEntity();
                 state = State.DISABLED;
             }
             else

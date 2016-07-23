@@ -57,6 +57,14 @@ namespace LegendOfZelda
             };
         }
 
+        public bool IsColliding(AABB p_aabb)
+        {
+            return IsColliding(p_aabb, Direction.UP) ||
+                   IsColliding(p_aabb, Direction.DOWN) ||
+                   IsColliding(p_aabb, Direction.RIGHT) ||
+                   IsColliding(p_aabb, Direction.LEFT);
+        }
+
         public bool IsColliding(AABB p_aabb, Direction p_direction)
         {
             var __points = GetPointsByDirection(p_aabb, p_direction);

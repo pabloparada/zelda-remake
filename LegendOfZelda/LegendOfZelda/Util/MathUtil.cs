@@ -38,6 +38,11 @@ namespace LegendOfZelda.Util
             return p_position + p_size * 0.5f;
         }
 
+        public static uint RandomUInt32()
+        {
+            return (uint)(World.s_random.Next(1 << 30)) << 2 | (uint)(World.s_random.Next(1 << 2));
+        }
+
         public static float Linear(float p_t)
         {
             return p_t;

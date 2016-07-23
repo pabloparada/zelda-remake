@@ -40,8 +40,6 @@ namespace LegendOfZelda.Weapons
 
             if (!IsAtScreenBoundaries(position, size))
             {
-                
-                System.Console.WriteLine(position);
                 DestroyEntity();
                 state = State.DISABLED;
             }
@@ -52,8 +50,6 @@ namespace LegendOfZelda.Weapons
         public override void OnCollide(Entity p_entity)
         {
             if (p_entity.type != EntityType.ENEMY) return;
-            System.Console.WriteLine(_animationController.Name);
-            System.Console.WriteLine(position);
             
             DestroyEntity();
             state = State.DISABLED;

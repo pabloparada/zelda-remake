@@ -24,6 +24,8 @@ namespace LegendOfZelda.Enemies
 
         private float _hittedTimer;
 
+        private Color _lastHitColor;
+
         public Stalfos(Vector2 p_position) : base(p_position, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 2.0f))
         {
             life = 2;
@@ -118,7 +120,23 @@ namespace LegendOfZelda.Enemies
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            if (immunityTimeAferHit >= 0.0f)
+            {
+                var __currentColor = Color.White.Equals(_lastHitColor) ?
+                                                   Color.Red :
+                                                   Color.White;
+
+                _animationController.DrawFrame(p_spriteBatch,
+                                               MathUtil.GetDrawRectangle(position, size, parentPosition),
+                                               __currentColor);
+
+                _lastHitColor = __currentColor;
+            }
+            else
+            {
+                _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            }
+
             base.Draw(p_spriteBatch);
         }
 

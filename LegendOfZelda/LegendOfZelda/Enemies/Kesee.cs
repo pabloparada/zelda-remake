@@ -30,28 +30,31 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (_sleepTime <= 0.0f)
+            if (!isStunned)
             {
-                if (_animationTick >= 2.0f) _animationTick = 0.0f;
-
-                _animationTick += p_delta * 0.1f;
-
-                _interpolatedTime = InOutQuad(_animationTick);
-
-                var __tmpPosition = position + (_velocity * _interpolatedTime) * _targetDirection * p_delta;
-
-                if (ReachedTargetPosition(__tmpPosition, _targetPosition) || IsColliding(__tmpPosition))
+                if (_sleepTime <= 0.0f)
                 {
-                    SortNextMove();
+                    if (_animationTick >= 2.0f) _animationTick = 0.0f;
+
+                    _animationTick += p_delta*0.1f;
+
+                    _interpolatedTime = InOutQuad(_animationTick);
+
+                    var __tmpPosition = position + (_velocity*_interpolatedTime)*_targetDirection*p_delta;
+
+                    if (ReachedTargetPosition(__tmpPosition, _targetPosition) || IsColliding(__tmpPosition))
+                    {
+                        SortNextMove();
+                    }
+                    else
+                    {
+                        position = __tmpPosition;
+                    }
                 }
                 else
                 {
-                    position = __tmpPosition;
+                    _sleepTime -= p_delta;
                 }
-            }
-            else
-            {
-                _sleepTime -= p_delta;
             }
 
             base.Update(p_delta, p_collider);
@@ -60,15 +63,6 @@ namespace LegendOfZelda.Enemies
         private bool IsColliding(Vector2 p_targetPos)
         {
             return IsBoundary(p_targetPos) || IsBoundary(p_targetPos + size);
-        }
-
-        public override void OnCollide(Entity p_entity)
-        {
-            if (p_entity.type != EntityType.WEAPON) return;
-
-            state = State.DISABLED;
-
-            base.OnCollide(p_entity);
         }
 
         private static float InOutQuad(float p_time)

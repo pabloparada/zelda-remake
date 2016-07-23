@@ -1,10 +1,8 @@
-﻿using System;
-using LegendOfZelda.Animations;
+﻿using LegendOfZelda.Animations;
 using LegendOfZelda.Util;
 using LegendOfZelda.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 
 namespace LegendOfZelda.Enemies
 {
@@ -22,6 +20,12 @@ namespace LegendOfZelda.Enemies
 
         private bool _attacking;
 
+        private Color _lastHitColor;
+
+        private bool _hitted;
+
+        private float _hittedTimer;
+
         public Zora(Vector2 p_position, Collider p_collider, Player p_player) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
         {
             life = 2;
@@ -30,43 +34,61 @@ namespace LegendOfZelda.Enemies
             _velocity = new Vector2(40.0f, 40.0f);
             _spawnRegion = CalculateSpawnRegion(p_collider);
             _player = p_player;
+            _hittedTimer = 0.0f;
+            _hitted = false;
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
-            var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
-            var __isColliding = IsColliding(__tmpPosition);
-
-            if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+            if (!isStunned)
             {
-                if (weapon == null)
-                {
-                    InvokeAddWeaponToManager(new EnergyBall(this, _player, new Vector2(16, 12.0f)));
-                    _attacking = true;
+                var __tmpPosition = position + (_velocity*_targetDirectionVector*p_delta);
+                var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
+                var __isColliding = IsColliding(__tmpPosition);
 
-                    _animationController.ChangeAnimation("Front");
+                if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+                {
+                    if (weapon == null)
+                    {
+                        InvokeAddWeaponToManager(new EnergyBall(this, _player, new Vector2(16, 12.0f)));
+                        _attacking = true;
+
+                        _animationController.ChangeAnimation("Front");
+                    }
+                    else if (weapon.state == State.DISABLED)
+                    {
+                        InvokeRemoveWeaponFromManager();
+                        _attacking = false;
+
+                        _animationController.ChangeAnimation("Underwater");
+                    }
                 }
-                else if (weapon.state == State.DISABLED)
-                {
-                    InvokeRemoveWeaponFromManager();
-                    _attacking = false;
 
-                    _animationController.ChangeAnimation("Underwater");
+                if (!_attacking)
+                {
+                    if (__reachedTargetPos || __isColliding)
+                    {
+                        SortNextMove();
+
+                        direction = _targetDirection;
+                    }
+                    else
+                    {
+                        position = __tmpPosition;
+                    }
                 }
             }
 
-            if (!_attacking)
+            if (_hitted)
             {
-                if (__reachedTargetPos || __isColliding)
+                if (_hittedTimer >= 1.0f)
                 {
-                    SortNextMove();
-
-                    direction = _targetDirection;
+                    _hitted = false;
+                    _hittedTimer = 0.0f;
                 }
                 else
                 {
-                    position = __tmpPosition;
+                    _hittedTimer += p_delta * 0.3f;
                 }
             }
 
@@ -139,7 +161,23 @@ namespace LegendOfZelda.Enemies
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            if (immunityTimeAferHit >= 0.0f)
+            {
+                var __currentColor = Color.White.Equals(_lastHitColor) ?
+                                                   Color.Red:
+                                                   Color.White;
+
+                _animationController.DrawFrame(p_spriteBatch,
+                                               MathUtil.GetDrawRectangle(position, size, parentPosition),
+                                               __currentColor);
+
+                _lastHitColor = __currentColor;
+            }
+            else
+            {
+                _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            }
+
             base.Draw(p_spriteBatch);
         }
 

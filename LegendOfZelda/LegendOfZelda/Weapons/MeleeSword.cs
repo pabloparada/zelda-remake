@@ -26,6 +26,7 @@ namespace LegendOfZelda.Weapons
             }
             else
             {
+                DestroyEntity();
                 state = State.DISABLED;
             }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using LegendOfZelda.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -102,8 +101,19 @@ namespace LegendOfZelda
                 var __enemy = EnemyFactory.CreateEnemyByObject(__obj, player, _collider);
 
                 __enemy.OnDestroyEntity += RemoveEntity;
-                __enemy.AddWeaponToManager += _enemyWeaponManager.AddWeapon;
-                __enemy.RemoveWeaponFromManager += _enemyWeaponManager.RemoveWeapon;
+
+                if (__enemy is Aquamentus)
+                {
+                    var __aqua = (Aquamentus) __enemy;
+
+                    __aqua.AddWeaponsToManager += _enemyWeaponManager.AddWeapons;
+                    __aqua.RemoveWeaponFromManagerByWeaponId += _enemyWeaponManager.RemoveWeaponFromManagerByWeaponId;
+                }
+                else
+                {
+                    __enemy.AddWeaponToManager += _enemyWeaponManager.AddWeapon;
+                    __enemy.RemoveWeaponFromManager += _enemyWeaponManager.RemoveWeapon;
+                }
 
                 _enemies.Add(__enemy);
 
