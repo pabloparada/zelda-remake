@@ -29,9 +29,6 @@ namespace LegendOfZelda.Animations
             if (Frame == null)
                 Frame = FramesList[0];
 
-            //if (resetAnimation)
-            //    Frame = FramesList[0];
-
             timer += p_deltaTime;
             float __tempTimer = timer;
             foreach (AnimationFrame __frame in FramesList)

@@ -64,6 +64,7 @@
     <Compile Include="GUI\GUIMap.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Items\BoomerangItem.cs" />
+    <Compile Include="SoundManager.cs" />
     <Compile Include="Weapons\Boomerang.cs" />
     <Compile Include="Collider.cs" />
     <Compile Include="Direction.cs" />
