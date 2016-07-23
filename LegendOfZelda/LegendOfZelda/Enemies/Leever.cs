@@ -6,65 +6,85 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LegendOfZelda.Enemies
 {
-    public class Octorok : Enemy
+    public enum OktorokType { RED, BLUE }
+
+    public class Leever : Enemy
     {
         private readonly Direction[] _direction;
         private readonly Vector2 _velocity;
-
-        private AABB _tmpAABB;
 
         private Direction _targetDirection;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
 
-        private bool _shooting;
+        private float _waitForDig;
+        private bool _digging;
 
-        private Weapon _weapon;
+        private Player _player;
 
-        public Octorok(EnemyType p_enemyType, Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
+        public Leever(EnemyType p_enemyType, Vector2 p_position, Player p_player) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
         {
             life = 1;
             animationSpeed = 2.5f;
 
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
-            _animationController = new AnimationController(EnemyTypeResolver.TypeToString(p_enemyType, "Octorok"));
+            _animationController = new AnimationController(EnemyTypeResolver.TypeToString(p_enemyType, "Leever"));
+            _animationController.AnimationsList[1].OnAnimationEnd += LeeverOnAnimationEnd;
             _velocity = new Vector2(35.0f, 35.0f);
+       
+            _player = p_player;
+            _waitForDig = 0.0f;
+            _digging = true;
+        }
+
+        private void LeeverOnAnimationEnd()
+        {
+            _animationController.ChangeAnimation("Leever");
         }
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
-            var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
-            var __isColliding = IsColliding(p_collider, __tmpPosition);
-
-            if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+            if (!_digging)
             {
-                if (weapon == null)
-                {
-                    InvokeAddWeaponToManager(new DirectionalProjectile(this, new Vector2(12.0f, 12.0f), new Vector2(2.5f, 2.5f), "Rock"));
-                    _shooting = true;
-                }
-                else if (weapon.state == State.DISABLED)
-                {
-                    InvokeRemoveWeaponFromManager();
-                    _shooting = false;
-                }
-            }
+                var __tmpPosition = position + (_velocity * _targetDirectionVector * p_delta);
+                var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);
+                var __isColliding = IsColliding(p_collider, __tmpPosition);
 
-            if (!_shooting)
-            {
-                if (__reachedTargetPos || __isColliding)
+                if (__reachedTargetPos && _targetPosition != Vector2.Zero)
+                {
+                    _waitForDig = 0.0f;
+                    _digging = true; 
+                }
+                else if (__isColliding || __reachedTargetPos)
                 {
                     SortNextMove();
-
-                    direction = _targetDirection;
-                    _animationController.ChangeAnimation(GetAnimationNameByDirection(_targetDirection));
                 }
                 else
                 {
                     position = __tmpPosition;
+                    
                 }
+            } else
+            {
+                if (_waitForDig <= 0.8f && _digging)
+                {
+                    if (_animationController.Animation.name != "Underground")
+                    {
+                        _animationController.ChangeAnimation("Underground");
+                    }
+                }
+                else if (_waitForDig > 0.8f && _waitForDig <= 1.0f)
+                {
+                    _animationController.ChangeAnimation("Emerging");
+                }
+                else
+                {
+                    _digging = false;
+                    SortNextMove();
+                }
+
+                _waitForDig += p_delta;
             }
 
             direction = _targetDirection;
@@ -83,16 +103,9 @@ namespace LegendOfZelda.Enemies
             _targetDirection = _direction[World.s_random.Next(4)];
             _targetDirectionVector = InputManager.GetDirectionVectorByDirectionEnum(_targetDirection);
 
-            var __targetDistance = 16.0f * World.s_random.Next(1, 12);
+            var __targetDistance = 16.0f * World.s_random.Next(1, 5);
 
             _targetPosition = position + (_targetDirectionVector * __targetDistance);
-        }
-
-        public string GetAnimationNameByDirection(Direction p_direction)
-        {
-            var __name = _targetDirection.ToString();
-
-            return char.ToUpper(__name[0]) + __name.Substring(1).ToLower();
         }
 
         public bool ReachedTargetPosition(Vector2 p_pos, Vector2 p_target)

@@ -65,6 +65,44 @@
                  "name":"Goriya0",
                  "properties":
                     {
+                     "Name":"LeeverRed"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":80
+                },
+				{
+                 "height":16,
+                 "id":7,
+                 "name":"Goriya0",
+                 "properties":
+                    {
+                     "Name":"LeeverBlue"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":80
+                },
+				{
+                 "height":16,
+                 "id":7,
+                 "name":"Goriya0",
+                 "properties":
+                    {
                      "Name":"Zora"
                     },
                  "propertytypes":
