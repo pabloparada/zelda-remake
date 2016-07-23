@@ -19,11 +19,19 @@ namespace LegendOfZelda.Util
             }
             else if ("OctorokBlue".Equals(__name))
             {
-                return new Octorok(OktorokType.BLUE, new Vector2(p_object.x, p_object.y));
+                return new Octorok(EnemyType.BLUE, new Vector2(p_object.x, p_object.y));
             }
             else if ("OctorokRed".Equals(__name))
             {
-                return new Octorok(OktorokType.RED, new Vector2(p_object.x, p_object.y));
+                return new Octorok(EnemyType.RED, new Vector2(p_object.x, p_object.y));
+            }
+            else if ("LeeverBlue".Equals(__name))
+            {
+                return new Leever(EnemyType.BLUE, new Vector2(p_object.x, p_object.y), p_player);
+            }
+            else if ("LeeverRed".Equals(__name))
+            {
+                return new Leever(EnemyType.RED, new Vector2(p_object.x, p_object.y), p_player);
             }
             else if ("Zora".Equals(__name))
             {

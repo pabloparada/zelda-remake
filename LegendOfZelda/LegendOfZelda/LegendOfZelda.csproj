@@ -49,7 +49,9 @@
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationController.cs" />
     <Compile Include="Animations\AnimationFrame.cs" />
+    <Compile Include="Enemies\EnemyType.cs" />
     <Compile Include="Enemies\Goriya.cs" />
+    <Compile Include="Enemies\Leever.cs" />
     <Compile Include="Enemies\Octorok.cs" />
     <Compile Include="Enemies\Zora.cs" />
     <Compile Include="Explosion\SpawnExplosion.cs" />
