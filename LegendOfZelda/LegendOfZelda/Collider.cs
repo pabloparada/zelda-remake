@@ -119,7 +119,7 @@ namespace LegendOfZelda
         {
             if (p_tileAABB.Mask == CollisionMask.NONE) return false;
 
-            else if (p_tileAABB.Mask == CollisionMask.WATER) return true;
+            else if (p_tileAABB.Mask == CollisionMask.WATER) return IsPointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Max, false);
 
             else if (p_tileAABB.Mask == CollisionMask.FULL) return IsPointInsideRectangle(p_point, p_tileAABB.Min, p_tileAABB.Max, false);
 

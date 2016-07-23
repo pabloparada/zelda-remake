@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
@@ -7,6 +8,7 @@ namespace LegendOfZelda.Weapons
 {
     public class PlayerWeaponManager
     {
+        public event Action<Vector2> OnLinkSwordDie;
         private Weapon _firstProjectile;
         private Weapon _secondProjectile;
         private Weapon _melee;
@@ -98,7 +100,7 @@ namespace LegendOfZelda.Weapons
                 if (InputManager.GetKeyChange(Keys.X) && _secondProjectileState == WeaponState.DISABLED)
                 {
                     _secondProjectile = new DirectionalProjectile(_source, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 5.0f), "LinkSword");
-
+                    _secondProjectile.OnDestroyEntity += _secondProjectile_OnDestroyEntity;
                     _secondProjectileState = WeaponState.ACTIVE;
                 }
 
@@ -120,6 +122,11 @@ namespace LegendOfZelda.Weapons
                     }
                 }
             }
+        }
+
+        private void _secondProjectile_OnDestroyEntity(Entity obj)
+        {
+            OnLinkSwordDie(obj.position);
         }
 
         private void UpdateFirstProjectile(float p_delta, Collider p_collider)

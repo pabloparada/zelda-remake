@@ -42,6 +42,7 @@ namespace LegendOfZelda
             entitiesToRemove = new List<Entity>();
 
             _playerWeaponManager = new PlayerWeaponManager(p_player);
+            _playerWeaponManager.OnLinkSwordDie += _playerWeaponManager_OnLinkSwordDie;
             _enemyWeaponManager = new EnemyWeaponManager();
 
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
@@ -55,6 +56,11 @@ namespace LegendOfZelda
 
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
+        }
+
+        private void _playerWeaponManager_OnLinkSwordDie(Vector2 obj)
+        {
+            CreateExplosion(obj, 2);
         }
 
         private void SetPortals(Layer p_layer)
@@ -101,21 +107,39 @@ namespace LegendOfZelda
 
                 _enemies.Add(__enemy);
 
-                CreateExplosion(__obj, true);
+                CreateExplosion(new Vector2(__obj.x, __obj.y), 0);
             }
         }
-        private void CreateExplosion(Object p_obj, bool p_spawnExplosion)
+        private void CreateExplosion(Vector2 p_pos, int p_explosionType)
         {
-            if (p_spawnExplosion)
-                entities.Add(new SpawnExplosion(p_obj));
-            entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+            if (p_explosionType == 0)
+            {
+                entities.Add(new SpawnExplosion(p_pos));
+                entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+            }
+            else if (p_explosionType == 1)
+            {
+                entities.Add(new DeathExplosion(p_pos));
+                entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+            }
+            else if (p_explosionType == 2)
+            {
+                entities.Add(new SwordExplosion(p_pos, new Vector2(-1f, 1f)));
+                entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+                entities.Add(new SwordExplosion(p_pos, new Vector2(1f, 1f)));
+                entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+                entities.Add(new SwordExplosion(p_pos, new Vector2(-1f, -1f)));
+                entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+                entities.Add(new SwordExplosion(p_pos, new Vector2(1f, -1f)));
+                entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+            }
+
         }
         private void SetItems(Layer p_layer)
         {
             if (p_layer == null)
             {
                 Console.WriteLine("ITEMS LAYER NOT FOUND");
-
                 return;
             }
             foreach (var __obj in p_layer.objects)
@@ -144,7 +168,6 @@ namespace LegendOfZelda
 
             _playerWeaponManager.Draw(p_spriteBatch);
             _enemyWeaponManager.Draw(p_spriteBatch);
-
             base.Draw(p_spriteBatch);
         }
 
@@ -175,6 +198,8 @@ namespace LegendOfZelda
         public void RemoveEntity(Entity p_ent)
         {
             entitiesToRemove.Add(p_ent);
+            if (p_ent.type == EntityType.ENEMY)
+                CreateExplosion(p_ent.position, 1);
         }
         private void RemoveEntities()
         {
@@ -258,6 +283,7 @@ namespace LegendOfZelda
                 {
                     if (_collider.IsIntersectingRectangle(__portal.aabb, player.aabb))
                     {
+                        DisableAllButPlayer();
                         OnPortalEnter?.Invoke(__portal);
 
                         return;
@@ -266,13 +292,22 @@ namespace LegendOfZelda
                 else if (_collider.IsPointInsideRectangle(player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max) &&
                          _collider.IsPointInsideRectangle(player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
+                    DisableAllButPlayer();
                     OnPortalEnter?.Invoke(__portal);
-
+                    
                     return;
                 }
             }
         }
-
+        private void DisableAllButPlayer()
+        {
+            foreach (Entity __en in entities)
+                if (__en.type != EntityType.PLAYER)
+                {
+                    Console.WriteLine("Here");
+                    __en.state = State.DISABLED;
+                }
+        }
         private void DrawCollisionMap(SpriteBatch p_spriteBatch)
         {
             foreach (var __collider in _collider.Collisions)

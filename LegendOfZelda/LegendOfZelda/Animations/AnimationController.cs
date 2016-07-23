@@ -8,9 +8,10 @@ namespace LegendOfZelda.Animations
     {
         public List<Animation>  AnimationsList { get; }
         public Animation        Animation { get; private set; }
-
+        public string           Name { get; private set; }
         public AnimationController(string p_animatorType)
         {
+            Name = p_animatorType;
             AnimationsList = new List<Animation>();
             switch (p_animatorType)
             {
@@ -87,16 +88,16 @@ namespace LegendOfZelda.Animations
                     break;
                 //Up-Left, Up-Right, Down-Left, Down-Right
                 case "SwordExplosionUL":
-                    AddMultipleFrameAnimation("UL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UL1, 4);
+                    AddMultipleFrameAnimation("UL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UL1, 4, 0.1f);
                     break;
                 case "SwordExplosionUR":
-                    AddMultipleFrameAnimation("UR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UR1, 4);
+                    AddMultipleFrameAnimation("UR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_UR1, 4, 0.1f);
                     break;
                 case "SwordExplosionDL":
-                    AddMultipleFrameAnimation("DL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DL1, 4);
+                    AddMultipleFrameAnimation("DL", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DL1, 4, 0.1f);
                     break;
                 case "SwordExplosionDR":
-                    AddMultipleFrameAnimation("DR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DR1, 3);
+                    AddMultipleFrameAnimation("DR", TilesetManager.ProjectileTileSet.SWORD_EXPLOSION_DR1, 4, 0.1f);
                     break;
                 case "EnergyBallA":
                     AddMultipleFrameAnimation("EnergyBallA", TilesetManager.ProjectileTileSet.ENERGY_BALL_A1, 2);
@@ -108,7 +109,7 @@ namespace LegendOfZelda.Animations
                     AddOneFrameAnimation("Rock", TilesetManager.ProjectileTileSet.ROCK);
                     break;
                 case "DeathExplosion":
-                    AddMultipleFrameAnimation("Death", TilesetManager.ProjectileTileSet.DEATH_EXPLOSION_1, 8);
+                    AddMultipleFrameAnimation("Death", TilesetManager.ProjectileTileSet.DEATH_EXPLOSION_1, 8, 0.075f);
                     break;
                 case "SpawnExplosion":
                     AddMultipleFrameAnimation("Spawn", TilesetManager.ProjectileTileSet.SPAWN_EXPLOSION_1, 3);
