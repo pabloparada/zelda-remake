@@ -37,7 +37,7 @@ namespace LegendOfZelda
             guiManager = new GUIManager(_player);
             //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_6-5"), _player);
             //mapName = "Room_6-5";
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_1-0"), _player);
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_4-1"), _player);
             mapName = "Dungeon_1-0";
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;

@@ -64,16 +64,29 @@ namespace LegendOfZelda
         public override void Update(float p_delta, Collider p_collider)
         {
             direction = GetDefaultDirection();
-            Direction __dir = InputManager.GetDirection().Item1;
+
+            var __dir = InputManager.GetDirection().Item1;
+
             if (__dir == Direction.NONE && _animationController.Animation.name.StartsWith("Walk"))
+            {
                 animationSpeed = 0f;
+            }
             else
+            {
                 animationSpeed = 1f;
+            }
+
             if (__dir != _lasDirection)
-                _animationController.ChangeAnimation("Walk" + CultureInfo.CurrentCulture.
-                    TextInfo.ToTitleCase(__dir.ToString().ToLower()));
-            _directionVector = InputManager.GetDirection().Item2;
-            
+            {
+                _animationController.ChangeAnimation("Walk" + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(__dir.ToString().ToLower()));
+
+                _directionVector = InputManager.GetDirection().Item2;
+            }
+            else
+            {
+                _directionVector = InputManager.GetDirectionVectorByDirectionEnum(_lasDirection);
+            }
+
             MoveAndFixCollisionFraction(p_delta, p_collider, direction);
 
             _lasDirection = direction;
@@ -97,9 +110,10 @@ namespace LegendOfZelda
             aabb.Max = __tempPos + size;
             movementAABB.Min = __tempPos + movementAABBOffset;
             movementAABB.Max = __tempPos + movementAABBOffset + movementAABBSize;
+
             if (Math.Abs(_directionVector.X) > 0 || Math.Abs(_directionVector.Y) > 0)
             {
-                _isColliding = p_collider.IsColliding(movementAABB, p_direction);
+                _isColliding = p_collider.IsColliding(movementAABB);
             }
 
             if (_isColliding)
@@ -156,6 +170,8 @@ namespace LegendOfZelda
             if (_isColliding) p_spriteBatch.DrawRectangle(__debugHitbox, Color.Red, 1.0f);
 
             var __msgPos = new Vector2((parentPosition.X + position.X) * Main.s_scale, (parentPosition.Y + position.Y) * Main.s_scale);
+
+            p_spriteBatch.DrawRectangle(movementAABB.ScaledRectangleFromAABB(), Color.Yellow, 2.0f);
 
             p_spriteBatch.DrawString(Main.s_debugFont, "X:" + (int) position.X + " Y:" + (int) position.Y, __msgPos, Color.Black);
 
