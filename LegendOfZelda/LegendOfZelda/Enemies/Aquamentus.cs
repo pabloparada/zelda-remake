@@ -136,6 +136,20 @@ namespace LegendOfZelda.Enemies
             return __dist >= -0.5f && __dist <= 0.5f;
         }
 
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+
+            if (life != 0) return;
+
+            foreach (var __w in _weapons)
+            {
+                RemoveWeaponFromManagerByWeaponId.Invoke(__w.id);
+            }
+
+            _weapons.Clear();
+        }
+
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             if (immunityTimeAferHit >= 0.0f)
