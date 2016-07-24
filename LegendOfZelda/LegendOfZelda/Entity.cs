@@ -44,7 +44,7 @@ namespace LegendOfZelda
 
         //Collision
         public AABB         aabb { get; protected set; }
-        public Rectangle    hitbox { get; private set; }
+        public Rectangle    hitbox { get; set; }
         public Vector2      hitboxOffset { get; protected set; }
         public Vector2      hitboxSize { get; protected set; }
         
@@ -69,10 +69,7 @@ namespace LegendOfZelda
 
         public virtual void Draw(SpriteBatch p_spriteBatch) {}
 
-        public virtual void DebugDraw(SpriteBatch p_spriteBatch)
-        {
-            p_spriteBatch.DrawRectangle(MathUtil.GetDrawRectangle(hitbox, parentPosition), Color.Yellow, 3f);
-        }
+        public virtual void DebugDraw(SpriteBatch p_spriteBatch) {}
 
         public virtual void OnCollide(Entity p_entity) {}
 
