@@ -3,6 +3,13 @@ namespace LegendOfZelda.Items
 {
     public class Item : Entity
     {
+        public enum SpawnType
+        {
+            ALWAYS,
+            ALL_DEAD
+        }
+        public SpawnType spawn = SpawnType.ALWAYS;
+       
         public enum ItemType
         {
             HEART_CONTAINER,
@@ -43,8 +50,13 @@ namespace LegendOfZelda.Items
                 return new Heart(p_itemObj);
             else if (p_itemObj.properties.Name == "WoodSword")
                 return new WoodSwordItem(p_itemObj);
-
-            else return new Compass(p_itemObj);
+            else if (p_itemObj.properties.Name == "Oldman")
+                return new Oldman(p_itemObj);
+            else if (p_itemObj.properties.Name == "Text")
+                return new Text(p_itemObj);
+            else return null;
         }
+
+        public virtual void AllDead() { }
     }
 }

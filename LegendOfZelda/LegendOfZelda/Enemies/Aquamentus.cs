@@ -36,6 +36,7 @@ namespace LegendOfZelda.Enemies
             _velocity = new Vector2(5.0f, 5.0f);
             _player = p_player;
             _weapons = new List<Weapon>();
+            size = new Vector2(32f, 32f);
         }
 
         public override void Update(float p_delta, Collider p_collider)

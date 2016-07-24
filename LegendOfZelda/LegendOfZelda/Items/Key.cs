@@ -9,12 +9,15 @@ namespace LegendOfZelda.Items
         public Key(Object p_obj)
         {
             tag = "Key";
+            spawn = (SpawnType)p_obj.properties.KeyType;
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
-            state = State.ACTIVE;
+            if (spawn == SpawnType.ALWAYS)
+                state = State.ACTIVE;
             hitboxSize = new Vector2(8f, 12f);
             hitboxOffset = new Vector2(4f, 2f);
             UpdateAABB();
+           
         }
         public override void Update(float delta, Collider p_collider)
         {
@@ -39,6 +42,12 @@ namespace LegendOfZelda.Items
                 DestroyEntity();
                 Inventory.Instance.keyCount++;
             }
+        }
+        public override void AllDead()
+        {
+            base.AllDead();
+            if (spawn == SpawnType.ALL_DEAD)
+                state = State.ACTIVE;
         }
     }
 }

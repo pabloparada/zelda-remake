@@ -38,6 +38,13 @@ namespace LegendOfZelda
         public int TargetPositionY { get; set; }
         public int TransitionType { get; set; }
         public string Name { get; set; }
+        public string Text1 { get; set; }
+        public string Text2 { get; set; }
+        public int KeyType { get; set; }
+        public int DoorType { get; set; }
+        public int DoorSide { get; set; }
+        public int TileToOpen { get; set; }
+        public bool CloseOnEnter { get; set; }
     }
 
     public class Propertytypes
@@ -47,6 +54,8 @@ namespace LegendOfZelda
         public string TargetPositionY { get; set; }
         public string TransitionType { get; set; }
         public string Name { get; set; }
+        public string Text1 { get; set; }
+        public string Text2 { get; set; }
     }
 
     public class Object

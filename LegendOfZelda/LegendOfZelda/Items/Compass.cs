@@ -32,9 +32,11 @@ namespace LegendOfZelda.Items
         public override void OnCollide(Entity p_entity)
         {
             base.OnCollide(p_entity);
-            Inventory.Instance.hasCompass = true;
             if (p_entity.type == EntityType.PLAYER)
+            {
+                Inventory.Instance.hasCompass = true;
                 DestroyEntity();
+            }
         }
     }
 }

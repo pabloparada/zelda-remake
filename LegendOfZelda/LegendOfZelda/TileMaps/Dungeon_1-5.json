@@ -222,10 +222,12 @@
                  "name":"Key",
                  "properties":
                     {
+                     "KeyType":1,
                      "Name":"Key"
                     },
                  "propertytypes":
                     {
+                     "KeyType":"int",
                      "Name":"string"
                     },
                  "rotation":0,

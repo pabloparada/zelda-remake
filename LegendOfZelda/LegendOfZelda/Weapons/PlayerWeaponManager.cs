@@ -65,6 +65,7 @@ namespace LegendOfZelda.Weapons
                 {
                     _melee = new MeleeSword(_source);
                     _meleeSwordState = WeaponState.ACTIVE;
+                    _source.SetAttackAnimation();
                 }
 
                 if (_meleeSwordState == WeaponState.ACTIVE)

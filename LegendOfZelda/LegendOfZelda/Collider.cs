@@ -38,7 +38,10 @@ namespace LegendOfZelda
                 }
             }
         }
-
+        public void ChangeAABBMaskType(int p_aabbIndex, CollisionMask p_mask)
+        {
+            _collisions[p_aabbIndex].ChangeMask(p_mask);
+        }
         public List<AABB> FilterCollisionsByCollisionMasks(CollisionMask p_mask)
         {
             return _collisions.FindAll(p_aabb => p_aabb.Mask == p_mask);
@@ -247,7 +250,10 @@ namespace LegendOfZelda
             _max = p_max;
             _mask = p_mask;
         }
-
+        public void ChangeMask(CollisionMask p_mask)
+        {
+            _mask = p_mask;
+        }
         public Rectangle ToRectangle()
         {
             return ToRectangle(16, 16);

@@ -100,6 +100,7 @@
  <objectgroup name="Items">
   <object id="16" name="Key" x="160" y="128" width="16" height="16">
    <properties>
+    <property name="KeyType" type="int" value="1"/>
     <property name="Name" value="Key"/>
    </properties>
   </object>

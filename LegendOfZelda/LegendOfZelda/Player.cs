@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using LegendOfZelda.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +18,9 @@ namespace LegendOfZelda
         private Vector2 _directionVector;
         private Direction _lasDirection;
 
+        private AABB movementAABB;
+        private Vector2 movementAABBOffset;
+        private Vector2 movementAABBSize;
         public Player()
         {
             type = EntityType.PLAYER;
@@ -28,14 +32,28 @@ namespace LegendOfZelda
             _maximumLife = 16;
             
             position = new Vector2(120, 120);
-            size = new Vector2(12, 12);
+            size = new Vector2(16, 16);
             direction = GetDefaultDirection();
-
+            _animationController = new Animations.AnimationController("Player");
+            for(int i = 4; i < 8; i ++)
+                _animationController.AnimationsList[i].OnAnimationEnd += Player_OnAnimationEnd;
             _lasDirection = Direction.DOWN;
             _velocity = new Vector2(80.0f, 80.0f);
             _directionVector = new Vector2(0, 0);
 
-            aabb = new AABB(position, position + size);
+            hitboxSize = new Vector2(8f, 12f);
+            hitboxOffset = new Vector2(4f, 2f);
+            UpdateAABB();
+            movementAABBOffset = new Vector2(4f, 7f);
+            movementAABBSize = new Vector2(8f, 7f);
+            movementAABB = new AABB(position + movementAABBOffset, position + size);
+        }
+
+        private void Player_OnAnimationEnd()
+        {
+            Console.WriteLine("Here");
+            _animationController.ChangeAnimation("Walk" 
+                + _animationController.Animation.name.Remove(0, 6));
         }
 
         public void ForcePosition(Vector2 p_pos)
@@ -46,9 +64,16 @@ namespace LegendOfZelda
         public override void Update(float p_delta, Collider p_collider)
         {
             direction = GetDefaultDirection();
-
+            Direction __dir = InputManager.GetDirection().Item1;
+            if (__dir == Direction.NONE && _animationController.Animation.name.StartsWith("Walk"))
+                animationSpeed = 0f;
+            else
+                animationSpeed = 1f;
+            if (__dir != _lasDirection)
+                _animationController.ChangeAnimation("Walk" + CultureInfo.CurrentCulture.
+                    TextInfo.ToTitleCase(__dir.ToString().ToLower()));
             _directionVector = InputManager.GetDirection().Item2;
-
+            
             MoveAndFixCollisionFraction(p_delta, p_collider, direction);
 
             _lasDirection = direction;
@@ -70,10 +95,11 @@ namespace LegendOfZelda
 
             aabb.Min = __tempPos;
             aabb.Max = __tempPos + size;
-
+            movementAABB.Min = __tempPos + movementAABBOffset;
+            movementAABB.Max = __tempPos + movementAABBOffset + movementAABBSize;
             if (Math.Abs(_directionVector.X) > 0 || Math.Abs(_directionVector.Y) > 0)
             {
-                _isColliding = p_collider.IsColliding(aabb, p_direction);
+                _isColliding = p_collider.IsColliding(movementAABB, p_direction);
             }
 
             if (_isColliding)
@@ -111,11 +137,14 @@ namespace LegendOfZelda
         {
             return _maximumLife == health;
         }
-
+        public void SetAttackAnimation()
+        {
+            _animationController.ChangeAnimation("Attack" 
+                + _animationController.Animation.name.Remove(0, 4));
+        }
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(position, size, parentPosition), Color.Green);
-
+            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
             base.Draw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)

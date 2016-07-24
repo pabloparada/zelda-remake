@@ -33,7 +33,7 @@ namespace LegendOfZelda
             TRIFORCE2,
             MAP,
             BOW,
-            BOMB,
+            OLDMAN,
             BOOMERANG,
             FIRE1,
             FIRE2
@@ -220,6 +220,13 @@ namespace LegendOfZelda
             {
                 __sourceRect.X = (p_index % (GraphicAssets.enemiesTileset.Width / 16)) * 16;
                 __sourceRect.Y = (p_index / (GraphicAssets.enemiesTileset.Height / 16)) * 16;
+                if (p_index >= 48)
+                {
+                    __sourceRect.X = ((48 + ((p_index - 48) * 2)) % (GraphicAssets.enemiesTileset.Width / 16)) * 16;
+                    __sourceRect.Y = ((48 + ((p_index - 48) * 2)) / (GraphicAssets.enemiesTileset.Height / 16)) * 16;
+                    __sourceRect.Width = 32;
+                    __sourceRect.Height = 32;
+                }
             }
             else if (p_type == TileSetType.INVENTORY)
             {

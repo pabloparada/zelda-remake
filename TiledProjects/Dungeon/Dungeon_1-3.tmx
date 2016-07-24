@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="15">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="16">
  <tileset firstgid="1" name="zelda-tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
@@ -42,7 +42,7 @@
  <layer name="CollisionMask" width="16" height="11" opacity="0.5">
   <data encoding="csv">
 1026,1026,1026,1026,1026,1026,1026,1033,1034,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1033,1034,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1026,1026,1025,1025,1025,1025,1025,1026,1026,
@@ -109,6 +109,17 @@
   <object id="14" name="Kesee5" x="160" y="128" width="16" height="16">
    <properties>
     <property name="Name" value="Kesee"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Doors">
+  <object id="15" name="Door0" x="120" y="20" width="16" height="16">
+   <properties>
+    <property name="CloseOnEnter" type="bool" value="false"/>
+    <property name="DoorSide" type="int" value="1"/>
+    <property name="DoorType" type="int" value="2"/>
+    <property name="Name" value="Door"/>
+    <property name="TileToOpen" type="int" value="23"/>
    </properties>
   </object>
  </objectgroup>

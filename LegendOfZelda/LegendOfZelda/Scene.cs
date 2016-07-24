@@ -17,9 +17,10 @@ namespace LegendOfZelda
         private List<Entity> entitiesToRemove;
         public Player player { get; set; }
 
-        public List<Portal> portals;
-        private List<Enemy> _enemies;
-        private List<Weapon> _weapons;
+        public List<Door>       doors;
+        public List<Portal>     portals;
+        private List<Enemy>     _enemies;
+        private List<Weapon>    _weapons;
 
         private readonly RootObject _rootObject;
         private readonly Texture2D _worldTileSet;
@@ -47,12 +48,13 @@ namespace LegendOfZelda
             SetPortals(RootObjectUtil.GetLayerByName(p_rootObject, "Portals"));
             SetItems(RootObjectUtil.GetLayerByName(p_rootObject, "Items"));
             SetEnemies(RootObjectUtil.GetLayerByName(p_rootObject, "Enemies"));
-
+            SetDoors(RootObjectUtil.GetLayerByName(p_rootObject, "Doors"));
             entities.Add(player);
 
             portals.ForEach(p_portal => entities.Add(p_portal));
             _enemies.ForEach(p_enemy => entities.Add(p_enemy));
-
+            if (_enemies.Count == 0)
+                AllEnemiesDead();
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
         }
@@ -60,6 +62,53 @@ namespace LegendOfZelda
         private void _playerWeaponManager_OnLinkSwordDie(Vector2 obj)
         {
             CreateExplosion(obj, 2);
+        }
+        private void SetDoors(Layer p_layer)
+        {
+            doors = new List<Door>();
+            if (p_layer == null)
+            {
+                Console.WriteLine("DOORS LAYER NOT FOUND");
+                return;
+            }
+            foreach (var __obj in p_layer.objects)
+            {
+                var __tempDoor = new Door(__obj);
+                __tempDoor.OnDoorOpen += OnDoorOpen;
+                doors.Add(__tempDoor);
+            }
+        }
+
+        private void OnDoorOpen(Door p_door)
+        {
+            Console.WriteLine(p_door.name);
+            if (p_door.doorSide == 0)
+            {
+                Layer __layer = RootObjectUtil.GetLayerByName(_rootObject, "TileMap");
+                __layer.data[p_door.tileToOpen] = 417;
+                __layer = RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask");
+                __layer.data[p_door.tileToOpen] = 0;
+                _collider.ChangeAABBMaskType(p_door.tileToOpen, CollisionMask.NONE);
+            }
+            else if (p_door.doorSide == 1)
+            {
+                Layer __layer = RootObjectUtil.GetLayerByName(_rootObject, "TileMap");
+                __layer.data[p_door.tileToOpen] = 397;
+                __layer.data[p_door.tileToOpen + 1] = 398;
+                __layer = RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask");
+                __layer.data[p_door.tileToOpen] = 8;
+                __layer.data[p_door.tileToOpen + 1] = 9;
+                _collider.ChangeAABBMaskType(p_door.tileToOpen, CollisionMask.HALF_LEFT);
+                _collider.ChangeAABBMaskType(p_door.tileToOpen + 1, CollisionMask.HALF_RIGHT);
+            }
+            else if  (p_door.doorSide == 2)
+            {
+                Layer __layer = RootObjectUtil.GetLayerByName(_rootObject, "TileMap");
+                __layer.data[p_door.tileToOpen] = 387;
+                __layer = RootObjectUtil.GetLayerByName(_rootObject, "CollisionMask");
+                __layer.data[p_door.tileToOpen] = 0;
+                _collider.ChangeAABBMaskType(p_door.tileToOpen, CollisionMask.NONE);
+            }
         }
 
         private void SetPortals(Layer p_layer)
@@ -156,6 +205,9 @@ namespace LegendOfZelda
             {
                 var __tempItem = Item.SpawnItem(__obj);
 
+                if (__tempItem == null)
+                    continue;
+
                 __tempItem.name = __obj.name;
                 __tempItem.type = EntityType.ITEM;
                 __tempItem.OnDestroyEntity += RemoveEntity;
@@ -214,8 +266,25 @@ namespace LegendOfZelda
         private void RemoveEntities()
         {
             foreach (Entity __en in entitiesToRemove)
+            {
                 entities.Remove(__en);
+                if (__en.type == EntityType.ENEMY)
+                {
+                    _enemies.Remove((Enemy)__en);
+                    if (_enemies.Count == 0)
+                        AllEnemiesDead();
+                }
+            }
             entitiesToRemove.Clear();
+        }
+        private void AllEnemiesDead()
+        {
+            Console.WriteLine("AllDead");
+            foreach (Door __door in doors)
+                __door.AllDead();
+            foreach (Entity __en in entities)
+                if (__en.type == EntityType.ITEM)
+                    ((Item)__en).AllDead();
         }
         public override void Update(float p_delta)
         {
@@ -244,7 +313,7 @@ namespace LegendOfZelda
 
                 __tmpEntities.AddRange(_playerWeaponManager.weapons);
                 __tmpEntities.AddRange(_enemyWeaponManager.weapons);
-
+                __tmpEntities.AddRange(doors);
                 CheckCollisions(__tmpEntities);
                 CheckPortalCollision();
             }
@@ -264,6 +333,8 @@ namespace LegendOfZelda
                     {
                         continue;
                     }
+                    if (__entity1.state != State.ACTIVE || __entity2.state != State.ACTIVE)
+                        continue;
 
                     if (_collider.IsIntersectingRectangle(__entity1.aabb, __entity2.aabb))
                     {

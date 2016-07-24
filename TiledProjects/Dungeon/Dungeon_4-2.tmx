@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="11">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="12">
  <tileset firstgid="1" name="zelda-tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
@@ -9,7 +9,7 @@
  <imagelayer name="RefImage" opacity="0.33" offsetx="-1024" offsety="-352">
   <image source="../../Images/Maps/Zelda_Quest1_Dundeon1.png" width="1536" height="1056"/>
  </imagelayer>
- <layer name="TileMap" width="16" height="11" visible="0">
+ <layer name="TileMap" width="16" height="11">
   <data encoding="csv">
 4,5,6,5,5,7,8,364,364,9,10,5,5,11,5,12,
 41,42,43,44,45,46,47,367,368,49,50,51,52,53,54,55,
@@ -42,7 +42,7 @@
  <layer name="CollisionMask" width="16" height="11" opacity="0.5">
   <data encoding="csv">
 1026,1026,1026,1026,1026,1026,1026,1033,1034,1026,1026,1026,1026,1026,1026,1026,
-1026,1026,1026,1026,1026,1026,1026,1033,1034,1026,1026,1026,1026,1026,1026,1026,
+1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
 1026,1026,1025,1026,1025,1026,1025,1026,1026,1025,1026,1025,1026,1025,1026,1026,
 1026,1026,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1025,1026,1026,
@@ -84,7 +84,19 @@
  <objectgroup name="Items">
   <object id="10" name="Key" x="160" y="128" width="16" height="16">
    <properties>
+    <property name="KeyType" type="int" value="0"/>
     <property name="Name" value="Key"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Doors">
+  <object id="11" name="Door0" x="120" y="20" width="16" height="16">
+   <properties>
+    <property name="CloseOnEnter" type="bool" value="false"/>
+    <property name="DoorSide" type="int" value="1"/>
+    <property name="DoorType" type="int" value="2"/>
+    <property name="Name" value="Door"/>
+    <property name="TileToOpen" type="int" value="23"/>
    </properties>
   </object>
  </objectgroup>

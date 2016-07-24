@@ -49,6 +49,7 @@
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationController.cs" />
     <Compile Include="Animations\AnimationFrame.cs" />
+    <Compile Include="Door.cs" />
     <Compile Include="Enemies\Aquamentus.cs" />
     <Compile Include="Enemies\EnemyType.cs" />
     <Compile Include="Enemies\Goriya.cs" />
@@ -64,6 +65,8 @@
     <Compile Include="GUI\GUIMap.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Items\BoomerangItem.cs" />
+    <Compile Include="Items\Oldman.cs" />
+    <Compile Include="Items\Text.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Weapons\Boomerang.cs" />
     <Compile Include="Collider.cs" />

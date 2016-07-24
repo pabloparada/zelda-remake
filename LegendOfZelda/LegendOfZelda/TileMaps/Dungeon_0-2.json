@@ -203,7 +203,30 @@
                  "name":"Text",
                  "properties":
                     {
-                     "Name":"Text"
+                     "Name":"Text",
+                     "Text1":"EASTMOST PENNINSULA",
+                     "Text2":"   IS THE SECRET."
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string",
+                     "Text1":"string",
+                     "Text2":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":160,
+                 "x":48,
+                 "y":32
+                }, 
+                {
+                 "height":16,
+                 "id":18,
+                 "name":"Oldman",
+                 "properties":
+                    {
+                     "Name":"Oldman"
                     },
                  "propertytypes":
                     {
@@ -212,9 +235,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":160,
-                 "x":48,
-                 "y":32
+                 "width":16,
+                 "x":120,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -223,7 +246,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":18,
+ "nextobjectid":19,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tileheight":16,

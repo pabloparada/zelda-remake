@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="15">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="18">
  <tileset firstgid="1" name="zelda-tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
@@ -104,6 +104,14 @@
   <object id="13" name="Stalfos4" x="208" y="112" width="16" height="16">
    <properties>
     <property name="Name" value="Stalfos"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Items">
+  <object id="17" name="Key" x="176" y="128" width="16" height="16">
+   <properties>
+    <property name="KeyType" type="int" value="1"/>
+    <property name="Name" value="Key"/>
    </properties>
   </object>
  </objectgroup>

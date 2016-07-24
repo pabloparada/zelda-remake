@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="18">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="19">
  <tileset firstgid="1" name="zelda-tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
@@ -95,6 +95,13 @@
   <object id="17" name="Text" x="48" y="32" width="160" height="32">
    <properties>
     <property name="Name" value="Text"/>
+    <property name="Text1" value="EASTMOST PENNINSULA"/>
+    <property name="Text2" value="   IS THE SECRET."/>
+   </properties>
+  </object>
+  <object id="18" name="Oldman" x="120" y="64" width="16" height="16">
+   <properties>
+    <property name="Name" value="Oldman"/>
    </properties>
   </object>
  </objectgroup>

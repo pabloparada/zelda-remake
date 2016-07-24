@@ -14,7 +14,7 @@
             }
         }
 
-        public int keyCount = 0;
+        public int keyCount = 10;
         public int rupeeCount = 0;
         public int bombCount = 0;
         public bool hasMap = false;
