@@ -9,6 +9,7 @@ namespace LegendOfZelda.Items
         public MapItem(Object p_obj)
         {
             tag = "Map";
+            _animationController = new Animations.AnimationController("MapItem");
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;

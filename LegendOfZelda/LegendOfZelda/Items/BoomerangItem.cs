@@ -9,6 +9,7 @@ namespace LegendOfZelda.Items
         public BoomerangItem(Object p_obj)
         {
             tag = "BoomerangItem";
+            _animationController = new Animations.AnimationController("BoomerangItem");
             spawn = (SpawnType)p_obj.properties.KeyType;
             if (spawn == SpawnType.ALWAYS)
                 state = State.ACTIVE;
@@ -23,12 +24,8 @@ namespace LegendOfZelda.Items
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             base.Draw(p_spriteBatch);
-
-            p_spriteBatch.Draw(GraphicAssets.itemsTileset, 
-                               MathUtil.GetDrawRectangle(position,size,parentPosition), 
-                               TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, 
-                               (int) TilesetManager.ItemTileSet.BOOMERANG), 
-                               Color.White);
+            _animationController.DrawFrame(p_spriteBatch, 
+                MathUtil.GetDrawRectangle(position, size, parentPosition));
         }
         public override void OnCollide(Entity p_entity)
         {

@@ -1,8 +1,5 @@
 ﻿using System;
-using LegendOfZelda.Util;
-using LegendOfZelda.Animations;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace LegendOfZelda
 {
@@ -27,13 +24,13 @@ namespace LegendOfZelda
             type = EntityType.ITEM;
             tag = "Door";
             name = p_obj.name;
+            closeOnEnter = p_obj.properties.CloseOnEnter;
+            tileToOpen = p_obj.properties.TileToOpen;
             doorType = (DoorType)p_obj.properties.DoorType;
             doorSide = p_obj.properties.DoorSide;
             isOpen = false;
             if (doorType == DoorType.KEY)
                 canOpen = false;
-            closeOnEnter = p_obj.properties.CloseOnEnter;
-            tileToOpen = p_obj.properties.TileToOpen;
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;
@@ -60,7 +57,7 @@ namespace LegendOfZelda
             if (isOpen) return;
 
             if (p_entity.type == EntityType.PLAYER && doorType == DoorType.KEY 
-                &&  canOpen && Inventory.Instance.keyCount > 0)
+                && canOpen && Inventory.Instance.keyCount > 0)
             {
                 Inventory.Instance.keyCount--;
                 isOpen = true;

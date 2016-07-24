@@ -24,7 +24,7 @@ namespace LegendOfZelda
 
         public static Random s_random;
         public static string mapName;
-
+        public static SaveState s_saveState;
         private Player _player;
 
         public World()
@@ -35,18 +35,22 @@ namespace LegendOfZelda
             _player = new Player();
             _tileReader = new TiledReader();
             guiManager = new GUIManager(_player);
-            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_6-5"), _player);
+            
             //mapName = "Room_6-5";
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_4-1"), _player);
-            mapName = "Dungeon_1-0";
+            mapName = "Dungeon_2-2";
+            s_saveState = new SaveState();
+            s_saveState.AddRoom(mapName);
+            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_6-5"), _player);
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-2"), _player);
+         
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
         }
 
         private void Scene_OnPortalEnter(Portal p_portal)
         {
-            ChangeScene(new Scene(_tileReader.LoadTiledJson(p_portal.targetMap), CurrentScene.player), p_portal);
             mapName = p_portal.targetMap;
+            ChangeScene(new Scene(_tileReader.LoadTiledJson(p_portal.targetMap), CurrentScene.player), p_portal);
         }
 
         public static bool IsOpenWorld()

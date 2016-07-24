@@ -67,6 +67,7 @@
     <Compile Include="Items\BoomerangItem.cs" />
     <Compile Include="Items\Oldman.cs" />
     <Compile Include="Items\Text.cs" />
+    <Compile Include="SaveState.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Weapons\Boomerang.cs" />
     <Compile Include="Collider.cs" />
