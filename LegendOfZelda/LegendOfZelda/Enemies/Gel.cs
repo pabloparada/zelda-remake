@@ -35,7 +35,7 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (!isStunned)
+            if (!isStuned)
             {
                 if (_tick >= -0.5f && _tick < 0.0f)
                 {
@@ -59,7 +59,7 @@ namespace LegendOfZelda.Enemies
                 else if (_tick > 0.0f)
                 {
                     _nextMovementAABB = CalculateAABBWithOffset(_targetPosition, hitboxOffset, size);
-                    var __collisionFound = p_collider.IsColliding(_nextMovementAABB, _targetDirection);
+                    var __collisionFound = IsBoundary(_targetPosition) || p_collider.IsColliding(_nextMovementAABB, _targetDirection);
 
                     if (__collisionFound)
                     {
@@ -85,6 +85,8 @@ namespace LegendOfZelda.Enemies
                     _tick += p_delta;
                 }
             }
+
+            direction = _targetDirection;
 
             base.Update(p_delta, p_collider);
         }

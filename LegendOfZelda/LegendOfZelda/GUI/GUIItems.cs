@@ -63,15 +63,15 @@ namespace LegendOfZelda.GUI
             //Draw Hearts
             var __x = 0;
 
-            for (var __i = 0; __i < _player.health; __i += 2)
+            for (var __i = 0; __i < _player.life; __i += 2)
             {
                 var __type = 0;
 
-                if (_player.health - __i > 1)
+                if (_player.life - __i > 1)
                 {
                     __type = 0;
                 }
-                else if (_player.health - __i == 1)
+                else if (_player.life - __i == 1)
                 {
                     __type = 1;
                 }

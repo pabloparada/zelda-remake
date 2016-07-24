@@ -101,7 +101,7 @@ namespace LegendOfZelda.Weapons
                 if (InputManager.GetKeyChange(Keys.X) && _secondProjectileState == WeaponState.DISABLED)
                 {
                     _secondProjectile = new DirectionalProjectile(_source, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 5.0f), "LinkSword");
-                    _secondProjectile.OnDestroyEntity += _secondProjectile_OnDestroyEntity;
+                    _secondProjectile.OnDestroyEntity += SecondProjectileOnDestroyEntity;
                     _secondProjectileState = WeaponState.ACTIVE;
                 }
 
@@ -125,8 +125,9 @@ namespace LegendOfZelda.Weapons
             }
         }
 
-        private void _secondProjectile_OnDestroyEntity(Entity obj)
+        private void SecondProjectileOnDestroyEntity(Entity obj)
         {
+            _secondProjectileState = WeaponState.DISABLED;
             OnLinkSwordDie(obj.position);
         }
 

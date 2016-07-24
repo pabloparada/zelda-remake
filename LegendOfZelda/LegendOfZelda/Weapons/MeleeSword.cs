@@ -8,7 +8,7 @@ namespace LegendOfZelda.Weapons
     {
         private readonly Player _player;
 
-        public MeleeSword(Player p_source) : base(p_source, new Vector2(3.6f, 15.0f), p_source.direction)
+        public MeleeSword(Player p_source) : base(p_source, new Vector2(5.6f, 15.0f), p_source.direction)
         {
             weaponType = WeaponType.SWORD;
 

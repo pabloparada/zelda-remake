@@ -38,7 +38,7 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (!isStunned)
+            if (!isStuned)
             {
                 // dont push when boomerang is being thrown
                 if (_hitted && _throwingBoomerang)
@@ -136,7 +136,7 @@ namespace LegendOfZelda.Enemies
         {
             base.OnCollide(p_entity);
 
-            if (p_entity.type == EntityType.WEAPON && !isStunned && hittedBy != WeaponType.BOOMERANG)
+            if (p_entity.type == EntityType.WEAPON && !isStuned && hittedBy != WeaponType.BOOMERANG)
             {
                 var __weap = (Weapon) p_entity;
 

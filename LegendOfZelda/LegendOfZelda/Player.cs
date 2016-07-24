@@ -8,19 +8,26 @@ namespace LegendOfZelda
 {
     public class Player : Entity
     {
-        public int health { get; set; }
-
         private readonly Vector2 _velocity;
         private readonly int _maximumLife;
 
         private bool _isColliding;
+        private bool _hitted;
 
-        private Vector2 _directionVector;
         private Direction _lasDirection;
+        private Direction _hitDirection;
 
         private AABB movementAABB;
+
+        private Vector2 _directionVector;
         private Vector2 movementAABBOffset;
         private Vector2 movementAABBSize;
+        private Vector2 _hitPushDistance;
+
+        private Color _lastHitColor;
+
+        private float _hittedTimer;
+
         public Player()
         {
             type = EntityType.PLAYER;
@@ -28,7 +35,7 @@ namespace LegendOfZelda
             name = "Player";
             state = State.ACTIVE;
 
-            health = 16;
+            life = 16;
             _maximumLife = 16;
             
             position = new Vector2(120, 120);
@@ -39,7 +46,7 @@ namespace LegendOfZelda
                 _animationController.AnimationsList[i].OnAnimationEnd += Player_OnAnimationEnd;
             _lasDirection = Direction.DOWN;
             _velocity = new Vector2(80.0f, 80.0f);
-            _directionVector = new Vector2(0, 0);
+            _directionVector = InputManager.GetDirectionVectorByDirectionEnum(direction);
 
             hitboxSize = new Vector2(8f, 12f);
             hitboxOffset = new Vector2(4f, 2f);
@@ -87,11 +94,11 @@ namespace LegendOfZelda
                 _directionVector = InputManager.GetDirectionVectorByDirectionEnum(_lasDirection);
             }
 
-            MoveAndFixCollisionFraction(p_delta, p_collider, direction);
+            MoveAndFixCollisionFraction(p_delta, p_collider, __dir);
 
             _lasDirection = direction;
 
-            base.Update(p_delta);
+            base.Update(p_delta, p_collider);
         }
 
         private Direction GetDefaultDirection()
@@ -102,55 +109,100 @@ namespace LegendOfZelda
 
         public void MoveAndFixCollisionFraction(float p_delta, Collider p_collider, Direction p_direction)
         {
-            var __maxReach = 0.0f;
-
-            var __tempPos = position + _directionVector * _velocity * p_delta;
-
-            aabb.Min = __tempPos;
-            aabb.Max = __tempPos + size;
-            movementAABB.Min = __tempPos + movementAABBOffset;
-            movementAABB.Max = __tempPos + movementAABBOffset + movementAABBSize;
-
-            if (Math.Abs(_directionVector.X) > 0 || Math.Abs(_directionVector.Y) > 0)
+            if (_hitted && immunityTimeAferHit > 0.0f)
             {
-                _isColliding = p_collider.IsColliding(movementAABB);
-            }
+                var __tmpPosition = Vector2.Lerp(position, _hitPushDistance, _hittedTimer);
 
-            if (_isColliding)
-            {
-                var __reachFraction = p_delta * 0.5f;
+                aabb.Min = __tmpPosition;
+                aabb.Max = __tmpPosition + size;
+                movementAABB.Min = __tmpPosition + movementAABBOffset;
+                movementAABB.Max = __tmpPosition + movementAABBOffset + movementAABBSize;
 
-                for (var __i = 0; __i < 4; __i++)
+                if (ReachedTargetPosition(__tmpPosition, _hitPushDistance) || p_collider.IsColliding(movementAABB) ||
+                    _hittedTimer >= 1.0f)
                 {
-                    __tempPos = position + (_directionVector * _velocity * p_delta * __reachFraction);
-
-                    _isColliding = p_collider.IsColliding(new AABB(__tempPos, __tempPos + size), p_direction);
-
-                    if (_isColliding)
-                        __reachFraction -= 1f / (float)Math.Pow(2, __i + 2);
-                    else
-                    {
-                        __reachFraction += 1f / (float)Math.Pow(2, __i + 2);
-                        __maxReach = __reachFraction;
-                    }
+                    _hitted = false;
+                    _hittedTimer = 0.0f;
                 }
+                else
+                {
+                    position = __tmpPosition;
+                }
+
+                _hittedTimer += p_delta*0.3f;
             }
             else
             {
-                __maxReach = 1f;
-            }
+                var __maxReach = 0.0f;
 
-            if (__maxReach > 0f)
+                var __tempPos = position + _directionVector * _velocity * p_delta;
+
+                aabb.Min = __tempPos;
+                aabb.Max = __tempPos + size;
+                movementAABB.Min = __tempPos + movementAABBOffset;
+                movementAABB.Max = __tempPos + movementAABBOffset + movementAABBSize;
+
+                if (p_collider.IsColliding(movementAABB))
+                {
+                    var __reachFraction = p_delta * 0.5f;
+
+                    for (var __i = 0; __i < 4; __i++)
+                    {
+                        __tempPos = position + (_directionVector * _velocity * p_delta * __reachFraction);
+
+                        _isColliding = p_collider.IsColliding(new AABB(__tempPos + movementAABBOffset, __tempPos + movementAABBOffset + movementAABBSize), p_direction);
+
+                        if (_isColliding)
+                            __reachFraction -= 1f / (float)Math.Pow(2, __i + 2);
+                        else
+                        {
+                            __reachFraction += 1f / (float)Math.Pow(2, __i + 2);
+                            __maxReach = __reachFraction;
+                        }
+                    }
+                }
+                else
+                {
+                    __maxReach = 1f;
+                }
+
+                if (__maxReach > 0f)
+                {
+                    position += _directionVector * _velocity * p_delta * __maxReach;
+                    position = new Vector2((float)Math.Round(position.X), (float)Math.Round(position.Y));
+                }
+            }
+        }
+
+        public bool ReachedTargetPosition(Vector2 p_pos, Vector2 p_target)
+        {
+            if (p_target == Vector2.Zero) return true;
+
+            var __dist = (p_pos - p_target).Length();
+
+            return __dist >= -0.5f && __dist <= 0.5f;
+        }
+
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+
+            if (p_entity.type == EntityType.ENEMY && immunityTimeAferHit == -0.5f)
             {
-                position += _directionVector * _velocity * p_delta * __maxReach;
-                position = new Vector2((float)Math.Round(position.X), (float)Math.Round(position.Y));
+                var __dir = MathUtil.Revert(InputManager.GetDirectionVectorByDirectionEnum(direction));
+
+                life -= 1;
+                _hitted = true;
+                _hitPushDistance = position + __dir * Vector2.One * 40.0f;
+                immunityTimeAferHit = 0.0f;
             }
         }
 
         public bool IsHealthFull()
         {
-            return _maximumLife == health;
+            return _maximumLife == life;
         }
+
         public void SetAttackAnimation()
         {
             _animationController.ChangeAnimation("Attack" 
@@ -158,7 +210,21 @@ namespace LegendOfZelda
         }
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            if (immunityTimeAferHit - 0.2f >= 0.0f)
+            {
+                var __currentColor = _animationController.HitColor.Equals(_lastHitColor) ? Color.IndianRed : _animationController.HitColor;
+
+                _animationController.DrawFrame(p_spriteBatch,
+                                               MathUtil.GetDrawRectangle(position, size, parentPosition),
+                                               __currentColor);
+
+                _lastHitColor = __currentColor;
+            }
+            else
+            {
+                _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+            }
+            
             base.Draw(p_spriteBatch);
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)

@@ -43,7 +43,7 @@ namespace LegendOfZelda.Util
             }
             else if ("Aquamentus".Equals(__name))
             {
-                return new Aquamentus(new Vector2(p_object.x, p_object.y), p_collider, p_player);
+                return new Aquamentus(new Vector2(p_object.x, p_object.y), p_player);
             }
             else
             {

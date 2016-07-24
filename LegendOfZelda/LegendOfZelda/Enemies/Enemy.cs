@@ -7,15 +7,11 @@ namespace LegendOfZelda.Enemies
     public class Enemy : Entity
     {
         protected Vector2 aabbSize;
-        protected float immunityTimeAferHit;
-        protected float stunTimer;
         protected WeaponType hittedBy;
 
         public event Action<Enemy, Weapon> AddWeaponToManager;
         public event Action<Enemy> RemoveWeaponFromManager;
 
-        public bool isStunned;
-        
         public Weapon weapon { get; set; }
 
         public Enemy(Vector2 p_position, Vector2 p_size, Vector2 p_aabbOffset, int p_life = 1)
@@ -46,26 +42,6 @@ namespace LegendOfZelda.Enemies
         {
             aabb = CalculateAABBWithOffset(position, hitboxOffset, size);
 
-            if (immunityTimeAferHit >= 0.0f)
-            {
-                immunityTimeAferHit += p_delta;
-            }
-
-            if (immunityTimeAferHit >= 1.5f)
-            {
-                immunityTimeAferHit = -0.5f;
-            }
-
-            if (isStunned && stunTimer <= 3.0f)
-            {
-                stunTimer += p_delta;
-            }
-            else
-            {
-                stunTimer = 0.0f;
-                isStunned = false;
-            }
-
             base.Update(p_delta, p_collider);
         }
 
@@ -80,7 +56,7 @@ namespace LegendOfZelda.Enemies
                 if (__weapon.weaponType == WeaponType.BOOMERANG)
                 {
                     var __bom = (Boomerang) __weapon;
-                    isStunned = !__bom.switchedDirection;
+                    isStuned = !__bom.switchedDirection;
                 }
                 else
                 {

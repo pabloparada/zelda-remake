@@ -52,6 +52,10 @@ namespace LegendOfZelda
         public AnimationController  _animationController;
         public float                animationSpeed = 1.0f;
 
+        public float        immunityTimeAferHit = -0.5f;
+        public float        stunTimer;
+        public bool         isStuned;
+
         public Entity()
         {
             id = Guid.NewGuid().ToString();
@@ -65,6 +69,26 @@ namespace LegendOfZelda
 
         public virtual void Update(float p_delta, Collider p_collider)
         {
+            if (immunityTimeAferHit >= 0.0f)
+            {
+                immunityTimeAferHit += p_delta;
+            }
+
+            if (immunityTimeAferHit >= 1.5f)
+            {
+                immunityTimeAferHit = -0.5f;
+            }
+
+            if (isStuned && stunTimer <= 3.0f)
+            {
+                stunTimer += p_delta;
+            }
+            else
+            {
+                stunTimer = 0.0f;
+                isStuned = false;
+            }
+
             _animationController?.UpdateAnimationController(p_delta * animationSpeed);
         }
 

@@ -30,7 +30,7 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (!isStunned)
+            if (!isStuned)
             {
                 if (_sleepTime <= 0.0f)
                 {

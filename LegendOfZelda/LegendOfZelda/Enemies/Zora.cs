@@ -40,7 +40,7 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (!isStunned)
+            if (!isStuned)
             {
                 var __tmpPosition = position + (_velocity*_targetDirectionVector*p_delta);
                 var __reachedTargetPos = ReachedTargetPosition(__tmpPosition, _targetPosition);

@@ -39,7 +39,7 @@ namespace LegendOfZelda.Enemies
 
         public override void Update(float p_delta, Collider p_collider)
         {
-            if (!isStunned)
+            if (!isStuned)
             {
                 if (_hitted)
                 {
@@ -109,7 +109,7 @@ namespace LegendOfZelda.Enemies
         {
             base.OnCollide(p_entity);
 
-            if (p_entity.type == EntityType.WEAPON && !isStunned && hittedBy != WeaponType.BOOMERANG)
+            if (p_entity.type == EntityType.WEAPON && !isStuned && hittedBy != WeaponType.BOOMERANG)
             {
                 var __weaponDirection = InputManager.GetDirectionVectorByDirectionEnum(p_entity.direction);
                 _hitted = true;
