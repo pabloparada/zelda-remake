@@ -27,6 +27,7 @@ namespace LegendOfZelda.Enemies
         private bool _attacking;
 
         private Color _lastHitColor;
+        private float _lastImmunityTimeAferHit;
 
         public Aquamentus(Vector2 p_position, Collider p_collider, Player p_player) : base(p_position, new Vector2(16.0f, 16.0f), new Vector2(4.0f, 4.0f))
         {
@@ -154,19 +155,19 @@ namespace LegendOfZelda.Enemies
         {
             if (immunityTimeAferHit >= 0.0f)
             {
-                var __currentColor = Color.White.Equals(_lastHitColor) ?
-                                                   Color.Red :
-                                                   Color.White;
+                var __currentColor = _animationController.HitColor.Equals(_lastHitColor) ? Color.IndianRed : _animationController.HitColor;
 
                 _animationController.DrawFrame(p_spriteBatch,
                                                MathUtil.GetDrawRectangle(position, size, parentPosition),
                                                __currentColor);
 
                 _lastHitColor = __currentColor;
+                _lastImmunityTimeAferHit += 1;
             }
             else
             {
                 _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+                _lastImmunityTimeAferHit = 0.0f;
             }
 
             base.Draw(p_spriteBatch);

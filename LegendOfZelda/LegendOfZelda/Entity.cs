@@ -36,6 +36,7 @@ namespace LegendOfZelda
         public EntityType   type = EntityType.EMPTY;
         public State        state = State.DISABLED;
         public string       id;
+        public int          life = 1;
        
         public Vector2      parentPosition;
         public Vector2      position { get; protected set; }

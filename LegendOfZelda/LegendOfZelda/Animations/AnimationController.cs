@@ -9,8 +9,11 @@ namespace LegendOfZelda.Animations
         public List<Animation>  AnimationsList { get; }
         public Animation        Animation { get; private set; }
         public string           Name { get; private set; }
+        public Color            HitColor { get; private set; }
+
         public AnimationController(string p_animatorType)
         {
+            HitColor = new Color(255.0f, 255.0f, 255.0f, 0.01f);
             Name = p_animatorType;
             AnimationsList = new List<Animation>();
             switch (p_animatorType)

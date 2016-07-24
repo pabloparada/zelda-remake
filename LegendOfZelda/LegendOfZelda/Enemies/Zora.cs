@@ -163,9 +163,7 @@ namespace LegendOfZelda.Enemies
         {
             if (immunityTimeAferHit >= 0.0f)
             {
-                var __currentColor = Color.White.Equals(_lastHitColor) ?
-                                                   Color.Red:
-                                                   Color.White;
+                var __currentColor = _animationController.HitColor.Equals(_lastHitColor) ? Color.IndianRed : _animationController.HitColor;
 
                 _animationController.DrawFrame(p_spriteBatch,
                                                MathUtil.GetDrawRectangle(position, size, parentPosition),

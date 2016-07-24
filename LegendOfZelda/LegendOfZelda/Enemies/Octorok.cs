@@ -11,16 +11,12 @@ namespace LegendOfZelda.Enemies
         private readonly Direction[] _direction;
         private readonly Vector2 _velocity;
 
-        private AABB _tmpAABB;
-
         private Direction _targetDirection;
 
         private Vector2 _targetDirectionVector;
         private Vector2 _targetPosition;
 
         private bool _shooting;
-
-        private Weapon _weapon;
 
         public Octorok(EnemyType p_enemyType, Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
         {

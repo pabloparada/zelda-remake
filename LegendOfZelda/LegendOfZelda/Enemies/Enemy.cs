@@ -7,7 +7,6 @@ namespace LegendOfZelda.Enemies
     public class Enemy : Entity
     {
         protected Vector2 aabbSize;
-        protected int life;
         protected float immunityTimeAferHit;
         protected float stunTimer;
         protected WeaponType hittedBy;
