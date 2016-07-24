@@ -65,6 +65,7 @@ namespace LegendOfZelda
         }
         private void SetDoors(Layer p_layer)
         {
+            Console.WriteLine("Here");
             doors = new List<Door>();
             if (p_layer == null)
             {
@@ -75,13 +76,15 @@ namespace LegendOfZelda
             {
                 var __tempDoor = new Door(__obj);
                 __tempDoor.OnDoorOpen += OnDoorOpen;
+                if (World.s_saveState.HasEnemy(__obj.name, World.mapName))
+                    OnDoorOpen(__tempDoor);
                 doors.Add(__tempDoor);
             }
         }
 
         private void OnDoorOpen(Door p_door)
         {
-            Console.WriteLine(p_door.name);
+            World.s_saveState.AddDoorToRoom(p_door.name, World.mapName);
             if (p_door.doorSide == 0)
             {
                 Layer __layer = RootObjectUtil.GetLayerByName(_rootObject, "TileMap");
@@ -147,10 +150,12 @@ namespace LegendOfZelda
 
             foreach (Object __obj in p_layer.objects)
             {
+                if (World.s_saveState.HasEnemy(__obj.name, World.mapName))
+                    continue;
                 var __enemy = EnemyFactory.CreateEnemyByObject(__obj, player, _collider);
 
                 __enemy.OnDestroyEntity += RemoveEntity;
-
+                __enemy.name = __obj.name;
                 if (__enemy is Aquamentus)
                 {
                     var __aqua = (Aquamentus) __enemy;
@@ -203,6 +208,8 @@ namespace LegendOfZelda
             }
             foreach (var __obj in p_layer.objects)
             {
+                if (World.s_saveState.HasItem(__obj.name, World.mapName))
+                    continue;
                 var __tempItem = Item.SpawnItem(__obj);
 
                 if (__tempItem == null)
@@ -261,7 +268,12 @@ namespace LegendOfZelda
         {
             entitiesToRemove.Add(p_ent);
             if (p_ent.type == EntityType.ENEMY)
+            {
                 CreateExplosion(p_ent.position, 1);
+                World.s_saveState.AddEnemyToRoom(p_ent.name, World.mapName);
+            }
+            else if (p_ent.type == EntityType.ITEM)
+                World.s_saveState.AddItemToRoom(p_ent.name, World.mapName);
         }
         private void RemoveEntities()
         {
@@ -384,10 +396,7 @@ namespace LegendOfZelda
         {
             foreach (Entity __en in entities)
                 if (__en.type != EntityType.PLAYER)
-                {
-                    Console.WriteLine("Here");
                     __en.state = State.DISABLED;
-                }
         }
         private void DrawCollisionMap(SpriteBatch p_spriteBatch)
         {

@@ -17,16 +17,25 @@ namespace LegendOfZelda.Animations
             {
                 //Items
                 case "Fire":
-                    AddTwoFrameAnimation("Fire", TilesetManager.ItemTileSet.FIRE1, 0.5f);
+                    AddMultipleFrameAnimation("Fire", TilesetManager.ItemTileSet.FIRE1, 2, 0.5f);
                     break;
                 case "Triforce":
-                    AddTwoFrameAnimation("Triforce", TilesetManager.ItemTileSet.TRIFORCE1, 0.5f);
+                    AddMultipleFrameAnimation("Triforce", TilesetManager.ItemTileSet.TRIFORCE1, 2, 0.5f);
                     break;
                 case "Heart":
-                    AddTwoFrameAnimation("Heart", TilesetManager.ItemTileSet.FIRE1);
+                    AddMultipleFrameAnimation("Heart", TilesetManager.ItemTileSet.FIRE1, 2);
                     break;
                 case "Rupee":
-                    AddTwoFrameAnimation("Rupee", TilesetManager.ItemTileSet.RUPEE1);
+                    AddMultipleFrameAnimation("Rupee", TilesetManager.ItemTileSet.RUPEE1, 2);
+                    break;
+                case "BoomerangItem":
+                    AddMultipleFrameAnimation("Boomerang", TilesetManager.ItemTileSet.BOOMERANG, 1);
+                    break;
+                case "MapItem":
+                    AddMultipleFrameAnimation("Map", TilesetManager.ItemTileSet.MAP, 1);
+                    break;
+                case "Compass":
+                    AddMultipleFrameAnimation("Rupee", TilesetManager.ItemTileSet.COMPASS, 1);
                     break;
                 //Enemies
                 case "OctorokRed":
@@ -161,6 +170,12 @@ namespace LegendOfZelda.Animations
             AnimationsList.Add(new Animation(p_animName));
             AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile, p_frameDuration));
             AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + 1, p_frameDuration));
+        }
+        private void AddMultipleFrameAnimation(string p_animName, TilesetManager.ItemTileSet p_tile, int p_frameCount, float p_frameDuration = 0.2f)
+        {
+            AnimationsList.Add(new Animation(p_animName));
+            for (int i = 0; i < p_frameCount; i++)
+                AnimationsList[AnimationsList.Count - 1].FramesList.Add(new AnimationFrame(p_tile + i, p_frameDuration));
         }
         private void AddMultipleFrameAnimation(string p_animName, TilesetManager.ProjectileTileSet p_tile, int p_frameCount, float p_frameDuration = 0.2f)
         {

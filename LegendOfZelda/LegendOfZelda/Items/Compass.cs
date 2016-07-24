@@ -9,6 +9,7 @@ namespace LegendOfZelda.Items
         public Compass(Object p_obj)
         {
             tag = "Compass";
+            _animationController = new Animations.AnimationController("Compass");
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;
@@ -23,11 +24,8 @@ namespace LegendOfZelda.Items
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            spriteBatch.Draw(GraphicAssets.itemsTileset, 
-                MathUtil.GetDrawRectangle(position, size, parentPosition),
-                TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, 
-                (int)TilesetManager.ItemTileSet.COMPASS), 
-                Color.White);
+            _animationController.DrawFrame(spriteBatch,
+                MathUtil.GetDrawRectangle(position, size, parentPosition));
         }
         public override void OnCollide(Entity p_entity)
         {
