@@ -58,6 +58,9 @@ namespace LegendOfZelda.Enemies
                     AddWeaponsToManager.Invoke(_weapons);
 
                     _attacking = true;
+                    _animationController.ChangeAnimation("Attack");
+
+                    SoundManager.instance.Play(World.s_random.Next(2) == 1 ? SoundType.BOSS_SCREAM_1 : SoundType.BOSS_SCREAM_2);
                 }
                 else
                 {
@@ -81,6 +84,11 @@ namespace LegendOfZelda.Enemies
 
             if (!_attacking)
             {
+                if (_animationController.Animation.name != "Idle")
+                {
+                    _animationController.ChangeAnimation("Idle");
+                }
+
                 if (__reachedTargetPos || __isColliding)
                 {
                     SortNextMove();

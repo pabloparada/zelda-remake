@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using LegendOfZelda.Util;
+using LegendOfZelda.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -17,12 +18,13 @@ namespace LegendOfZelda
         private Direction _lasDirection;
         private Direction _hitDirection;
 
-        private AABB movementAABB;
+        public AABB movementAABB { get; private set; }
 
         private Vector2 _directionVector;
         private Vector2 movementAABBOffset;
         private Vector2 movementAABBSize;
         private Vector2 _hitPushDistance;
+        private Vector2 _hitPushDirectionVector;
 
         private Color _lastHitColor;
 
@@ -112,7 +114,7 @@ namespace LegendOfZelda
 
         public void MoveAndFixCollisionFraction(float p_delta, Collider p_collider, Direction p_direction)
         {
-            if (_hitted && immunityTimeAferHit > 0.0f)
+            if (_hitted && immunityTimeAferHit >= 0.0f)
             {
                 var __tmpPosition = Vector2.Lerp(position, _hitPushDistance, _hittedTimer);
 
@@ -121,7 +123,8 @@ namespace LegendOfZelda
                 movementAABB.Min = __tmpPosition + movementAABBOffset;
                 movementAABB.Max = __tmpPosition + movementAABBOffset + movementAABBSize;
 
-                if (ReachedTargetPosition(__tmpPosition, _hitPushDistance) || p_collider.IsColliding(movementAABB) ||
+                if (ReachedTargetPosition(__tmpPosition, _hitPushDistance) || 
+                    p_collider.IsColliding(movementAABB) ||
                     _hittedTimer >= 1.0f)
                 {
                     _hitted = false;
@@ -130,6 +133,18 @@ namespace LegendOfZelda
                 else
                 {
                     position = __tmpPosition;
+                }
+
+                if (!IsAtScreenBoundaries(__tmpPosition, size))
+                {
+                    var __dirVec = MathUtil.Revert(_hitPushDirectionVector);
+
+                    direction = InputManager.GetDirectionEnumByDirectionVector(_hitPushDirectionVector);
+
+                    position += new Vector2(3.0f, 3.0f) * __dirVec;
+
+                    _hitted = false;
+                    _hittedTimer = 0.0f;
                 }
 
                 _hittedTimer += p_delta*0.3f;
@@ -190,14 +205,23 @@ namespace LegendOfZelda
         {
             base.OnCollide(p_entity);
 
-            if (p_entity.type == EntityType.ENEMY && immunityTimeAferHit == -0.5f)
+            if ((p_entity.type == EntityType.ENEMY || p_entity.type == EntityType.WEAPON) && immunityTimeAferHit == -0.5f)
             {
-                var __dir = MathUtil.Revert(InputManager.GetDirectionVectorByDirectionEnum(direction));
+                if (p_entity.type == EntityType.WEAPON)
+                {
+                    var __weapon = (Weapon) p_entity;
+
+                    if (__weapon.source.type == EntityType.PLAYER || __weapon.weaponType == WeaponType.BOOMERANG) return;
+                }
+
+                _hitPushDirectionVector = MathUtil.Revert(InputManager.GetDirectionVectorByDirectionEnum(direction));
 
                 life -= 1;
                 _hitted = true;
-                _hitPushDistance = position + __dir * Vector2.One * 40.0f;
+                _hitPushDistance = position + _hitPushDirectionVector * Vector2.One * 40.0f;
                 immunityTimeAferHit = 0.0f;
+
+                SoundManager.instance.Play(life == 0 ? SoundType.PLAYER_DEATH : SoundType.PLAYER_HITTED);
             }
             else if (p_entity.type == EntityType.ITEM && p_entity.tag == "HeartContainer")
                 IncreaseMaxHealth();
@@ -210,14 +234,13 @@ namespace LegendOfZelda
 
         public void SetAttackAnimation()
         {
-            _animationController.ChangeAnimation("Attack" 
-                + _animationController.Animation.name.Remove(0, 4));
+            _animationController.ChangeAnimation("Attack" + _animationController.Animation.name.Remove(0, 4));
         }
         public override void Draw(SpriteBatch p_spriteBatch)
         {
             if (immunityTimeAferHit - 0.2f >= 0.0f)
             {
-                var __currentColor = _animationController.HitColor.Equals(_lastHitColor) ? Color.IndianRed : _animationController.HitColor;
+                var __currentColor = _animationController.HitColor.Equals(_lastHitColor) ? Color.White : _animationController.HitColor;
 
                 _animationController.DrawFrame(p_spriteBatch,
                                                MathUtil.GetDrawRectangle(position, size, parentPosition),

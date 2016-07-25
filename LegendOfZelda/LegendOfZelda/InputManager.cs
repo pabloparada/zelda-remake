@@ -69,6 +69,15 @@ namespace LegendOfZelda
             return _directionCache[p_direction].Item2;
         }
 
+        public static Direction GetDirectionEnumByDirectionVector(Vector2 p_direction)
+        {
+            if (p_direction == Vector2.UnitX) return Direction.RIGHT;
+            else if (p_direction == Vector2.UnitY) return Direction.DOWN;
+            else if (p_direction == -Vector2.UnitY) return Direction.UP;
+            else if (p_direction == -Vector2.UnitX) return Direction.LEFT;
+            else return Direction.NONE;
+        }
+
         public static string GetAnimationNameByDirection(Direction p_direction)
         {
             var __name = p_direction.ToString();

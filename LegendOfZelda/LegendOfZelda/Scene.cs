@@ -53,10 +53,17 @@ namespace LegendOfZelda
 
             portals.ForEach(p_portal => entities.Add(p_portal));
             _enemies.ForEach(p_enemy => entities.Add(p_enemy));
+
             if (_enemies.Count == 0)
+            {
                 AllEnemiesDead();
+            }
+                
             _worldTileSet = Main.s_game.Content.Load<Texture2D>("TileSet_World");
             _collisionMask = Main.s_game.Content.Load<Texture2D>("TileSet_CollisionMask");
+
+            SoundManager.instance.Play(World.IsOpenWorld() ? SoundType.OVERWORLD : SoundType.DUNGEON, true);
+            SoundManager.instance.StopAndDispose(World.IsOpenWorld() ? SoundType.DUNGEON : SoundType.OVERWORLD);
         }
 
         private void _playerWeaponManager_OnLinkSwordDie(Vector2 obj)
@@ -111,6 +118,8 @@ namespace LegendOfZelda
                 __layer.data[p_door.tileToOpen] = 0;
                 _collider.ChangeAABBMaskType(p_door.tileToOpen, CollisionMask.NONE);
             }
+
+            SoundManager.instance.Play(SoundType.PLAYER_HITTED);
         }
 
         private void SetPortals(Layer p_layer)
@@ -325,6 +334,7 @@ namespace LegendOfZelda
                 __tmpEntities.AddRange(_playerWeaponManager.weapons);
                 __tmpEntities.AddRange(_enemyWeaponManager.weapons);
                 __tmpEntities.AddRange(doors);
+
                 CheckCollisions(__tmpEntities);
                 CheckPortalCollision();
             }
@@ -358,9 +368,7 @@ namespace LegendOfZelda
         // skip weapon vs item | player vs weapon | weapon vs weapon
         private bool ShouldSkipCollisionCheck(Entity p_entity1, Entity p_entity2)
         {
-            return p_entity1.type == EntityType.WEAPON && p_entity2.type == EntityType.PLAYER ||
-                   p_entity2.type == EntityType.WEAPON && p_entity1.type == EntityType.PLAYER ||
-                   p_entity1.type == EntityType.WEAPON && p_entity2.type == EntityType.WEAPON ||
+            return p_entity1.type == EntityType.WEAPON && p_entity2.type == EntityType.WEAPON ||
                    p_entity1.type == EntityType.WEAPON && p_entity2.type == EntityType.ITEM ||
                    p_entity2.type == EntityType.WEAPON && p_entity1.type == EntityType.ITEM;
         }
@@ -370,6 +378,8 @@ namespace LegendOfZelda
             foreach (var __portal in portals)
             {
                 if (__portal.state != State.ACTIVE) continue;
+
+                if (player.immunityTimeAferHit >= 0.0f) return;
 
                 if (__portal.collideOnHit)
                 {
@@ -381,8 +391,8 @@ namespace LegendOfZelda
                         return;
                     }
                 }
-                else if (_collider.IsPointInsideRectangle(player.aabb.Min, __portal.aabb.Min, __portal.aabb.Max) &&
-                         _collider.IsPointInsideRectangle(player.aabb.Max, __portal.aabb.Min, __portal.aabb.Max))
+                else if (_collider.IsPointInsideRectangle(player.movementAABB.Min, __portal.aabb.Min, __portal.aabb.Max) &&
+                         _collider.IsPointInsideRectangle(player.movementAABB.Max, __portal.aabb.Min, __portal.aabb.Max))
                 {
                     DisableAllButPlayer();
                     OnPortalEnter?.Invoke(__portal);

@@ -39,7 +39,10 @@ namespace LegendOfZelda
         protected override void Initialize()
         {
             GraphicAssets.LoadContent();
+            SoundManager.instance.LoadContent();
+
             world = new World();
+
             base.Initialize();
         }
 
@@ -47,6 +50,7 @@ namespace LegendOfZelda
         {
             s_debugFont = Content.Load<SpriteFont>("DebugFontFace");
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
         }
 
         protected override void UnloadContent() {}
