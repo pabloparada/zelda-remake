@@ -78,8 +78,9 @@ namespace LegendOfZelda
         }
         private void Player_OnAnimationEnd()
         {
-            _animationController.ChangeAnimation("Walk" 
-                + _animationController.Animation.name.Remove(0, 6));
+            if (_animationController.Animation.name.StartsWith("Hold"))
+                return;
+            _animationController.ChangeAnimation("Walk" + DirectionUtil.DirectionToTitleCase(direction));
         }
         
 
@@ -90,7 +91,8 @@ namespace LegendOfZelda
         public override void Update(float p_delta, Collider p_collider)
         {
             direction = GetDefaultDirection();
-
+            if (_animationController.Animation.name.StartsWith("Hold"))
+                return;
             if (InputManager.GetKeyChange(Keys.F3))
                 HealLife(20);
 
@@ -223,6 +225,9 @@ namespace LegendOfZelda
         {
             base.OnCollide(p_entity);
 
+            if (_animationController.Animation.name.StartsWith("Hold"))
+                return;
+
             if ((p_entity.type == EntityType.ENEMY || p_entity.type == EntityType.WEAPON) && immunityTimeAferHit == -0.5f)
             {
                 if (p_entity.type == EntityType.WEAPON)
@@ -258,6 +263,14 @@ namespace LegendOfZelda
                 {
                     soundManager.Play(SoundType.GET_HEART);
                     IncreaseMaxHealth();
+                }
+                else if (p_entity.tag == "Triforce")
+                {
+                    _animationController.ChangeAnimation("HoldTriforce");
+                    soundManager.StopAndDispose(SoundType.DUNGEON);
+                    soundManager.Play(SoundType.GET_ITEM);
+                    ForcePosition(new Vector2(120f, 96f));
+
                 }
                 else
                 {

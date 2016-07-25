@@ -28,5 +28,6 @@ namespace LegendOfZelda.Items
             base.Draw(p_spriteBatch);
             _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
         }
+
     }
 }

@@ -7,6 +7,7 @@ namespace LegendOfZelda.Items
 {
     public class Triforce : Item
     {
+        public bool captured = false;
         public Triforce(Object p_obj)
         {
             tag = "Triforce";
@@ -26,6 +27,15 @@ namespace LegendOfZelda.Items
         {
             base.Draw(p_spriteBatch);
             _animationController.DrawFrame(p_spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
+        }
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+            hitboxSize = new Vector2(0f, 0f);
+            hitboxOffset = new Vector2(0f, 0f);
+            UpdateAABB();
+            //if (p_entity.type == EntityType.PLAYER)
+            //    DestroyEntity();
         }
     }
 }

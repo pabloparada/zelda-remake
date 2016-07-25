@@ -20,6 +20,7 @@ namespace LegendOfZelda
         GET_ITEM,
         GET_HEART,
         GET_RUPEE,
+        GET_TRIFORCE,
         OPEN_DOOR
     }
 
@@ -56,6 +57,7 @@ namespace LegendOfZelda
                 { SoundType.GET_ITEM, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Get_Item") },
                 { SoundType.GET_HEART, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Get_Heart") },
                 { SoundType.GET_RUPEE, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Get_Rupee") },
+                { SoundType.GET_TRIFORCE, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Fanfare") },
                 { SoundType.OPEN_DOOR, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Unlock") }
 
             };

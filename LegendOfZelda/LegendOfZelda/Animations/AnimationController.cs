@@ -147,11 +147,11 @@ namespace LegendOfZelda.Animations
                     AddTwoFrameAnimation("WalkUp", TilesetManager.PlayerTileSet.LINK_WALK_U1);
                     AddTwoFrameAnimation("WalkLeft", TilesetManager.PlayerTileSet.LINK_WALK_L1);
                     AddTwoFrameAnimation("WalkDown", TilesetManager.PlayerTileSet.LINK_WALK_D1);
-                    AddOneFrameAnimation("AttackRight", TilesetManager.PlayerTileSet.LINK_ATTACK_R, 0.4f);
-                    AddOneFrameAnimation("AttackUp", TilesetManager.PlayerTileSet.LINK_ATTACK_U, 0.4f);
-                    AddOneFrameAnimation("AttackLeft", TilesetManager.PlayerTileSet.LINK_ATTACK_L, 0.4f);
-                    AddOneFrameAnimation("AttackDown", TilesetManager.PlayerTileSet.LINK_ATTACK_D, 0.4f);
-                    AddOneFrameAnimation("HoldTrifoce", TilesetManager.PlayerTileSet.LINK_HOLD_TRIFORCE);
+                    AddOneFrameAnimation("AttackRight", TilesetManager.PlayerTileSet.LINK_ATTACK_R, 0.25f);
+                    AddOneFrameAnimation("AttackUp", TilesetManager.PlayerTileSet.LINK_ATTACK_U, 0.25f);
+                    AddOneFrameAnimation("AttackLeft", TilesetManager.PlayerTileSet.LINK_ATTACK_L, 0.25f);
+                    AddOneFrameAnimation("AttackDown", TilesetManager.PlayerTileSet.LINK_ATTACK_D, 0.25f);
+                    AddOneFrameAnimation("HoldTriforce", TilesetManager.PlayerTileSet.LINK_HOLD_TRIFORCE, 2.0f);
                     break;
             }
             Animation = AnimationsList[0];
