@@ -16,7 +16,11 @@ namespace LegendOfZelda
         ENEMY_KILL,
         ENEMY_HITTED,
         BOSS_SCREAM_1,
-        BOSS_SCREAM_2
+        BOSS_SCREAM_2,
+        GET_ITEM,
+        GET_HEART,
+        GET_RUPEE,
+        OPEN_DOOR
     }
 
     public class SoundManager
@@ -48,7 +52,11 @@ namespace LegendOfZelda
                 { SoundType.ENEMY_KILL, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Kill") },
                 { SoundType.DUNGEON, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Dungeon") },
                 { SoundType.BOSS_SCREAM_1, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Boss_Scream1") },
-                { SoundType.BOSS_SCREAM_2, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Boss_Scream2") }
+                { SoundType.BOSS_SCREAM_2, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Boss_Scream2") },
+                { SoundType.GET_ITEM, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Get_Item") },
+                { SoundType.GET_HEART, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Get_Heart") },
+                { SoundType.GET_RUPEE, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Get_Rupee") },
+                { SoundType.OPEN_DOOR, Main.s_game.Content.Load<SoundEffect>("Sounds/LOZ_Unlock") }
 
             };
         }

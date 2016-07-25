@@ -59,7 +59,7 @@ namespace LegendOfZelda.Weapons
 
         private void UpdateMeleeAttack(float p_delta, Collider p_collider)
         {
-            if (ShouldCastMeleeAttack())
+            if (ShouldCastMeleeAttack() && Inventory.Instance.hasSword)
             {
                 if (InputManager.GetKeyChange(Keys.X) && _meleeSwordState == WeaponState.DISABLED)
                 {
@@ -93,7 +93,7 @@ namespace LegendOfZelda.Weapons
 
         private void UpdateSecondProjectile(float p_delta, Collider p_collider)
         {
-            if (_source.IsHealthFull() && _firstProjectileState == WeaponState.DISABLED || _secondProjectileState == WeaponState.ACTIVE)
+            if (Inventory.Instance.hasSword && _source.IsHealthFull() && _firstProjectileState == WeaponState.DISABLED || _secondProjectileState == WeaponState.ACTIVE)
             {
                 if (_secondProjectileState == WeaponState.ACTIVE)
                 {
@@ -137,7 +137,7 @@ namespace LegendOfZelda.Weapons
 
         private void UpdateFirstProjectile(float p_delta, Collider p_collider)
         {
-            if (_secondProjectileState == WeaponState.DISABLED)
+            if (_secondProjectileState == WeaponState.DISABLED && Inventory.Instance.hasBoomerang)
             {
                 if (_firstProjectileState == WeaponState.ACTIVE)
                 {

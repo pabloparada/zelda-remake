@@ -11,6 +11,7 @@ namespace LegendOfZelda
 {
     public class Scene : Entity
     {
+        public event Action<Player> OnPlayerDead;
         public event Action<Portal> OnPortalEnter;
 
         private List<Entity> entities { get; }
@@ -75,7 +76,6 @@ namespace LegendOfZelda
             doors = new List<Door>();
             if (p_layer == null)
             {
-                Console.WriteLine("DOORS LAYER NOT FOUND");
                 return;
             }
             foreach (var __obj in p_layer.objects)
@@ -83,14 +83,15 @@ namespace LegendOfZelda
                 var __tempDoor = new Door(__obj);
                 __tempDoor.OnDoorOpen += OnDoorOpen;
                 if (World.s_saveState.HasDoor(__obj.name, World.mapName))
-                    OnDoorOpen(__tempDoor);
+                    OnDoorOpen(__tempDoor, false);
                 doors.Add(__tempDoor);
             }
         }
 
-        private void OnDoorOpen(Door p_door)
+        private void OnDoorOpen(Door p_door, bool p_playSound = true)
         {
             World.s_saveState.AddDoorToRoom(p_door.name, World.mapName);
+            p_door.isOpen = true;
             if (p_door.doorSide == 0)
             {
                 Layer __layer = RootObjectUtil.GetLayerByName(_rootObject, "TileMap");
@@ -118,8 +119,8 @@ namespace LegendOfZelda
                 __layer.data[p_door.tileToOpen] = 0;
                 _collider.ChangeAABBMaskType(p_door.tileToOpen, CollisionMask.NONE);
             }
-
-            SoundManager.instance.Play(SoundType.PLAYER_HITTED);
+            if (p_playSound)
+                SoundManager.instance.Play(SoundType.OPEN_DOOR);
         }
 
         private void SetPortals(Layer p_layer)
@@ -128,7 +129,6 @@ namespace LegendOfZelda
 
             if (p_layer == null)
             {
-                Console.WriteLine("PORTALS LAYER NOT FOUND");
                 return;
             }
 
@@ -211,7 +211,6 @@ namespace LegendOfZelda
         {
             if (p_layer == null)
             {
-                Console.WriteLine("ITEMS LAYER NOT FOUND");
                 return;
             }
             foreach (var __obj in p_layer.objects)
@@ -235,6 +234,7 @@ namespace LegendOfZelda
         {
             DrawTileMap(RootObjectUtil.GetLayerByName(_rootObject, "TileMap"), p_spriteBatch, _worldTileSet, 1f);
 
+            _playerWeaponManager.Draw(p_spriteBatch);
             foreach (var __e in entities)
             {
                 if (__e.state != State.DISABLED)
@@ -243,7 +243,7 @@ namespace LegendOfZelda
                 }
             }
 
-            _playerWeaponManager.Draw(p_spriteBatch);
+            
             _enemyWeaponManager.Draw(p_spriteBatch);
             base.Draw(p_spriteBatch);
         }
@@ -279,6 +279,14 @@ namespace LegendOfZelda
             {
                 CreateExplosion(p_ent.position, 1);
                 World.s_saveState.AddEnemyToRoom(p_ent.name, World.mapName);
+                int __rnd = World.s_random.Next(0, 100);
+                if (__rnd < 25)
+                {
+                    entities.Add(new Heart(p_ent.position));
+                    entities[entities.Count -1].name = "Heart";
+                    entities[entities.Count - 1].type = EntityType.ITEM;
+                    entities[entities.Count - 1].OnDestroyEntity += RemoveEntity;
+                }
             }
             else if (p_ent.type == EntityType.ITEM)
                 World.s_saveState.AddItemToRoom(p_ent.name, World.mapName);
@@ -299,7 +307,6 @@ namespace LegendOfZelda
         }
         private void AllEnemiesDead()
         {
-            Console.WriteLine("AllDead");
             foreach (Door __door in doors)
                 __door.AllDead();
             foreach (Entity __en in entities)
@@ -337,11 +344,12 @@ namespace LegendOfZelda
 
                 CheckCollisions(__tmpEntities);
                 CheckPortalCollision();
+                if (player != null && player.life <= 0)
+                    OnPlayerDead?.Invoke(player);
             }
 
             base.Update(p_delta);
         }
-
         private void CheckCollisions(List<Entity> p_entities)
         {
             for (var __i = 0; __i < p_entities.Count; __i++)

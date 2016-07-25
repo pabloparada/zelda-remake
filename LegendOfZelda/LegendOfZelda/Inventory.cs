@@ -19,5 +19,8 @@
         public int bombCount = 0;
         public bool hasMap = false;
         public bool hasCompass = false;
+        public bool hasSword = true;
+        public bool hasBoomerang = true;
+        public bool hasBow = false;
     }
 }

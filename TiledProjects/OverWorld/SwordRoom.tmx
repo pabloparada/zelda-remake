@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="14">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="22">
  <tileset firstgid="1" name="TileSet_World" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../Images/TileSets/TileSet_World.png" width="512" height="512"/>
+  <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="1025" name="TileSet_CollisionMask" tilewidth="16" tileheight="16" tilecount="16" columns="4">
-  <image source="../Images/TileSets/TileSet_CollisionMask.png" width="64" height="64"/>
+  <image source="../../Images/TileSets/TileSet_CollisionMask.png" width="64" height="64"/>
  </tileset>
  <imagelayer name="RefImage" visible="0" opacity="0.37" offsetx="0" offsety="-8">
-  <image source="../Images/Maps/Zelda_OverWorld.png" width="4352" height="1408"/>
+  <image source="../Images/Maps/Zelda_OverWorld.png"/>
  </imagelayer>
  <layer name="TileMap" width="16" height="11">
   <data encoding="csv">
@@ -24,7 +24,7 @@
 1,1,1,1,1,1,1,3,3,1,1,1,1,1,1,1
 </data>
  </layer>
- <layer name="CollisionMask" width="16" height="11" opacity="0.46">
+ <layer name="CollisionMask" width="16" height="11" opacity="0.5">
   <data encoding="csv">
 1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
 1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,1026,
@@ -46,6 +46,35 @@
     <property name="TargetPositionX" type="float" value="66"/>
     <property name="TargetPositionY" type="float" value="40"/>
     <property name="TransitionType" type="int" value="4"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Items">
+  <object id="14" name="Fire0" x="72" y="64" width="16" height="16">
+   <properties>
+    <property name="Name" value="Fire"/>
+   </properties>
+  </object>
+  <object id="15" name="Fire1" x="168" y="64" width="16" height="16">
+   <properties>
+    <property name="Name" value="Fire"/>
+   </properties>
+  </object>
+  <object id="16" name="Oldman" x="120" y="64" width="16" height="16">
+   <properties>
+    <property name="Name" value="Oldman"/>
+   </properties>
+  </object>
+  <object id="20" name="Text" x="48" y="32" width="160" height="32">
+   <properties>
+    <property name="Name" value="Text"/>
+    <property name="Text1" value="IT'S DANGEROURS TO GO"/>
+    <property name="Text2" value="   ALONE TAKE THIS"/>
+   </properties>
+  </object>
+  <object id="21" name="WoodSword" x="120" y="96" width="16" height="16">
+   <properties>
+    <property name="Name" value="WoodSword"/>
    </properties>
   </object>
  </objectgroup>

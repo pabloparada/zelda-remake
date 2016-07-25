@@ -3,12 +3,14 @@ using System.Globalization;
 using LegendOfZelda.Util;
 using LegendOfZelda.Weapons;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LegendOfZelda
 {
     public class Player : Entity
     {
+
         private readonly Vector2 _velocity;
         public int maximumLife { get; private set; }
 
@@ -29,7 +31,7 @@ namespace LegendOfZelda
         private Color _lastHitColor;
 
         private float _hittedTimer;
-
+        private SoundManager soundManager;
         public Player()
         {
             type = EntityType.PLAYER;
@@ -37,13 +39,14 @@ namespace LegendOfZelda
             name = "Player";
             state = State.ACTIVE;
 
-            life = 16;
-            maximumLife = 16;
-            
+            ResetMaxHealth();
+
+
             position = new Vector2(120, 120);
             size = new Vector2(16, 16);
             direction = GetDefaultDirection();
             _animationController = new Animations.AnimationController("Player");
+            _animationController.ChangeAnimation("WalkDown");
             for(int i = 4; i < 8; i ++)
                 _animationController.AnimationsList[i].OnAnimationEnd += Player_OnAnimationEnd;
             _lasDirection = Direction.DOWN;
@@ -56,18 +59,29 @@ namespace LegendOfZelda
             movementAABBOffset = new Vector2(4f, 7f);
             movementAABBSize = new Vector2(8f, 7f);
             movementAABB = new AABB(position + movementAABBOffset, position + size);
+
+            soundManager = SoundManager.instance;
         }
         public void IncreaseMaxHealth()
         {
             maximumLife += 2;
             life = maximumLife;
         }
+        public void ResetMaxHealth()
+        {
+            maximumLife = 16;
+            life = maximumLife;
+        }
+        public void HealLife(int p_heal)
+        {
+            life = MathHelper.Clamp(life + p_heal, 0, maximumLife);
+        }
         private void Player_OnAnimationEnd()
         {
-            Console.WriteLine("Here");
             _animationController.ChangeAnimation("Walk" 
                 + _animationController.Animation.name.Remove(0, 6));
         }
+        
 
         public void ForcePosition(Vector2 p_pos)
         {
@@ -76,6 +90,9 @@ namespace LegendOfZelda
         public override void Update(float p_delta, Collider p_collider)
         {
             direction = GetDefaultDirection();
+
+            if (InputManager.GetKeyChange(Keys.F3))
+                HealLife(20);
 
             var __dir = InputManager.GetDirection().Item1;
 
@@ -90,7 +107,8 @@ namespace LegendOfZelda
 
             if (__dir != _lasDirection)
             {
-                _animationController.ChangeAnimation("Walk" + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(__dir.ToString().ToLower()));
+                if (!_animationController.Animation.name.StartsWith("Attack"))
+                    _animationController.ChangeAnimation("Walk" + DirectionUtil.DirectionToTitleCase(direction));
 
                 _directionVector = InputManager.GetDirection().Item2;
             }
@@ -209,7 +227,7 @@ namespace LegendOfZelda
             {
                 if (p_entity.type == EntityType.WEAPON)
                 {
-                    var __weapon = (Weapon) p_entity;
+                    var __weapon = (Weapon)p_entity;
 
                     if (__weapon.source.type == EntityType.PLAYER || __weapon.weaponType == WeaponType.BOOMERANG) return;
                 }
@@ -220,11 +238,32 @@ namespace LegendOfZelda
                 _hitted = true;
                 _hitPushDistance = position + _hitPushDirectionVector * Vector2.One * 40.0f;
                 immunityTimeAferHit = 0.0f;
-
-                SoundManager.instance.Play(life == 0 ? SoundType.PLAYER_DEATH : SoundType.PLAYER_HITTED);
+                soundManager.Play(life == 0 ? SoundType.PLAYER_DEATH : SoundType.PLAYER_HITTED);
             }
-            else if (p_entity.type == EntityType.ITEM && p_entity.tag == "HeartContainer")
-                IncreaseMaxHealth();
+            else if (p_entity.type == EntityType.ITEM)
+            {
+                if (p_entity.name.StartsWith("Door"))
+                    return;
+                if (p_entity.tag == "Rupee")
+                {
+                    soundManager.Play(SoundType.GET_RUPEE);
+                    Inventory.Instance.rupeeCount++;
+                }
+                else if (p_entity.tag == "Heart")
+                {
+                    soundManager.Play(SoundType.GET_HEART);
+                    HealLife(2);
+                }
+                else if (p_entity.tag == "HeartContainer")
+                {
+                    soundManager.Play(SoundType.GET_HEART);
+                    IncreaseMaxHealth();
+                }
+                else
+                {
+                    soundManager.Play(SoundType.GET_ITEM);
+                }
+            }
         }
 
         public bool IsHealthFull()

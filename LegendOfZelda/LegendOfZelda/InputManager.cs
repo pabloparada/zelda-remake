@@ -57,10 +57,10 @@ namespace LegendOfZelda
 
         public static Tuple<Direction, Vector2> GetDirection()
         {
-            if (s_keyboardState.IsKeyDown(Keys.W)) return _directionCache[Direction.UP];
-            else if (s_keyboardState.IsKeyDown(Keys.A)) return _directionCache[Direction.LEFT];
-            else if (s_keyboardState.IsKeyDown(Keys.D)) return _directionCache[Direction.RIGHT];
-            else if (s_keyboardState.IsKeyDown(Keys.S)) return _directionCache[Direction.DOWN];
+            if (s_keyboardState.IsKeyDown(Keys.Up)) return _directionCache[Direction.UP];
+            else if (s_keyboardState.IsKeyDown(Keys.Left)) return _directionCache[Direction.LEFT];
+            else if (s_keyboardState.IsKeyDown(Keys.Right)) return _directionCache[Direction.RIGHT];
+            else if (s_keyboardState.IsKeyDown(Keys.Down)) return _directionCache[Direction.DOWN];
             else return _directionCache[Direction.NONE];
         }
 
