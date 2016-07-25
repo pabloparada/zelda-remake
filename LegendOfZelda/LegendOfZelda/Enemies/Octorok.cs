@@ -20,9 +20,13 @@ namespace LegendOfZelda.Enemies
 
         public Octorok(EnemyType p_enemyType, Vector2 p_position) : base(p_position, new Vector2(15.0f, 15.0f), new Vector2(2.0f, 0.0f))
         {
-            life = 1;
+            if (p_enemyType == EnemyType.BLUE)
+                life = 2;
+            else
+                life = 1;
             animationSpeed = 2.5f;
 
+           
             _direction = new[] { Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT };
             _animationController = new AnimationController(EnemyTypeResolver.TypeToString(p_enemyType, "Octorok"));
             _velocity = new Vector2(35.0f, 35.0f);

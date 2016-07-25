@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="5">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="11" tilewidth="16" tileheight="16" nextobjectid="12">
  <tileset firstgid="1" name="zelda-tiles" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../Images/TileSets/TileSet_World.png" width="512" height="512"/>
  </tileset>
@@ -9,7 +9,7 @@
  <imagelayer name="RefImage" opacity="0.42" offsetx="-2304" offsety="-1231">
   <image source="../../Images/Maps/Zelda_OverWorld.png" width="4352" height="1408"/>
  </imagelayer>
- <layer name="TileMap" width="16" height="11">
+ <layer name="TileMap" width="16" height="11" visible="0">
   <data encoding="csv">
 432,432,412,86,412,86,412,86,86,412,86,412,86,412,86,412,
 432,432,412,86,412,86,412,86,86,412,86,412,86,412,86,412,
@@ -24,7 +24,7 @@
 432,432,412,412,412,412,412,412,412,412,412,412,412,412,412,412
 </data>
  </layer>
- <layer name="CollisionMask" width="16" height="11" opacity="0.5">
+ <layer name="CollisionMask" width="16" height="11" visible="0" opacity="0.5">
   <data encoding="csv">
 1026,1026,1026,1025,1026,1025,1026,1025,1025,1026,1025,1026,1025,1026,1025,1026,
 1026,1026,1026,1025,1026,1025,1026,1025,1025,1026,1025,1026,1025,1026,1025,1026,
@@ -50,6 +50,28 @@
    <properties>
     <property name="TargetMap" value="Room_8-6"/>
     <property name="TransitionType" type="int" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Enemies">
+  <object id="5" name="Octorok0" x="80" y="32" width="16" height="16">
+   <properties>
+    <property name="Name" value="OctorokRed"/>
+   </properties>
+  </object>
+  <object id="9" name="Octorok1" x="128" y="64" width="16" height="16">
+   <properties>
+    <property name="Name" value="OctorokRed"/>
+   </properties>
+  </object>
+  <object id="10" name="Octorok2" x="160" y="64" width="16" height="16">
+   <properties>
+    <property name="Name" value="OctorokRed"/>
+   </properties>
+  </object>
+  <object id="11" name="Octorok3" x="128" y="112" width="16" height="16">
+   <properties>
+    <property name="Name" value="OctorokRed"/>
    </properties>
   </object>
  </objectgroup>

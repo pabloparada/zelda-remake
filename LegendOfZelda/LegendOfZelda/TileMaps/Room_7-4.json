@@ -130,8 +130,39 @@
          "width":0,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":11,
+         "name":"Enemies",
+         "objects":[
+                {
+                 "height":16,
+                 "id":6,
+                 "name":"Zora0",
+                 "properties":
+                    {
+                     "Name":"Zora"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":32
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":16,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":6,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

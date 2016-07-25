@@ -247,7 +247,7 @@ namespace LegendOfZelda
             }
             else if (p_entity.type == EntityType.ITEM)
             {
-                if (p_entity.name.StartsWith("Door"))
+                if (p_entity.name.StartsWith("Door") || p_entity.GetType() == typeof(Door))
                     return;
                 if (p_entity.tag == "Rupee")
                 {

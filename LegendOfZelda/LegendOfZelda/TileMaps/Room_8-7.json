@@ -8,7 +8,7 @@
          "offsety":-1231,
          "opacity":0.419999986886978,
          "type":"imagelayer",
-         "visible":false,
+         "visible":true,
          "width":0,
          "x":0,
          "y":0
@@ -19,7 +19,7 @@
          "name":"TileMap",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":16,
          "x":0,
          "y":0
@@ -30,14 +30,14 @@
          "name":"CollisionMask",
          "opacity":0.5,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":16,
          "x":0,
          "y":0
         }, 
         {
          "draworder":"topdown",
-         "height":11,
+         "height":0,
          "name":"Portals",
          "objects":[
                 {
@@ -81,27 +81,94 @@
                  "width":192,
                  "x":48,
                  "y":0
-                }, 
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":11,
+         "name":"Enemies",
+         "objects":[
                 {
-                 "height":112,
-                 "id":4,
-                 "name":"PortalWest",
+                 "height":16,
+                 "id":5,
+                 "name":"Octorok0",
                  "properties":
                     {
-                     "TargetMap":"Room_7-7",
-                     "TransitionType":2
+                     "Name":"OctorokRed"
                     },
                  "propertytypes":
                     {
-                     "TargetMap":"string",
-                     "TransitionType":"int"
+                     "Name":"string"
                     },
                  "rotation":0,
                  "type":"",
-                 "visible":false,
-                 "width":2,
-                 "x":254,
+                 "visible":true,
+                 "width":16,
+                 "x":80,
                  "y":32
+                }, 
+                {
+                 "height":16,
+                 "id":9,
+                 "name":"Octorok1",
+                 "properties":
+                    {
+                     "Name":"OctorokRed"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":10,
+                 "name":"Octorok2",
+                 "properties":
+                    {
+                     "Name":"OctorokRed"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":160,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":11,
+                 "name":"Octorok3",
+                 "properties":
+                    {
+                     "Name":"OctorokRed"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":112
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -110,7 +177,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":5,
+ "nextobjectid":12,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

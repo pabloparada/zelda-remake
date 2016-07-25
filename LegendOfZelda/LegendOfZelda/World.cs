@@ -36,12 +36,12 @@ namespace LegendOfZelda
             _tileReader = new TiledReader();
             guiManager = new GUIManager(_player);
             
-            //mapName = "Room_7-7";
-            mapName = "Dungeon_2-5";
+            mapName = "Room_7-7";
+            //mapName = "Dungeon_2-2";
             s_saveState = new SaveState();
             s_saveState.AddRoom(mapName);
-            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), _player);
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-5"), _player);
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), _player);
+            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-2"), _player);
          
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;

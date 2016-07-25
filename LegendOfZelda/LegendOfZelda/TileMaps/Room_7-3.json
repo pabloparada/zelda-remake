@@ -155,8 +155,39 @@
          "width":0,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":11,
+         "name":"Enemies",
+         "objects":[
+                {
+                 "height":16,
+                 "id":9,
+                 "name":"OctorokRed0",
+                 "properties":
+                    {
+                     "Name":"OctorokRed"
+                    },
+                 "propertytypes":
+                    {
+                     "Name":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":96
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":16,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":9,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

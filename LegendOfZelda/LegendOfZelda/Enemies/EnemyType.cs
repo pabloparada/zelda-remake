@@ -6,7 +6,7 @@
     {
         public static string TypeToString(EnemyType p_type, string p_name)
         {
-            return p_type == EnemyType.RED ? p_name + "Blue" : p_name + "Red";
+            return p_type == EnemyType.RED ? p_name + "Red" : p_name + "Blue";
         }
     }
 }

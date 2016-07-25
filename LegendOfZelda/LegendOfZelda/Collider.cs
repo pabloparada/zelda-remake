@@ -76,7 +76,8 @@ namespace LegendOfZelda
             var __pos2 = __points.Item2;
 
             var __index = GetIndexByPosition(__pos1);
-
+            if (__index >= _collisions.Count)
+                return true;
             if (CheckCollision(_collisions[__index], __pos1, p_aabb))
             {
                 return true;
