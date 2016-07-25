@@ -57,6 +57,8 @@ namespace LegendOfZelda
 
         protected override void Update(GameTime gameTime)
         {
+            //Fix Branch
+
             if (!IsActive) return;
 
             inputManager.UpdateState();
