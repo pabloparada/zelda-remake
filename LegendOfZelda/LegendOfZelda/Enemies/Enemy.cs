@@ -69,9 +69,16 @@ namespace LegendOfZelda.Enemies
                         if (weapon != null) InvokeRemoveWeaponFromManager();
 
                         DestroyEntity();
+
+                        SoundManager.instance.Play(SoundType.ENEMY_KILL);
+                    }
+                    else
+                    {
+                        SoundManager.instance.Play(SoundType.ENEMY_HITTED);
                     }
 
                     immunityTimeAferHit = 0.0f;
+
                 }
             }
 

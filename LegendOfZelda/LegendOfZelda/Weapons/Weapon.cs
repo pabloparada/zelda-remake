@@ -43,6 +43,11 @@ namespace LegendOfZelda.Weapons
             base.Update(p_delta, p_collider);
         }
 
+        public override void OnCollide(Entity p_entity)
+        {
+            DestroyEntity();
+        }
+
         public Vector2 CenterPositionByDirection(Vector2 p_position, Vector2 p_sourceSize, Vector2 p_weaponSize)
         {
             var __initialPosition = new Vector2();

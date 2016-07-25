@@ -66,6 +66,8 @@ namespace LegendOfZelda.Weapons
                     _melee = new MeleeSword(_source);
                     _meleeSwordState = WeaponState.ACTIVE;
                     _source.SetAttackAnimation();
+
+                    SoundManager.instance.Play(SoundType.SWORD);
                 }
 
                 if (_meleeSwordState == WeaponState.ACTIVE)
@@ -91,7 +93,7 @@ namespace LegendOfZelda.Weapons
 
         private void UpdateSecondProjectile(float p_delta, Collider p_collider)
         {
-            if (_source.IsHealthFull() && _firstProjectileState == WeaponState.DISABLED)
+            if (_source.IsHealthFull() && _firstProjectileState == WeaponState.DISABLED || _secondProjectileState == WeaponState.ACTIVE)
             {
                 if (_secondProjectileState == WeaponState.ACTIVE)
                 {
@@ -103,32 +105,34 @@ namespace LegendOfZelda.Weapons
                     _secondProjectile = new DirectionalProjectile(_source, new Vector2(16.0f, 16.0f), new Vector2(2.0f, 5.0f), "LinkSword");
                     _secondProjectile.OnDestroyEntity += SecondProjectileOnDestroyEntity;
                     _secondProjectileState = WeaponState.ACTIVE;
+
+                    SoundManager.instance.Play(SoundType.SWORD_PROJECTILE);
                 }
 
                 if (_secondProjectileState == WeaponState.ACTIVE && _secondProjectile.state != State.ACTIVE)
                 {
                     _secondProjectileState = WeaponState.WAITING_FOR_COOLDOWN;
                 }
+            }
 
-                if (_secondProjectileState == WeaponState.WAITING_FOR_COOLDOWN)
+            if (_secondProjectileState == WeaponState.WAITING_FOR_COOLDOWN)
+            {
+                if (_secondProjectileCooldown >= 1.0f)
                 {
-                    if (_secondProjectileCooldown >= 1.0f)
-                    {
-                        _secondProjectileState = WeaponState.DISABLED;
-                        _secondProjectileCooldown = 0.0f;
-                    }
-                    else
-                    {
-                        _secondProjectileCooldown += p_delta;
-                    }
+                    _secondProjectileState = WeaponState.DISABLED;
+                    _secondProjectileCooldown = 0.0f;
+                }
+                else
+                {
+                    _secondProjectileCooldown += p_delta;
                 }
             }
         }
 
-        private void SecondProjectileOnDestroyEntity(Entity obj)
+        private void SecondProjectileOnDestroyEntity(Entity p_entity)
         {
-            _secondProjectileState = WeaponState.DISABLED;
-            OnLinkSwordDie(obj.position);
+            _secondProjectileState = WeaponState.WAITING_FOR_COOLDOWN;
+            OnLinkSwordDie(p_entity.position);
         }
 
         private void UpdateFirstProjectile(float p_delta, Collider p_collider)
@@ -144,6 +148,8 @@ namespace LegendOfZelda.Weapons
                 {
                     _firstProjectile = new Boomerang(_source);
                     _firstProjectileState = WeaponState.ACTIVE;
+
+                    SoundManager.instance.Play(SoundType.BOOMERANG);
                 }
 
                 if (_firstProjectileState == WeaponState.ACTIVE && _firstProjectile.state != State.ACTIVE)
