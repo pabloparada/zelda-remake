@@ -65,7 +65,6 @@ namespace LegendOfZelda
         }
         private void SetDoors(Layer p_layer)
         {
-            Console.WriteLine("Here");
             doors = new List<Door>();
             if (p_layer == null)
             {
@@ -76,7 +75,7 @@ namespace LegendOfZelda
             {
                 var __tempDoor = new Door(__obj);
                 __tempDoor.OnDoorOpen += OnDoorOpen;
-                if (World.s_saveState.HasEnemy(__obj.name, World.mapName))
+                if (World.s_saveState.HasDoor(__obj.name, World.mapName))
                     OnDoorOpen(__tempDoor);
                 doors.Add(__tempDoor);
             }

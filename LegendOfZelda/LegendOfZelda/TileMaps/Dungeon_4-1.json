@@ -184,10 +184,12 @@
                  "name":"HeartContainer",
                  "properties":
                     {
+                     "KeyType":1,
                      "Name":"HeartContainer"
                     },
                  "propertytypes":
                     {
+                     "KeyType":"int",
                      "Name":"string"
                     },
                  "rotation":0,
@@ -206,7 +208,7 @@
         }, 
         {
          "draworder":"topdown",
-         "height":11,
+         "height":0,
          "name":"Doors",
          "objects":[
                 {
@@ -239,7 +241,7 @@
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":16,
+         "width":0,
          "x":0,
          "y":0
         }],

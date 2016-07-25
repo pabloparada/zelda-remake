@@ -90,6 +90,7 @@
  <objectgroup name="Items">
   <object id="12" name="HeartContainer" x="192" y="80" width="16" height="16">
    <properties>
+    <property name="KeyType" type="int" value="1"/>
     <property name="Name" value="HeartContainer"/>
    </properties>
   </object>

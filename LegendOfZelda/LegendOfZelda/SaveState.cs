@@ -31,7 +31,7 @@ namespace LegendOfZelda
         public void AddDoorToRoom(string p_door, string p_room)
         {
             AddRoom(p_room);
-            GetRoom(p_room).AddItem(p_door);
+            GetRoom(p_room).AddDoor(p_door);
         }
         public bool HasEnemy(string p_enemy, string p_room)
         {
@@ -96,7 +96,7 @@ namespace LegendOfZelda
         }
         public void AddDoor(string p_door)
         {
-            if (!HasDoor(p_door))
+           if (!HasDoor(p_door))
                 doors.Add(p_door);
         }
         public bool HasDoor(string p_door)

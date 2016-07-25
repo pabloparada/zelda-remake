@@ -40,6 +40,12 @@ namespace LegendOfZelda.Animations
                 case "Compass":
                     AddMultipleFrameAnimation("Rupee", TilesetManager.ItemTileSet.COMPASS, 1);
                     break;
+                case "Key":
+                    AddMultipleFrameAnimation("Key", TilesetManager.ItemTileSet.KEY, 1);
+                    break;
+                case "HeartContainer":
+                    AddMultipleFrameAnimation("HeartContainer", TilesetManager.ItemTileSet.HEART_CONTAINER, 1);
+                    break;
                 //Enemies
                 case "OctorokRed":
                     AddAllDirectionAnimation(TilesetManager.EnemyTileSet.OCTOROK_RED_R1);

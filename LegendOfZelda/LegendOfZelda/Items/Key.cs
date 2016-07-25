@@ -9,6 +9,7 @@ namespace LegendOfZelda.Items
         public Key(Object p_obj)
         {
             tag = "Key";
+            _animationController = new Animations.AnimationController("Key");
             spawn = (SpawnType)p_obj.properties.KeyType;
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
@@ -26,8 +27,8 @@ namespace LegendOfZelda.Items
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            spriteBatch.Draw(GraphicAssets.itemsTileset, MathUtil.GetDrawRectangle(position, size, parentPosition),
-                TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, (int)TilesetManager.ItemTileSet.KEY), Color.White);
+            _animationController.DrawFrame(spriteBatch, 
+                MathUtil.GetDrawRectangle(position, size, parentPosition));
         }
         public override void DebugDraw(SpriteBatch p_spriteBatch)
         {

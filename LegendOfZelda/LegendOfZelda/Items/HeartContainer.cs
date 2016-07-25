@@ -9,25 +9,33 @@ namespace LegendOfZelda.Items
         public HeartContainer(Object p_obj)
         {
             tag = "HeartContainer";
+            _animationController = new Animations.AnimationController("HeartContainer");
+            spawn = (SpawnType)p_obj.properties.KeyType;
+            if (spawn == SpawnType.ALWAYS)
+                state = State.ACTIVE;
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
-            state = State.ACTIVE;
             hitboxSize = new Vector2(12f, 12f);
             hitboxOffset = new Vector2(2f, 2f);
             UpdateAABB();
         }
-        public override void Update(float delta, Collider p_collider)
-        {
-            base.Update(delta, p_collider);
-        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            spriteBatch.Draw(GraphicAssets.itemsTileset, 
-                            MathUtil.GetDrawRectangle(position, size, parentPosition),
-                            TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.ITEMS, 
-                            (int)TilesetManager.ItemTileSet.HEART_CONTAINER), 
-                            Color.White);
+            _animationController.DrawFrame(spriteBatch,
+                 MathUtil.GetDrawRectangle(position, size, parentPosition));
+        }
+        public override void OnCollide(Entity p_entity)
+        {
+            base.OnCollide(p_entity);
+            if (p_entity.type == EntityType.PLAYER)
+                DestroyEntity();
+        }
+        public override void AllDead()
+        {
+            base.AllDead();
+            if (spawn == SpawnType.ALL_DEAD)
+                state = State.ACTIVE;
         }
     }
 }

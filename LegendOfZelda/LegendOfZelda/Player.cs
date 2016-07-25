@@ -9,7 +9,7 @@ namespace LegendOfZelda
     public class Player : Entity
     {
         private readonly Vector2 _velocity;
-        private readonly int _maximumLife;
+        public int maximumLife { get; private set; }
 
         private bool _isColliding;
         private bool _hitted;
@@ -36,7 +36,7 @@ namespace LegendOfZelda
             state = State.ACTIVE;
 
             life = 16;
-            _maximumLife = 16;
+            maximumLife = 16;
             
             position = new Vector2(120, 120);
             size = new Vector2(16, 16);
@@ -55,7 +55,11 @@ namespace LegendOfZelda
             movementAABBSize = new Vector2(8f, 7f);
             movementAABB = new AABB(position + movementAABBOffset, position + size);
         }
-
+        public void IncreaseMaxHealth()
+        {
+            maximumLife += 2;
+            life = maximumLife;
+        }
         private void Player_OnAnimationEnd()
         {
             Console.WriteLine("Here");
@@ -67,7 +71,6 @@ namespace LegendOfZelda
         {
             position = p_pos;
         }
-
         public override void Update(float p_delta, Collider p_collider)
         {
             direction = GetDefaultDirection();
@@ -196,11 +199,13 @@ namespace LegendOfZelda
                 _hitPushDistance = position + __dir * Vector2.One * 40.0f;
                 immunityTimeAferHit = 0.0f;
             }
+            else if (p_entity.type == EntityType.ITEM && p_entity.tag == "HeartContainer")
+                IncreaseMaxHealth();
         }
 
         public bool IsHealthFull()
         {
-            return _maximumLife == life;
+            return maximumLife == life;
         }
 
         public void SetAttackAnimation()
