@@ -67,7 +67,7 @@ namespace LegendOfZelda
 
             if (InputManager.GetKeyChange(Keys.F2)) ChangeScale();
 
-            if (InputManager.GetKeyChange(Keys.S)) world.OpenCloseInventory();
+            if (InputManager.GetKeyChange(Keys.F3)) world.OpenCloseInventory();
 
             var __delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
 

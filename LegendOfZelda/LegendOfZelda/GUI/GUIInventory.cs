@@ -30,7 +30,7 @@ namespace LegendOfZelda.GUI
                                      0.0f);
 
             //Draw Use B Button
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "USE Z BUTTON\n  FOR THIS",
+            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "USE B BUTTON\n  FOR THIS",
                                      new Vector2(16.0f * Main.s_scale, (parentPosition.Y + 71.0f) * Main.s_scale), 
                                      Color.White,
                                      0.0f, 
@@ -38,11 +38,11 @@ namespace LegendOfZelda.GUI
                                      Main.s_scale / 2.0f, 
                                      SpriteEffects.None, 
                                      0.0f);
-            if (Inventory.Instance.hasBoomerang)
-                p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
-                    new Rectangle((63 + (int)parentPosition.X) * Main.s_scale, (47 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
-                    TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 7), 
-                    Color.White);
+
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
+                               new Rectangle((63 + (int)parentPosition.X) * Main.s_scale, (47 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
+                               TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 6), 
+                               Color.White);
 
             //Draw Map
             if (Inventory.Instance.hasMap)
@@ -95,6 +95,11 @@ namespace LegendOfZelda.GUI
                                          0.0f);
             }
 
+            //Draw Items
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
+                               new Rectangle((63 + (int)parentPosition.X) * Main.s_scale, (47 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
+                               TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 6), 
+                               Color.White);
         }
     }
 }

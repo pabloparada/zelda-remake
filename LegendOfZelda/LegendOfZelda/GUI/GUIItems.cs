@@ -41,27 +41,24 @@ namespace LegendOfZelda.GUI
                                      0.0f, Vector2.Zero, Main.s_scale / 2.0f, SpriteEffects.None, 0.0f);
 
             //Draw Second Item HotKey
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "Z",
+            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "B",
                                      new Vector2((parentPosition.X + 129.0f) * Main.s_scale, (parentPosition.Y + 188.0f) * Main.s_scale), Color.White,
                                      0f, Vector2.Zero, Main.s_scale / 2.0f, SpriteEffects.None, 0.0f);
 
-            if (Inventory.Instance.hasBoomerang)
-                p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
-                    new Rectangle((124 + (int)parentPosition.X) * Main.s_scale,
-                    (196 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
-                    TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 7), Color.White);
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
+                               new Rectangle((124 + (int)parentPosition.X) * Main.s_scale,
+                               (196 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
+                               TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 7), Color.White);
 
             //Draw Sword HotKey
-            
-            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "X",
-                new Vector2((parentPosition.X + 153.0f) * Main.s_scale, (parentPosition.Y + 188.0f) * Main.s_scale), Color.White,
-                0.0f, Vector2.Zero, Main.s_scale / 2.0f, SpriteEffects.None, 0.0f);
+            p_spriteBatch.DrawString(GraphicAssets.zeldaFont12, "A",
+                                     new Vector2((parentPosition.X + 153.0f) * Main.s_scale, (parentPosition.Y + 188.0f) * Main.s_scale), Color.White,
+                                     0.0f, Vector2.Zero, Main.s_scale / 2.0f, SpriteEffects.None, 0.0f);
 
-            if (Inventory.Instance.hasSword)
-                p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
-                    new Rectangle((148 + (int)parentPosition.X) * Main.s_scale,
-                    (196 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
-                    TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 9), Color.White);
+            p_spriteBatch.Draw(GraphicAssets.inventoryTileset,
+                               new Rectangle((148 + (int)parentPosition.X) * Main.s_scale,
+                               (196 + (int)parentPosition.Y) * Main.s_scale, 16 * Main.s_scale, 16 * Main.s_scale),
+                               TilesetManager.GetSourceRectangle(TilesetManager.TileSetType.INVENTORY, 9), Color.White);
 
             //Draw Hearts
             var __x = 0;

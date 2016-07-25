@@ -13,18 +13,7 @@ namespace LegendOfZelda.Items
             position = new Vector2(p_obj.x, p_obj.y);
             size = new Vector2(16f, 16f);
             state = State.ACTIVE;
-            _animationController = new AnimationController("Heart");
-            hitboxSize = new Vector2(8f, 12f);
-            hitboxOffset = new Vector2(4f, 2f);
-            UpdateAABB();
-        }
-        public Heart(Vector2 p_pos)
-        {
-            tag = "Heart";
-            position = p_pos;
-            size = new Vector2(16f, 16f);
-            state = State.ACTIVE;
-            _animationController = new AnimationController("Heart");
+            _animationController = new AnimationController("Fire");
             hitboxSize = new Vector2(8f, 12f);
             hitboxOffset = new Vector2(4f, 2f);
             UpdateAABB();
@@ -37,12 +26,6 @@ namespace LegendOfZelda.Items
         {
             base.Draw(spriteBatch);
             _animationController.DrawFrame(spriteBatch, MathUtil.GetDrawRectangle(position, size, parentPosition));
-        }
-        public override void OnCollide(Entity p_entity)
-        {
-            base.OnCollide(p_entity);
-            if (p_entity.type == EntityType.PLAYER)
-                DestroyEntity();
         }
     }
 }

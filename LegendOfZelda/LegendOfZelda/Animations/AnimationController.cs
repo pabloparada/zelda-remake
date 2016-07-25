@@ -26,7 +26,7 @@ namespace LegendOfZelda.Animations
                     AddMultipleFrameAnimation("Triforce", TilesetManager.ItemTileSet.TRIFORCE1, 2, 0.5f);
                     break;
                 case "Heart":
-                    AddMultipleFrameAnimation("Heart", TilesetManager.ItemTileSet.HEART1, 2);
+                    AddMultipleFrameAnimation("Heart", TilesetManager.ItemTileSet.FIRE1, 2);
                     break;
                 case "Rupee":
                     AddMultipleFrameAnimation("Rupee", TilesetManager.ItemTileSet.RUPEE1, 2);
@@ -45,9 +45,6 @@ namespace LegendOfZelda.Animations
                     break;
                 case "HeartContainer":
                     AddMultipleFrameAnimation("HeartContainer", TilesetManager.ItemTileSet.HEART_CONTAINER, 1);
-                    break;
-                case "WoodSword":
-                    AddMultipleFrameAnimation("WoodSword", TilesetManager.ItemTileSet.WOOD_SWORD, 1);
                     break;
                 //Enemies
                 case "OctorokRed":
@@ -96,16 +93,10 @@ namespace LegendOfZelda.Animations
                     break;
                 //Projectiles
                 case "LinkSword":
-                    AddMultipleFrameAnimation("Right", TilesetManager.ProjectileTileSet.SWORD_R1, 4, 0.1f);
-                    AddMultipleFrameAnimation("Up", TilesetManager.ProjectileTileSet.SWORD_U1, 4, 0.1f);
-                    AddMultipleFrameAnimation("Left", TilesetManager.ProjectileTileSet.SWORD_L1, 4, 0.1f);
-                    AddMultipleFrameAnimation("Down", TilesetManager.ProjectileTileSet.SWORD_D1, 4, 0.1f);
-                    break;
-                case "LinkWoodSword":
-                    AddMultipleFrameAnimation("Right", TilesetManager.ProjectileTileSet.SWORD_R1, 1, 0.1f);
-                    AddMultipleFrameAnimation("Up", TilesetManager.ProjectileTileSet.SWORD_U1, 1, 0.1f);
-                    AddMultipleFrameAnimation("Left", TilesetManager.ProjectileTileSet.SWORD_L1, 1, 0.1f);
-                    AddMultipleFrameAnimation("Down", TilesetManager.ProjectileTileSet.SWORD_D1, 1, 0.1f);
+                    AddMultipleFrameAnimation("Right", TilesetManager.ProjectileTileSet.SWORD_R1, 2, 0.1f);
+                    AddMultipleFrameAnimation("Up", TilesetManager.ProjectileTileSet.SWORD_U1, 2, 0.1f);
+                    AddMultipleFrameAnimation("Left", TilesetManager.ProjectileTileSet.SWORD_L1, 2, 0.1f);
+                    AddMultipleFrameAnimation("Down", TilesetManager.ProjectileTileSet.SWORD_D1, 2, 0.1f);
                     break;
                 case "Arrow":
                     AddAllDirectionAnimation(TilesetManager.ProjectileTileSet.ARROW_R);
@@ -147,10 +138,10 @@ namespace LegendOfZelda.Animations
                     AddTwoFrameAnimation("WalkUp", TilesetManager.PlayerTileSet.LINK_WALK_U1);
                     AddTwoFrameAnimation("WalkLeft", TilesetManager.PlayerTileSet.LINK_WALK_L1);
                     AddTwoFrameAnimation("WalkDown", TilesetManager.PlayerTileSet.LINK_WALK_D1);
-                    AddOneFrameAnimation("AttackRight", TilesetManager.PlayerTileSet.LINK_ATTACK_R, 0.4f);
-                    AddOneFrameAnimation("AttackUp", TilesetManager.PlayerTileSet.LINK_ATTACK_U, 0.4f);
-                    AddOneFrameAnimation("AttackLeft", TilesetManager.PlayerTileSet.LINK_ATTACK_L, 0.4f);
-                    AddOneFrameAnimation("AttackDown", TilesetManager.PlayerTileSet.LINK_ATTACK_D, 0.4f);
+                    AddOneFrameAnimation("AttackRight", TilesetManager.PlayerTileSet.LINK_ATTACK_R);
+                    AddOneFrameAnimation("AttackUp", TilesetManager.PlayerTileSet.LINK_ATTACK_U);
+                    AddOneFrameAnimation("AttackLeft", TilesetManager.PlayerTileSet.LINK_ATTACK_L);
+                    AddOneFrameAnimation("AttackDown", TilesetManager.PlayerTileSet.LINK_ATTACK_D);
                     AddOneFrameAnimation("HoldTrifoce", TilesetManager.PlayerTileSet.LINK_HOLD_TRIFORCE);
                     break;
             }

@@ -30,10 +30,7 @@ namespace LegendOfZelda.Items
         {
             base.OnCollide(p_entity);
             if (p_entity.type == EntityType.PLAYER)
-            {
-                Inventory.Instance.hasBow = true;
                 DestroyEntity();
-            }
         }
     }
 }

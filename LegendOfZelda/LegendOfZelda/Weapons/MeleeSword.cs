@@ -8,14 +8,12 @@ namespace LegendOfZelda.Weapons
     {
         private readonly Player _player;
 
-        public MeleeSword(Player p_source) : base(p_source, new Vector2(15.0f, 15.0f), p_source.direction)
+        public MeleeSword(Player p_source) : base(p_source, new Vector2(5.6f, 15.0f), p_source.direction)
         {
             weaponType = WeaponType.SWORD;
 
             maxCooldown = 0.2f;
             _player = p_source;
-            _animationController = new Animations.AnimationController("LinkWoodSword");
-            _animationController.ChangeAnimation(DirectionUtil.DirectionToTitleCase(p_source.direction));
         }
 
         public override void Update(float p_delta, Collider p_collider)
@@ -39,8 +37,7 @@ namespace LegendOfZelda.Weapons
 
         public override void Draw(SpriteBatch p_spriteBatch)
         {
-            _animationController.DrawFrame(p_spriteBatch,MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition));
-            //p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Azure);
+            p_spriteBatch.FillRectangle(MathUtil.GetDrawRectangle(MathUtil.AddHUDMargin(position), size, parentPosition), Color.Azure);
             base.Draw(p_spriteBatch);
         }
 

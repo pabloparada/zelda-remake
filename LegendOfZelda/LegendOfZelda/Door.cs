@@ -5,7 +5,7 @@ namespace LegendOfZelda
 {
     public class Door : Entity
     {
-        public event Action<Door, bool> OnDoorOpen;
+        public event Action<Door> OnDoorOpen;
         public enum DoorType
         {
             NONE,
@@ -46,7 +46,7 @@ namespace LegendOfZelda
             if (doorType == DoorType.ALL_DEAD)
             {
                 isOpen = true;
-                OnDoorOpen(this, true);
+                OnDoorOpen(this);
             }
             else if (doorType == DoorType.KEY)
                 canOpen = true;
@@ -61,7 +61,7 @@ namespace LegendOfZelda
             {
                 Inventory.Instance.keyCount--;
                 isOpen = true;
-                OnDoorOpen(this, true);
+                OnDoorOpen(this);
             }
         }
     }

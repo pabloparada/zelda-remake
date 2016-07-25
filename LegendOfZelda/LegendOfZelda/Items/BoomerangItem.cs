@@ -30,10 +30,10 @@ namespace LegendOfZelda.Items
         public override void OnCollide(Entity p_entity)
         {
             base.OnCollide(p_entity);
-            if (p_entity.type == EntityType.PLAYER)
             {
-                Inventory.Instance.hasBoomerang = true;
-                DestroyEntity();
+                System.Console.WriteLine(p_entity.type);
+                if (p_entity.type == EntityType.PLAYER)
+                    DestroyEntity();
             }
         }
         public override void AllDead()

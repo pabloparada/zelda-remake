@@ -36,50 +36,15 @@ namespace LegendOfZelda
             _tileReader = new TiledReader();
             guiManager = new GUIManager(_player);
             
-            //mapName = "Room_7-7";
-            mapName = "Dungeon_2-5";
+            //mapName = "Room_6-5";
+            mapName = "Dungeon_4-1";
             s_saveState = new SaveState();
             s_saveState.AddRoom(mapName);
-            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_7-7"), _player);
-            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_2-5"), _player);
+            //CurrentScene = new Scene(_tileReader.LoadTiledJson("Room_6-5"), _player);
+            CurrentScene = new Scene(_tileReader.LoadTiledJson("Dungeon_4-1"), _player);
          
             CurrentScene.state = State.ACTIVE;
             CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
-            CurrentScene.OnPlayerDead += CurrentScene_OnPlayerDead;
-        }
-
-        private void CurrentScene_OnPlayerDead(Player obj)
-        {
-            Portal __tempPortal = new Portal(Vector2.Zero, Vector2.Zero);
-            __tempPortal.transitionType = TransitionType.BLINK;
-            obj.ResetMaxHealth();
-            s_saveState.rooms.Clear();
-            Inventory.Instance.hasBoomerang = false;
-            Inventory.Instance.hasBow = false;
-            Inventory.Instance.hasCompass = false;
-            Inventory.Instance.hasMap = false;
-            Inventory.Instance.rupeeCount = 0;
-            Inventory.Instance.keyCount = 0;
-            Inventory.Instance.bombCount = 0;
-            if (!IsOpenWorld())
-            {
-                Console.WriteLine("Dungeon");
-                
-                mapName = "Dungeon_2-5";
-                __tempPortal.targetMap = "Dungeon_2-5";
-                __tempPortal.targetPosition = new Vector2(122f, 140f);
-               
-                ChangeScene(new Scene(_tileReader.LoadTiledJson("Dungeon_2-5"), obj), __tempPortal);
-            }
-           else
-            {
-                Inventory.Instance.hasSword = false;
-                mapName = "Room_7-7";
-                __tempPortal.targetMap = "Room_7-7";
-                __tempPortal.targetPosition = new Vector2(120f, 120f);
-                ChangeScene(new Scene(_tileReader.LoadTiledJson("Room_7-7"), obj), __tempPortal);
-                Console.WriteLine("Open");
-            }
         }
 
         private void Scene_OnPortalEnter(Portal p_portal)
@@ -268,7 +233,6 @@ namespace LegendOfZelda
                 {
                     CurrentScene.scenePosition = new Vector2(0f, 48f);
                     CurrentScene.OnPortalEnter += Scene_OnPortalEnter;
-                    CurrentScene.OnPlayerDead += CurrentScene_OnPlayerDead;
                     previousScene = null;
                 }
 
